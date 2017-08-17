@@ -1,0 +1,60 @@
+<div class="row">
+        <div class="col-lg-4 col-sm-12">
+          <!-- small box -->
+          <div class="small-box bg-aqua">
+            <div class="inner">
+              {% if ingresos_hoy.total == None %}
+                  <h3>0$</h3>
+                  {% else %}
+                  <h3>{{ingresos_hoy.total}}$</h3>              
+              {% endif %}
+
+              <p>INGRESOS HOY</p>
+            </div>
+            <div class="icon">
+              <i class="ion ion-stats-bars"></i>
+            </div>
+            <a href="{% url "Caja:IngresoList" %}" class="small-box-footer">MAS  <i class="fa fa-arrow-circle-right"></i></a>
+          </div>
+        </div>
+        
+        <!-- ./col -->
+        <div class="col-lg-4 col-sm-12">
+          <!-- small box -->
+          <div class="small-box bg-yellow">
+            <div class="inner">
+              {% if turnos_hoy == None %}
+                  <h3>0$</h3>
+                  {% else %}
+                  <h3>{{turnos_hoy}}</h3>              
+              {% endif %}
+
+              <p>CITAS EN ESPERA DE HOY</p>
+            </div>
+            <div class="icon">
+              <i class="ion ion-person-add"></i>
+            </div>
+            <a href="{% url "Turnos:index" %}" class="small-box-footer">MAS  <i class="fa fa-arrow-circle-right"></i></a>
+          </div>
+        </div>
+        <!-- ./col -->
+        <div class="col-lg-4 col-sm-12">
+          <!-- small box -->
+          <div class="small-box bg-red">
+            <div class="inner">
+              {% if egresos_hoy.total == None %}
+                  <h3>0$</h3>
+                  {% else %}
+                  <h3>{{egresos_hoy.total}}$</h3>              
+              {% endif %}
+
+              <p>EGRESOS HOY</p>
+            </div>
+            <div class="icon">
+              <i class="ion ion-bag"></i>
+            </div>
+            <a href="{% url "Caja:EgresoList" %}" class="small-box-footer">MAS <i class="fa fa-arrow-circle-right"></i></a>
+          </div>
+        </div>
+        <!-- ./col -->
+      </div>

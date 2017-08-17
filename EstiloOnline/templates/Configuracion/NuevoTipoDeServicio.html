@@ -1,0 +1,109 @@
+{% extends "../Base/BasePanel.html" %}
+
+{% block content %}
+{% if user.is_authenticated and user.is_staff == True and user.is_superuser == True%}
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <h1>
+        Nuevo tipo de Servicio 
+        <small>detalles</small>
+      </h1>
+      <ol class="breadcrumb">
+        <li><a href="index.html"><i class="fa fa-dashboard"></i>Inicio</a></li>
+        <li><a href="#">Servicios </a></li>
+        <li class="active">Nuevo tipo de Servicios </li>
+      </ol>
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="row">
+        <!-- left column -->
+        <div class="col-lg-2 col-sm-0"></div>
+        <div class="col-lg-8 col-sm-12">
+          <!-- general form elements -->
+          
+          <div class="box box-info">
+            <div class="box-header with-border">
+              <h3 class="box-title">Nuevo tipo de Servicios </h3>
+            </div>
+            <!-- /.box-header -->
+            <!-- form start -->
+             <form action="" method="post">
+              {% csrf_token %}
+              <div class="box-body">
+                  
+                  {% for field in Form %}
+                     {% if Form.subject.errors %}
+                         <ol>
+                          {% for error in Form.subject.errors %}
+                              <li><strong>{{ error|escape }}</strong></li>
+                          {% endfor %}
+                        </ol>
+                    {% endif %}
+                    
+                    {{ field.errors }}
+
+
+                    {% if field.name == 'nameTipoServicio' %}
+                          <div class="form-group ">
+                            <label>NOMBRE</label>
+                            <input class="form-control" placeholder="{{field.label}}" autocomplete="off" 
+                            required autofocus maxlength="{{field.max_length}}" {{ field }}
+                    
+                        </div>
+
+                    
+                    
+
+
+                      
+                    {% endif %}
+        
+          
+
+          
+      
+                  {% if field.help_text %}
+                    <script> console.log('{{ field.help_text|safe }}')</script>
+                  {% endif %}
+               {% endfor %}
+
+               
+               
+                
+
+
+                
+              
+             
+              
+              </div>
+              <!-- /.box-body -->
+
+              <div class="box-footer">
+                <button type="submit" class="btn btn-primary">GUARDAR</button>
+                <a href="{% url "Configuracion:Configuracion" %}" class="btn btn-danger">REGRESAR</a>
+              </div>
+            </form>
+          </div>
+          <!-- /.box -->
+        </div>
+        <div class="col-lg-2 col-sm-0"></div>
+        <!--/.col (left) -->
+        <!-- right column -->
+        
+        <!--/.col (right) -->
+      </div>
+      <!-- /.row -->
+    </section>
+    <!-- /.content -->
+  </div>
+   {% else %}
+
+{% include "Base/404.html" %}
+  
+{% endif %}
+{% endblock content %}
+

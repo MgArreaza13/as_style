@@ -1,0 +1,204 @@
+{% extends "../Base/BasePanel.html" %}
+
+{% block title %}
+  Nuevo Cliente
+{% endblock title %}
+
+{% block content %}
+
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <h1>
+        Nuevo Cliente
+        <small>detalles</small>
+      </h1>
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i>Inicio</a></li>
+        <li><a href="#">Clientes </a></li>
+        <li class="active">Nuevo Cliente</li>
+      </ol>
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="row">
+        <!-- left column -->
+        <div class="col-lg-2 col-sm-0"></div>
+        <div class="col-lg-8 col-sm-12">
+          <!-- general form elements -->
+          <div class="box box-info">
+            <div class="box-header with-border">
+              <h3 class="box-title">Nuevo Cliente</h3>
+            </div>
+            <!-- /.box-header -->
+            <!-- form start -->
+              <form action="" method="post" enctype="multipart/form-data">
+              {% csrf_token %}
+              <div class="box-body">
+              {% for field in Form %}
+                    {% if form.subject.errors %}
+                      <ol>
+                        {% for error in form.subject.errors %}
+                          <li><strong>{{ error|escape }}</strong></li>
+                        {% endfor %}
+                      </ol>
+                    {% endif %}
+                 {{ field.errors }}
+          
+                {% if field.name == "username" %}
+                  <div class="form-group ">
+                    <label>Usuario</label>
+                    <input class="form-control" placeholder="{{field.label}}" autocomplete="off" 
+                      required autofocus maxlength="{{field.max_length}}" {{ field }}    
+                  </div>
+                {% elif field.name == "password1" %}
+                  <div class="form-group ">
+                     <label>Clave</label>
+                     <input class="form-control" placeholder="{{field.label}}" autocomplete="off" 
+                     required autofocus maxlength="{{field.max_length}}" {{ field }}
+                   </div>
+                {% else %}
+                  <div class="form-group ">
+                    <label>Repite tu clave</label>
+                     <input class="form-control" placeholder="{{field.label}}" autocomplete="off" 
+                      required autofocus maxlength="{{field.max_length}}" {{ field }}      
+                  </div>
+               {% endif %} 
+              {% if field.help_text %}
+                <script> console.log('{{ field.help_text|safe }}')</script>
+               {% endif %}
+          {% endfor %}
+     <!-- Final Formulario de Usuarios de Django Default -->
+
+
+     <!-- Formulario para UserProfile -->
+          {% for field in Form2 %}
+              {% if form.subject.errors %}
+                <ol>
+                  {% for error in form.subject.errors %}
+                      <li><strong>{{ error|escape }}</strong></li>
+                  {% endfor %}
+                </ol>
+                {% endif %}
+            {{ field.errors }}
+        
+              {% if field.name == "nameUser" %}
+              <div class="form-group ">
+                <label>Nombre Completo</label>
+                <input class="form-control" placeholder="{{field.label}}" autocomplete="off" 
+                required autofocus maxlength="{{field.max_length}}" {{ field }}
+              </div>
+             {% elif field.name == "mailUser" %}
+              <div class="form-group ">
+                <label>Correo Electronico</label>
+                <input class="form-control" placeholder="{{field.label}}" autocomplete="off" 
+                          required autofocus maxlength="{{field.max_length}}" {{ field }}
+              </div>        
+             {% elif field.name == "image" %}
+              <div class="form-group ">
+                <label>Seleccione su foto de perfil</label>
+                {{ field }} 
+              </div>
+
+              {% endif %}
+      
+            {% if field.help_text %}
+              <script> console.log('{{ field.help_text|safe }}')</script>
+            {% endif %}
+          {% endfor %}
+          <div class="form-group ">
+              <label >  Fecha de Nacimiento</label>
+              <input class="form-control" name="birthdayDate" value="birthdayDate" type="date" placeholder="Fecha de Cumpleaño" autocomplete="off" 
+                        required autofocus max="2000-12-31" >
+              
+          </div>
+          {% for field in Form3 %}
+              {% if Form3.subject.errors %}
+                  <ol>
+                  {% for error in Form3.subject.errors %}
+                      <li><strong>{{ error|escape }}</strong></li>
+                  {% endfor %}
+                  </ol>
+               {% endif %}
+                    
+                    {{ field.errors }}
+
+                    {% if field.name == 'dni' %}
+                      <div class="form-group ">
+                              <label>Dni</label>
+                              <input class="form-control" placeholder="{{field.label}}" autocomplete="off" 
+                              required autofocus maxlength="{{field.max_length}}" {{ field }}
+                      
+                          </div>
+                     {% elif field.name == 'phoneNumberClient' %}
+                      <div class="form-group ">
+                              <label>Numero 1</label>
+                              <input class="form-control" placeholder="{{field.label}}" autocomplete="off" 
+                              required autofocus maxlength="{{field.max_length}}" {{ field }}
+                      
+                          </div>
+                    {% elif field.name == 'phoneNumberClientTwo' %}
+                      <div class="form-group ">
+                              <label>Numero 2</label>
+                              <input class="form-control" placeholder="{{field.label}}" autocomplete="off" 
+                              required autofocus maxlength="{{field.max_length}}" {{ field }}
+                      
+                          </div>
+
+                    {% elif field.name == 'addressClient' %}
+                      <div class="form-group ">
+                              <label>Direccion 1</label>
+                             {{ field }}
+                      
+                          </div>
+                    {% elif field.name == 'addressClientTwo' %}
+                      <div class="form-group ">
+                              <label>Direccion 2</label>
+                             {{ field }}                          
+                          </div>
+                    {% endif %}
+        
+          
+
+          
+      
+                  {% if field.help_text %}
+                    <script> console.log('{{ field.help_text|safe }}')</script>
+                  {% endif %}
+               {% endfor %}
+
+               
+               
+                
+
+
+                
+              
+             
+              
+              </div>
+              <!-- /.box-body -->
+
+              <div class="box-footer">
+                <button type="submit" class="btn btn-primary">GUARDAR</button>
+                <a href="{% url "Clientes:list" %}" class="btn btn-danger">REGRESAR</a>
+              </div>
+            </form>
+          </div>
+          <!-- /.box -->
+        </div>
+        <div class="col-lg-2 col-sm-0"></div>
+        <!--/.col (left) -->
+        <!-- right column -->
+        
+        <!--/.col (right) -->
+      </div>
+      <!-- /.row -->
+    </section>
+    <!-- /.content -->
+</div>
+
+
+{% endblock content %}
+

@@ -1,0 +1,338 @@
+{% extends "../Base/BasePanel.html" %}
+{% load staticfiles %}
+
+{% block styles %}
+  
+
+<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+  <!-- Bootstrap 3.3.6 -->
+  <link rel="stylesheet" href="{% static "bootstrap/css/bootstrap.min.css" %}">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
+  <!-- Ionicons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="{% static 'dist/css/AdminLTE.min.css'%}">
+  <!-- AdminLTE Skins. Choose a skin from the css/skins
+       folder instead of downloading all of them to reduce the load. -->
+  <link rel="stylesheet" href="{% static 'dist/css/skins/_all-skins.min.css' %}">
+  <!-- iCheck -->
+  <link rel="stylesheet" href="{% static 'plugins/iCheck/flat/blue.css' %}">
+  <!-- Morris chart -->
+  <link rel="stylesheet" href="{% static 'plugins/morris/morris.css'%}">
+  <!-- jvectormap -->
+  <link rel="stylesheet" href="{% static 'plugins/jvectormap/jquery-jvectormap-1.2.2.css'%}">
+  <!-- Date Picker -->
+  <link rel="stylesheet" href="{% static 'plugins/datepicker/datepicker3.css'%}">
+  <!-- Daterange picker -->
+  <link rel="stylesheet" href="{% static 'plugins/daterangepicker/daterangepicker.css'%}">
+  <!-- bootstrap wysihtml5 - text editor -->
+  <link rel="stylesheet" href="{% static 'plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css'%}">
+   <link rel="stylesheet" href="{% static "plugins/fullcalendar/fullcalendar.min.css" %}">
+  <link rel="stylesheet" href="{% static "plugins/fullcalendar/fullcalendar.print.css" %}" media="print">
+{% endblock styles %}
+
+{% block content %}
+
+
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+     <section class="content-header">
+      <h1>
+        NUEVO TURNO 
+        <small>Control panel</small>
+      </h1>
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> INICIO</a></li>
+        <li class="active">CALENDARIO</li>
+      </ol>
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="row">
+        <div class="col-lg-4 col-sm-12">
+          <!-- general form elements -->
+          <div class="box box-info">
+            <div class="box-header with-border">
+              <h3 class="box-title">Nuevo Turno</h3>
+            </div>
+            <!-- /.box-header -->
+            <!-- form start -->
+            {% if mensaje %}
+              <div class="alert alert-danger alert-dismissible">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                <p><i class="icon fa fa-ban"></i> Alert!</p>
+                {{mensaje}}
+              </div>
+           {% endif %}
+            <form action="" method="post">
+              {% csrf_token %}
+              <div class="box-body">
+                  
+                  {% for field in Form %}
+                     {% if Form.subject.errors %}
+                         <ol>
+                          {% for error in Form.subject.errors %}
+                              <li><strong>{{ error|escape }}</strong></li>
+                          {% endfor %}
+                        </ol>
+                    {% endif %}
+                    
+                    {{ field.errors }}
+
+
+                  
+
+                    {% if field.name == 'extraInfoTurn' %}
+                      <div class="form-group ">
+                              <label>Informacion</label>
+                              {{ field }}
+                      
+                          </div>
+                     
+
+                    {% elif field.name == 'client' %}
+                      <div class="form-group ">
+                              <label>Seleccione Cliente</label>
+                             {{ field }}
+                      
+                          </div>
+                    {% elif field.name == 'collaborator' %}
+                      <div class="form-group ">
+                              <label>Seleccione Colaborador</label>
+                             {{ field }}
+                      
+                          </div>
+                    {% elif field.name == 'statusTurn' %}
+                      <div class="form-group ">
+                              <label>Seleccione Status</label>
+                             {{ field }}
+                      
+                          </div>
+
+                    {% elif field.name == 'servicioPrestar' %}
+                      <div class="form-group ">
+                              <label>Ingrese el servicio</label>
+                             {{ field }}
+                      
+                          </div>
+
+                  {% elif field.name == 'TypeHora' %}
+                      <div class="form-group ">
+                              <label>Ingrese el horario a convenir</label>
+                             {{ field }}
+                      
+                          </div>
+                      
+                    {% endif %}
+        
+          
+
+          
+      
+                  {% if field.help_text %}
+                    <script> console.log('{{ field.help_text|safe }}')</script>
+                  {% endif %}
+               {% endfor %}
+
+                <div class="form-group">
+                  <label >  Sleccione la Hora del turno </label>
+                      <input class="form-control" name="TimeTurn" type="time" placeholder="Hora Del Turno" autocomplete="off" 
+                               step="1" required autofocus  >
+              
+                </div>
+               <div class="form-group">
+                  <label >  Sleccione la fecha del turno </label>
+                      <input class="form-control" name="TurnDate" value="TurnDate" type="date" placeholder="Fecha del Turno" autocomplete="off" 
+                                required autofocus max="2030-12-31" >
+
+              </div>
+               
+                </div>
+
+
+                
+              
+             
+              
+                        <!-- /.box-body -->
+
+              <div class="box-footer">
+                <button type="submit" class="btn btn-primary">GUARDAR</button>
+                <a href="{% url "Turnos:listTurnos" %}" class="btn btn-danger">REGRESAR</a>
+              </div>
+            </form>
+          </div>
+          <!-- /.box -->
+        </div>
+        <!-- /.col -->
+        <div class="col-md-8">
+          <div class="box box-primary">
+            <div class="box-body no-padding">
+              <!-- THE CALENDAR -->
+              <div id="calendar"></div>
+            </div>
+            <!-- /.box-body -->
+          </div>
+          <!-- /. box -->
+        </div>
+        <!-- /.col -->
+      </div>
+      <!-- /.row -->
+    </section>
+    <!-- /.content -->
+  </div>
+
+
+
+{% endblock %}
+
+{% block scripts %}
+
+<!-- jQuery 2.2.3 -->
+<script src="{% static "plugins/jQuery/jquery-2.2.3.min.js" %}"></script>
+<!-- Bootstrap 3.3.6 -->
+<script src="{% static "bootstrap/js/bootstrap.min.js" %}"></script>
+<!-- jQuery UI 1.11.4 -->
+<script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
+<!-- Slimscroll -->
+<script src="{% static "plugins/slimScroll/jquery.slimscroll.min.js" %}"></script>
+<!-- FastClick -->
+<script src="{% static "plugins/fastclick/fastclick.js" %}"></script>
+<!-- AdminLTE App -->
+<script src="{% static "dist/js/app.min.js" %}"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="{% static "dist/js/demo.js" %}"></script>
+<!-- fullCalendar 2.2.5 -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
+<script src="{% static "plugins/fullcalendar/fullcalendar.min.js" %}"></script>
+<!-- Page specific script -->
+<script>
+  $(function () {
+
+    /* initialize the external events
+     -----------------------------------------------------------------*/
+    function ini_events(ele) {
+      ele.each(function () {
+
+        // create an Event Object (http://arshaw.com/fullcalendar/docs/event_data/Event_Object/)
+        // it doesn't need to have a start or end
+        var eventObject = {
+          title: $.trim($(this).text()) // use the element's text as the event title
+        };
+
+        // store the Event Object in the DOM element so we can get to it later
+        $(this).data('eventObject', eventObject);
+
+        // make the event draggable using jQuery UI
+        $(this).draggable({
+          zIndex: 1070,
+          revert: true, // will cause the event to go back to its
+          revertDuration: 0  //  original position after the drag
+        });
+
+      });
+    }
+ 
+    ini_events($('#external-events div.external-event'));
+
+    /* initialize the calendar
+     -----------------------------------------------------------------*/
+    //Date for the calendar events (dummy data)
+    var date = new Date();
+    var d = date.getDate(),
+        m = date.getMonth(),
+        y = date.getFullYear();
+    
+    $('#calendar').fullCalendar({
+      header: {
+        left: 'prev,next today',
+        center: 'title',
+        right: 'month,agendaWeek,agendaDay'
+      },
+      buttonText: {
+        today: 'Hoy',
+        month: 'Mes',
+        week: 'Semana',
+        day: 'Dia'
+      },
+
+
+      //Random default events
+      events: [
+
+      {% for turno in turnos %}
+        {
+          title: '{{turno.collaborator}}{{turno.HoraTurn}}',
+          start: '{{ turno.dateTurn|date:"Y-m-d" }}',
+          backgroundColor: "#f56954", //red
+          borderColor: "#f56954" //red
+        },
+      {% endfor %}
+      ],
+      editable: false,
+      droppable: true, // this allows things to be dropped onto the calendar !!!
+      drop: function (date, allDay) { // this function is called when something is dropped
+
+        // retrieve the dropped element's stored Event Object
+        var originalEventObject = $(this).data('eventObject');
+
+        // we need to copy it, so that multiple events don't have a reference to the same object
+        var copiedEventObject = $.extend({}, originalEventObject);
+
+        // assign it the date that was reported
+        copiedEventObject.start = date;
+        copiedEventObject.allDay = allDay;
+        copiedEventObject.backgroundColor = $(this).css("background-color");
+        copiedEventObject.borderColor = $(this).css("border-color");
+
+        // render the event on the calendar
+        // the last `true` argument determines if the event "sticks" (http://arshaw.com/fullcalendar/docs/event_rendering/renderEvent/)
+        $('#calendar').fullCalendar('renderEvent', copiedEventObject, true);
+
+        // is the "remove after drop" checkbox checked?
+        if ($('#drop-remove').is(':checked')) {
+          // if so, remove the element from the "Draggable Events" list
+          $(this).remove();
+        }
+
+      }
+    });
+
+    /* ADDING EVENTS */
+    var currColor = "#3c8dbc"; //Red by default
+    //Color chooser button
+    var colorChooser = $("#color-chooser-btn");
+    $("#color-chooser > li > a").click(function (e) {
+      e.preventDefault();
+      //Save color
+      currColor = $(this).css("color");
+      //Add color effect to button
+      $('#add-new-event').css({"background-color": currColor, "border-color": currColor});
+    });
+    $("#add-new-event").click(function (e) {
+      e.preventDefault();
+      //Get value and make sure it is not null
+      var val = $("#new-event").val();
+      if (val.length == 0) {
+        return;
+      }
+
+      //Create events
+      var event = $("<div />");
+      event.css({"background-color": currColor, "border-color": currColor, "color": "#fff"}).addClass("external-event");
+      event.html(val);
+      $('#external-events').prepend(event);
+
+      //Add draggable funtionality
+      ini_events(event);
+
+      //Remove event from text input
+      $("#new-event").val("");
+    });
+  });
+</script>
+{% endblock scripts %}
+
+

@@ -1,0 +1,91 @@
+{% extends "../Base/BasePanel.html" %}
+
+{% block title %}
+  Nuevo Proveedor
+{% endblock title %}
+
+{% block content %}
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <h1>
+        Nuevo Proveedor
+        <small>detalles</small>
+      </h1>
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i>Inicio</a></li>
+        <li><a href="#">Proveedores </a></li>
+        <li class="active">Nuevo Proveedor</li>
+      </ol>
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="row">
+        <!-- left column -->
+        <div class="col-lg-2 col-sm-0"></div>
+        <div class="col-lg-8 col-sm-12">
+          <!-- general form elements -->
+          <div class="box box-info">
+            <div class="box-header with-border">
+              <h3 class="box-title">Nuevo Proveedor</h3>
+            </div>
+            <!-- /.box-header -->
+            <!-- form start -->
+            <form role="form">
+              <div class="box-body">
+                <div class="form-group">
+                  <label>RAZON SOCIAL</label>
+                  <input type="text" class="form-control" placeholder="RAZON SOCIAL">
+                </div>
+                <div class="form-group">
+                  <label>CUIT</label>
+                  <input type="text" class="form-control" placeholder="CUIT">
+                </div>
+                <div class="form-group">
+                  <label>NOMBRE Y APELLIDO</label>
+                  <input type="text" class="form-control" placeholder="NOMBRE Y APELLIDO">
+                </div>
+                <div class="form-group">
+                  <label>TELEFONO</label>
+                  <input type="text" class="form-control" placeholder="TELEFONO">
+                </div>
+                <div class="form-group">
+                  <label>TELEFONO SECUNDARIO</label>
+                  <input type="text" class="form-control" placeholder="TELEFONO SECUNDARIO">
+                </div>
+                <div class="form-group">
+                  <label>DIRECCION</label>
+                  <input type="text" class="form-control" placeholder="DIRECCION">
+                </div>
+                <div class="form-group">
+                  <label>DIRECCION ALTERNATIVA</label>
+                  <input type="text" class="form-control" placeholder="DIRECCION ALTERNATIVA">
+                </div>
+
+
+                
+             
+              
+              </div>
+              <!-- /.box-body -->
+
+              <div class="box-footer">
+                <button type="submit" class="btn btn-primary">GUARDAR</button>
+              </div>
+            </form>
+          </div>
+          <!-- /.box -->
+        </div>
+        <div class="col-lg-2 col-sm-0"></div>
+        <!--/.col (left) -->
+        <!-- right column -->
+        
+        <!--/.col (right) -->
+      </div>
+      <!-- /.row -->
+    </section>
+    <!-- /.content -->
+</div>
+{% endblock content %}
+

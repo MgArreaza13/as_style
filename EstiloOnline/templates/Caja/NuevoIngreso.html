@@ -1,0 +1,145 @@
+{% extends "../Base/BasePanel.html" %}
+
+{% block title %}
+  Nuevo Ingreso
+{% endblock title %}
+
+{% block content %}
+
+{% if user.is_authenticated and user.is_staff == True and user.is_superuser == True%}
+
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <h1>
+        Nuveo Ingreso de Caja
+        <small>detalles</small>
+      </h1>
+      <ol class="breadcrumb">
+        <li><a href="index.html"><i class="fa fa-dashboard"></i>Inicio</a></li>
+        <li><a href="ingresos-egresos.html">Ingresos - Egreos </a></li>
+        <li class="active">Nuevo Ingreso</li>
+      </ol>
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="row">
+        <!-- left column -->
+        <div class="col-lg-2 col-sm-0"></div>
+        <div class="col-lg-8 col-sm-12">
+          <!-- general form elements -->
+          <div class="box box-info">
+            <div class="box-header with-border">
+              <h3 class="box-title">Nuevo Ingreso de Caja</h3>
+            </div>
+            <!-- /.box-header -->
+            <!-- form start -->
+            <form action="" method="post">
+              {% csrf_token %}
+              <div class="box-body">
+                  
+                  {% for field in Form %}
+                     {% if Form.subject.errors %}
+                         <ol>
+                          {% for error in Form.subject.errors %}
+                              <li><strong>{{ error|escape }}</strong></li>
+                          {% endfor %}
+                        </ol>
+                    {% endif %}
+                    
+                    {{ field.errors }}
+
+
+                    {% if field.name == 'service' %}
+                          <div class="form-group ">
+                          <label>Seleccione el servicio a pagar</label>
+                          {{ field }}
+                    
+                        </div>
+
+                    {% elif field.name == 'tipoPago' %}
+                      <div class="form-group ">
+                              <label>Seleccione el tipo de pago a realizar</label>
+                              {{ field }}
+                      
+                          </div>
+
+
+
+                    {% elif field.name == 'proveedor' %}
+                      <div class="form-group ">
+                              <label>Proveedor</label>
+                               {{ field }}
+                      
+                          </div>
+                     {% elif field.name == 'monto' %}
+                      <div class="form-group ">
+                              <label>Monto</label>
+                              <input class="form-control" placeholder="{{field.label}}" autocomplete="off" 
+                              required autofocus maxlength="{{field.max_length}}" {{ field }}
+                      
+                          </div>
+                    {% elif field.name == 'descripcion' %}
+                      <div class="form-group ">
+                              <label>Descripcion</label>
+                               {{ field }}
+                      
+                          </div>
+
+                    
+                    
+                    
+
+
+                      
+                    {% endif %}
+        
+          
+
+          
+      
+                  {% if field.help_text %}
+                    <script> console.log('{{ field.help_text|safe }}')</script>
+                  {% endif %}
+               {% endfor %}
+
+               
+               
+                
+
+
+                
+              
+             
+              
+              </div>
+              <!-- /.box-body -->
+
+              <div class="box-footer">
+                <button type="submit" class="btn btn-primary">GUARDAR</button>
+                <a href="{% url "Caja:IngresoList" %}" class="btn btn-danger">REGRESAR</a>
+              </div>
+            </form>
+          </div>
+          <!-- /.box -->
+        </div>
+        <div class="col-lg-2 col-sm-0"></div>
+        <!--/.col (left) -->
+        <!-- right column -->
+        
+        <!--/.col (right) -->
+      </div>
+      <!-- /.row -->
+    </section>
+    <!-- /.content -->
+</div>
+
+
+{% else %}
+
+{% include "Base/404.html" %}
+
+{% endif %}
+{% endblock content %}
+
