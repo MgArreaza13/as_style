@@ -14,7 +14,6 @@ class TurnForm(forms.ModelForm):
 		fields = [
 		'client',
 		'collaborator',
-		'extraInfoTurn',
 		'servicioPrestar',
 		'isProcessClient',
 		'isProcessCollaborator',
@@ -23,11 +22,10 @@ class TurnForm(forms.ModelForm):
 		
 		
 		]
-		exclude = ['user', 'dateTurn', 'HoraTurn']
+		exclude = ['user', 'dateTurn', 'HoraTurn', 'extraInfoTurn',]
 
 		labels = {
 		'dateTurn':'Fecha Para El turno', 
-		'extraInfoTurn': 'Informacion completa para el turno',
 		'isProcessClient':'Es Atendido',
 		'isProcessCollaborator': 'Es activo el collaborador',
 		'statusTurn':'Estatus',
@@ -35,13 +33,6 @@ class TurnForm(forms.ModelForm):
 		
 		}
 		widgets = {
-		'extraInfoTurn': Textarea(attrs={'class':'form-control', 
-			'required':True ,
-			 'autofocus':True,
-			  'autocomplete':'off,'
-			   ,'placeholder':'Ingrese la descripcion para el turno',
-			   'cols': 2, 
-			   'rows': 6}),
 
 		'servicioPrestar': Select(attrs={'class':'form-control',
 			'required':True,

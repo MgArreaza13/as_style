@@ -16,6 +16,9 @@ from datetime import date
 # Create your views here.
 from apps.UserProfile.models import tb_profile
 from apps.scripts.validatePerfil import validatePerfil
+# enviar correos
+from django.core.mail import send_mail
+from django.core.mail import send_mass_mail
 
 
 #Resumen de todos los turnos, parte principal
@@ -64,6 +67,24 @@ def NuevoTurnParaHoy(request):
 				turno.user = request.user
 				turno.dateTurn = fecha
 				turno.HoraTurn = request.POST['TimeTurn']
+				if request.POST['extraInfoTurn'] == "":
+					turno.extraInfoTurn = 'Sin Comentarios'
+				else:
+					turno.extraInfoTurn = request.POST['extraInfoTurn']
+				#Envio de mensajes 
+				colaborador = tb_profile.objects.get(nameUser=turno.collaborator) #trato de traer el colaborador del formulario
+				email_subject_Colaborador = 'Nuevo Turno Solicitado Por Cliente'
+				email_body_Colaborador = "Hola %s, El presente mensaje es para informarle que ha recibido una nueva solicitud para un turno si desea revisarla y confirmarla ingrese aqui http://estiloonline.pythonanywhere.com" %(colaborador)
+				email_colaborador = colaborador.mailUser
+				message_colaborador = (email_subject_Colaborador, email_body_Colaborador , 'mg.arreaza.13@gmail.com', [email_colaborador])
+				#cliente
+				client = tb_profile.objects.get(user__username=turno.client) #trato de traer el colaborador del formulario
+				email_subject_client = 'Nuevo Turno Solicitado'
+				email_body_Client = "Hola %s, El presente mensaje es para informarle que se ha enviado una nueva solicitud para un turno si desea revisarla y confirmarla ingrese aqui http://estiloonline.pythonanywhere.com" %(client)
+				email_client = client.mailUser
+				message_client = (email_subject_client, email_body_Client, 'mg.arreaza.13@gmail.com', [email_client])
+				#enviamos el correo
+				send_mass_mail((message_colaborador, message_client), fail_silently=False)
 				turno.save()
 				return redirect('Turnos:index')
 			elif data == 1: # collaborador ocupado para esa hora y fecha
@@ -112,7 +133,6 @@ def listTurnos(request):
 	result = validatePerfil(tb_profile.objects.filter(user=request.user))
 	perfil = result[0]
 	formulario = False
-	print(TurnEditar)
 	#queryset 
 	turnos_hoy =  tb_turn.objects.filter(dateTurn=date.today()).filter(statusTurn__nameStatus='En Espera').count()
 	ingresos_hoy = tb_ingreso.objects.filter(dateCreate=date.today()).aggregate(total=Sum('monto'))
@@ -146,7 +166,27 @@ def NuevoTurn(request):
 				turno.user = request.user
 				turno.dateTurn = request.POST['TurnDate']
 				turno.HoraTurn = request.POST['TimeTurn']
+				if request.POST['extraInfoTurn'] == "":
+					turno.extraInfoTurn = 'Sin Comentarios'
+				else:
+					turno.extraInfoTurn = request.POST['extraInfoTurn']
 				turno.save()
+				#Enviaremos los correos a el colaborador y al cliente 
+				#colaborador
+				colaborador = tb_profile.objects.get(nameUser=turno.collaborator) #trato de traer el colaborador del formulario
+				email_subject_Colaborador = 'Nuevo Turno Solicitado Por Cliente'
+				email_body_Colaborador = "Hola %s, El presente mensaje es para informarle que ha recibido una nueva solicitud para un turno si desea revisarla y confirmarla ingrese aqui http://estiloonline.pythonanywhere.com" %(colaborador)
+				email_colaborador = colaborador.mailUser
+				message_colaborador = (email_subject_Colaborador, email_body_Colaborador , 'mg.arreaza.13@gmail.com', [email_colaborador])
+				#cliente
+				client = tb_profile.objects.get(user__username=turno.client) #trato de traer el colaborador del formulario
+				email_subject_client = 'Nuevo Turno Solicitado'
+				email_body_Client = "Hola %s, El presente mensaje es para informarle que se ha enviado una nueva solicitud para un turno si desea revisarla y confirmarla ingrese aqui http://estiloonline.pythonanywhere.com" %(client)
+				email_client = client.mailUser
+				message_client = (email_subject_client, email_body_Client, 'mg.arreaza.13@gmail.com', [email_client])
+				#enviamos el correo
+				send_mass_mail((message_colaborador, message_client), fail_silently=False)
+				
 				return redirect('Turnos:listTurnos')
 			elif data == 1: # collaborador ocupado para esa hora y fecha
 				mensaje = "El Colaborador que desea Contratar esta Ocupado Para El Dia y la hora deseado intente con otro collaborador o con otro dia"

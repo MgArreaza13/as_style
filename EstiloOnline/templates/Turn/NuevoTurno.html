@@ -82,17 +82,7 @@
                     {{ field.errors }}
 
 
-                  
-
-                    {% if field.name == 'extraInfoTurn' %}
-                      <div class="form-group ">
-                              <label>Informacion</label>
-                              {{ field }}
-                      
-                          </div>
-                     
-
-                    {% elif field.name == 'client' %}
+                    {% if field.name == 'client' %}
                       <div class="form-group ">
                               <label>Seleccione Cliente</label>
                              {{ field }}
@@ -148,8 +138,13 @@
                                 required autofocus max="2030-12-31" >
 
               </div>
-               
+              <div class="form-group ">
+                  <label>Comentarios Adicionales</label>
+                  <textarea name="extraInfoTurn" rows="6"  placeholder="Ingrese algun tipo de infomacion adicional si lo desea" maxlength="300" autofocus="" id="id_extraInfoTurn" cols="2" autocomplete="off," class="form-control"></textarea>
+                      
                 </div>
+               
+           </div>
 
 
                 
