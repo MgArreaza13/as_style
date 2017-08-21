@@ -22,7 +22,6 @@ class ProveedorForm(forms.ModelForm):
 		'phoneNumberProveedor',
 		'phoneNumberProveedorTwo',
 		'addressProveedor',
-		'addressProveedorTwo',
 		
 		]
 		exclude = ['user','dateCreate']
@@ -49,13 +48,6 @@ class ProveedorForm(forms.ModelForm):
 			   'cols': 2, 
 			   'rows': 6}),
 		
-		'addressProveedorTwo': Textarea(attrs={'class':'form-control', 
-			'required':True ,
-			 'autofocus':True,
-			  'autocomplete':'off,'
-			   ,'placeholder':'Direccion Secundaria Del Nuevo Proveedor',
-			   'cols': 2, 
-			   'rows': 6}),
 		}
           
 			

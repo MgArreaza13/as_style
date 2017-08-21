@@ -50,8 +50,13 @@ def NuevoIngreso(request):
 	if request.method == 'POST':
 		Form = IngresoForm(request.POST or None)
 		if Form.is_valid():
+			print(request.POST)
 			ingreso = Form.save(commit=False)
 			ingreso.user = request.user
+			if request.POST['descripcion'] == "":
+				ingreso.descripcion = 'Sin Comentarios'
+			else:
+				ingreso.descripcion = request.POST['descripcion']
 			ingreso.save()
 			return redirect('Caja:IngresoList')
 		else:
@@ -106,6 +111,10 @@ def NuevoEgreso(request):
 		if Form.is_valid():
 			egreso = Form.save(commit=False)
 			egreso.user = request.user
+			if request.POST['descripcion'] == "":
+				egreso.descripcion = 'Sin Comentarios'
+			else:
+				egreso.descripcion = request.POST['descripcion']
 			egreso.save()
 			return redirect('Caja:EgresoList')
 		else:

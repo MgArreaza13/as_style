@@ -17,7 +17,7 @@ class tb_proveedor (models.Model):
 	paginaWeb 					=	models.URLField(default='', null=False,max_length=3000)
 	urlPhoto					=   models.URLField(default='', null=False,max_length=3000)
 	#CollaboratorFavoriteKf		= 	models.ForeignKey(tb_collaborator, on_delete=models.CASCADE, null=False, default='')
-	addressProveedorTwo			= 	models.TextField(default='', null=False)
+	#addressProveedorTwo			= 	models.TextField(default='', null=False)
 	#isSendPromotions			=	models.BooleanField()
 	dateCreate					=	models.DateField(auto_now=True, blank=False)
 	#isVip						= 	models.BooleanField()

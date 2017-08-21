@@ -65,9 +65,9 @@
 
 
 
-                    {% elif field.name == 'tipoIngreso' %}
+                    {% elif field.name == 'tipoEgreso' %}
                       <div class="form-group ">
-                              <label>El tipo de ingreso con el que pagara</label>
+                              <label>Seleccione el Tipo de Egreso</label>
                                {{ field }}
                       
                           </div>
@@ -78,20 +78,9 @@
                               required autofocus maxlength="{{field.max_length}}" {{ field }}
                       
                           </div>
-                    {% elif field.name == 'descripcion' %}
-                      <div class="form-group ">
-                              <label>Descripcion</label>
-                               {{ field }}
-                      
-                          </div>
-
-                    
-                    
-                    
-
-
-                      
+                     
                     {% endif %}
+                    
         
           
 
@@ -101,6 +90,11 @@
                     <script> console.log('{{ field.help_text|safe }}')</script>
                   {% endif %}
                {% endfor %}
+               <div class="form-group ">
+                              <label>Comentarios Adicionales</label>
+                               <textarea name="descripcion" placeholder="Ingrese algun comentario adicional si lo desea" class="form-control" maxlength="3000" rows="6" id="id_descripcion"  autocomplete="off" cols="2" autofocus=""></textarea>
+                      
+                          </div>
 
                
                

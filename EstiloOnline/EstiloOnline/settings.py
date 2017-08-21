@@ -205,6 +205,6 @@ SOCIAL_AUTH_FACEBOOK_SECRET = 'eb5ee7f19bad1431f28d1684727c2cc9'
 
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'mg.arreaza.13@gmail.com'
-EMAIL_HOST_PASSWORD = 'miguel22702517'
+EMAIL_HOST_USER = 'as.estiloonline@gmail.com'
+EMAIL_HOST_PASSWORD = 'asadmin123'
 EMAIL_PORT = 587

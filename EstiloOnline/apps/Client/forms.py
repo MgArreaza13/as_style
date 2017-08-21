@@ -16,7 +16,6 @@ class ClientForm(forms.ModelForm):
 		'phoneNumberClient',
 		'phoneNumberClientTwo',
 		'addressClient',
-		'addressClientTwo',
 		
 		]
 		exclude = ['dateCreate', 'user']
@@ -27,7 +26,6 @@ class ClientForm(forms.ModelForm):
 		'phoneNumberClient':'Numero Principal de Contacto',
 		'phoneNumberClientTwo': 'Numero Secundario de Contacto',
 		'addressClient':'Direccion Principal',
-		'addressClientTwo':'Direccion Secundaria',
 		
 		}
 		widgets = {
@@ -39,13 +37,6 @@ class ClientForm(forms.ModelForm):
 			   ,'placeholder':'Ingrese su direccion principal',
 			   'cols': 2, 
 			   'rows': 6}),
-		'addressClientTwo': Textarea(attrs={'class':'form-control', 
-			'required':True , 
-			'autofocus':True,
-			 'autocomplete':'off',
-			  'placeholder':'Ingrese su direccion Secundaria' ,
-			  'cols': 2, 
-			  'rows': 6}),
 		}
           
 			

@@ -32,10 +32,6 @@ def NuevoColaborador(request):
 		Form2 = ProfileForm(request.POST , request.FILES or None)
 		Form3 = ColaboradorForm(request.POST , request.FILES or None)
 		if Form.is_valid() and Form2.is_valid() and Form3.is_valid():
-			print(request.POST)
-			print(request.POST['typeCollaborador'])
-			print(request.POST['typeCollaborador'])
-			print(request.POST['typeCollaborador'])
 			Form.save()
 			usuario = request.POST['username']
 			clave 	= request.POST['password1']

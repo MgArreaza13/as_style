@@ -4,12 +4,14 @@ from apps.Service.models import tb_service
 from apps.Proveedores.models import tb_proveedor
 from apps.Configuracion.models import tb_tipoIngreso
 from apps.Configuracion.models import tb_formasDePago
+from apps.Configuracion.models import tb_tipoEgreso
 # Create your models here.
 
 class tb_ingreso (models.Model):
 	user 					=	models.ForeignKey(settings.AUTH_USER_MODEL)
-	service					=	models.ForeignKey(tb_service, on_delete=models.CASCADE, null=False, default='')
 	tipoPago				=	models.ForeignKey(tb_formasDePago, on_delete=models.CASCADE, null=False, default='')
+	tipoIngreso				=	models.ForeignKey(tb_tipoIngreso, on_delete=models.CASCADE, null=False, default='')
+	service					=	models.ForeignKey(tb_service, on_delete=models.CASCADE, null=False, default='')
 	monto					=	models.IntegerField(default='', null=False,)
 	descripcion	 			=	models.TextField(default='', null=False, max_length=3000)
 	#phoneNumberClientTwo	=	models.CharField(default='', null=False, max_length=30)
@@ -28,7 +30,7 @@ class tb_egreso (models.Model):
 	user 					=	models.ForeignKey(settings.AUTH_USER_MODEL)
 	tipoPago				=	models.ForeignKey(tb_formasDePago, on_delete=models.CASCADE, null=False, default='')
 	proveedor				=	models.ForeignKey(tb_proveedor, on_delete=models.CASCADE, null=False, default='')
-	tipoIngreso 			= 	models.ForeignKey(tb_tipoIngreso, on_delete=models.CASCADE, null=False, default='')
+	tipoEgreso				= 	models.ForeignKey(tb_tipoEgreso, on_delete=models.CASCADE, null=False, default='')
 	monto					=	models.IntegerField(default='', null=False,)
 	descripcion	 			=	models.TextField(default='', null=False, max_length=3000)
 	#service					=	models.ForeignKey(tb_service, on_delete=models.CASCADE, null=False, default='')

@@ -30,7 +30,7 @@ class tb_client (models.Model):
 	phoneNumberClientTwo	=	models.CharField(default='', null=False, max_length=30)
 	addressClient 			=	models.TextField(default='', null=False)
 	#CollaboratorFavoriteKf	= 	models.ForeignKey(tb_collaborator, on_delete=models.CASCADE, null=False, default='')
-	addressClientTwo		= 	models.TextField(default='', null=False)
+	#addressClientTwo		= 	models.TextField(default='', null=False)
 	#isSendPromotions		=	models.BooleanField()
 	dateCreate				=	models.DateField(auto_now=True, blank=False)
 	#isVip					= 	models.BooleanField()

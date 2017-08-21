@@ -13,13 +13,13 @@ class IngresoForm(forms.ModelForm):
 	class Meta:
 		model = tb_ingreso
 		fields = [
-		'service',
 		'tipoPago',
+		'tipoIngreso',
+		'service',
 		'monto',
-		'descripcion',
 		
 		]
-		exclude = ['user', 'dateCreate']
+		exclude = ['user', 'dateCreate', 'descripcion',]
 
 		labels = {
 		'monto':'Ingrese el monto a pagar', 
@@ -37,13 +37,11 @@ class IngresoForm(forms.ModelForm):
 			'autofocus':True,
 			'placeholder':'tipo de Pago'}),
 
-		'descripcion': Textarea(attrs={'class':'form-control', 
-			'required':True , 
+		'tipoIngreso':Select(attrs={'class':'form-control',
+			'required':True,
 			'autofocus':True,
-			 'autocomplete':'off',
-			  'placeholder':'Ingrese sla descripcion' ,
-			  'cols': 2, 
-			  'rows': 6}),
+			'placeholder':'tipo de Pago'}),
+
 		}
           
 
@@ -54,12 +52,11 @@ class EgresoForm(forms.ModelForm):
 		fields = [
 		'tipoPago',
 		'proveedor',
-		'tipoIngreso',
+		'tipoEgreso',
 		'monto',
-		'descripcion',
 		
 		]
-		exclude = ['user', 'dateCreate']
+		exclude = ['user', 'dateCreate', 'descripcion',]
 
 		labels = {
 		'monto':'Ingrese el monto a pagar', 
@@ -77,17 +74,9 @@ class EgresoForm(forms.ModelForm):
 			'autofocus':True,
 			'placeholder':'tipo de Pago'}),
 
-		'tipoIngreso':Select(attrs={'class':'form-control',
+		'tipoEgreso':Select(attrs={'class':'form-control',
 			'required':True,
 			'autofocus':True,
-			'placeholder':'tipo de Ingreso'}),
-
-		'descripcion': Textarea(attrs={'class':'form-control', 
-			'required':True , 
-			'autofocus':True,
-			 'autocomplete':'off',
-			  'placeholder':'Ingrese sla descripcion' ,
-			  'cols': 2, 
-			  'rows': 6}),
+			'placeholder':'tipo de Egreso'}),
 		}
           	

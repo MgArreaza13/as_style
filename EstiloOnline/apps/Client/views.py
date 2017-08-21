@@ -52,7 +52,6 @@ def NuevoClient(request):
 				cliente.phoneNumberClient = request.POST['phoneNumberClient']
 				cliente.phoneNumberClientTwo = request.POST['phoneNumberClientTwo']
 				cliente.addressClient = request.POST['addressClient']
-				cliente.addressClientTwo = request.POST['addressClientTwo']
 				cliente.save()
 				return redirect ('Clientes:ClientesHome')
 	else:
@@ -77,7 +76,6 @@ def NuevoClientProfile(request):
 			cliente.phoneNumberClient = request.POST['phoneNumberClient']
 			cliente.phoneNumberClientTwo = request.POST['phoneNumberClientTwo']
 			cliente.addressClient = request.POST['addressClient']
-			cliente.addressClientTwo = request.POST['addressClientTwo']
 			cliente.save()
 			return redirect ('Clientes:ClientesHome')
 	else:

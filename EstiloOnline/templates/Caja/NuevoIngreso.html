@@ -50,20 +50,28 @@
                     
                     {{ field.errors }}
 
+                    {% if field.name == 'tipoIngreso' %}
+                      <div class="form-group ">
+                              <label>Tipo De Ingreso</label>
+                              {{ field }}
+                      
+                          </div>
+                    
+                    {% elif field.name == 'tipoPago' %}
+                      <div class="form-group ">
+                              <label>Forma de Pago</label>
+                              {{ field }}
+                      
+                          </div>
+                    
 
-                    {% if field.name == 'service' %}
+                    {% elif field.name == 'service' %}
                           <div class="form-group ">
                           <label>Seleccione el servicio a pagar</label>
                           {{ field }}
                     
                         </div>
 
-                    {% elif field.name == 'tipoPago' %}
-                      <div class="form-group ">
-                              <label>Seleccione el tipo de pago a realizar</label>
-                              {{ field }}
-                      
-                          </div>
 
 
 
@@ -80,20 +88,9 @@
                               required autofocus maxlength="{{field.max_length}}" {{ field }}
                       
                           </div>
-                    {% elif field.name == 'descripcion' %}
-                      <div class="form-group ">
-                              <label>Descripcion</label>
-                               {{ field }}
-                      
-                          </div>
-
                     
-                    
-                    
-
-
-                      
                     {% endif %}
+                    
         
           
 
@@ -103,6 +100,11 @@
                     <script> console.log('{{ field.help_text|safe }}')</script>
                   {% endif %}
                {% endfor %}
+               <div class="form-group ">
+                              <label>Comentarios Adicionales</label>
+                               <textarea name="descripcion" placeholder="Ingrese algun comentario adicional si lo desea" class="form-control" maxlength="3000" rows="6" id="id_descripcion"  autocomplete="off" cols="2" autofocus=""></textarea>
+                      
+                          </div>
 
                
                

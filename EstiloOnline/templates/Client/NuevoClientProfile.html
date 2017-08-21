@@ -128,14 +128,14 @@
                           </div>
                      {% elif field.name == 'phoneNumberClient' %}
                       <div class="form-group ">
-                              <label>Numero 1</label>
+                              <label>Numero Principal</label>
                               <input class="form-control" placeholder="{{field.label}}" autocomplete="off" 
                               required autofocus maxlength="{{field.max_length}}" {{ field }}
                       
                           </div>
                     {% elif field.name == 'phoneNumberClientTwo' %}
                       <div class="form-group ">
-                              <label>Numero 2</label>
+                              <label>Numero Secundario</label>
                               <input class="form-control" placeholder="{{field.label}}" autocomplete="off" 
                               required autofocus maxlength="{{field.max_length}}" {{ field }}
                       
@@ -143,14 +143,9 @@
 
                     {% elif field.name == 'addressClient' %}
                       <div class="form-group ">
-                              <label>Direccion 1</label>
+                              <label>Direccion</label>
                              {{ field }}
                       
-                          </div>
-                    {% elif field.name == 'addressClientTwo' %}
-                      <div class="form-group ">
-                              <label>Direccion 2</label>
-                             {{ field }}                          
                           </div>
                     {% endif %}
         

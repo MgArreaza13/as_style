@@ -186,7 +186,6 @@ def NuevoTurn(request):
 				message_client = (email_subject_client, email_body_Client, 'mg.arreaza.13@gmail.com', [email_client])
 				#enviamos el correo
 				send_mass_mail((message_colaborador, message_client), fail_silently=False)
-				
 				return redirect('Turnos:listTurnos')
 			elif data == 1: # collaborador ocupado para esa hora y fecha
 				mensaje = "El Colaborador que desea Contratar esta Ocupado Para El Dia y la hora deseado intente con otro collaborador o con otro dia"
