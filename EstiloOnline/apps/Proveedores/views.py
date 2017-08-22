@@ -11,6 +11,9 @@ from datetime import date
 from apps.Turn.models import tb_turn
 from apps.Caja.models import tb_ingreso
 from apps.Caja.models import tb_egreso
+# enviar correos
+from django.core.mail import send_mail
+from django.core.mail import send_mass_mail
 
 # Create your views here.
 @login_required(login_url = 'Demo:login' )
@@ -47,6 +50,19 @@ def NuevoProveedor(request):
 			proveedor = Form.save(commit=False)
 			proveedor.user = request.user
 			proveedor.save()
+			#mandar mensaje de nuevo usuario
+			#Enviaremos los correos a el colaborador y al cliente 
+			#cliente
+			usuario = proveedor.email #trato de traer el colaborador del formulario
+			email_subject_usuario = 'Estilo Online Nuevo Proveedor'
+			email_body_usuario = "Hola %s, gracias por formar parte de nuestra familia como proveedor, toda tu informacion esta disponible aqui http://estiloonline.pythonanywhere.com" %(proveedor.nameProveedor)
+			message_usuario = (email_subject_usuario, email_body_usuario , 'as.estiloonline@gmail.com', [usuario])
+			#mensaje para apreciasoft
+			email_subject_Soporte = 'Nuevo Proveedor Registrado'
+			email_body_Soporte = "se ha registrado un nuevo proveedor satisfactoriamente con nombre %s para verificar ingrese aqui http://estiloonline.pythonanywhere.com" %(proveedor.nameProveedor)
+			message_Soporte = (email_subject_Soporte, email_body_Soporte , 'as.estiloonline@gmail.com', ['soporte@apreciasoft.com'])
+			#enviamos el correo
+			send_mass_mail((message_usuario, message_Soporte), fail_silently=False)
 			return redirect('Proveedores:ListProveedores')
 		else:
 			Form = ProveedorForm()

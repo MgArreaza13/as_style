@@ -30,6 +30,13 @@
   <link rel="stylesheet" href="{% static 'plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css'%}">
    <link rel="stylesheet" href="{% static "plugins/fullcalendar/fullcalendar.min.css" %}">
   <link rel="stylesheet" href="{% static "plugins/fullcalendar/fullcalendar.print.css" %}" media="print">
+  cript type="text/javascript" src="{% static "bootstrap/js/jquery-1.8.0.min.js" %}"></script>
+
+
+
+  <link rel="stylesheet" type="text/css" href="{% static "bootstrap/css/bootstrap-clockpicker.min.css" %}">
+  <link rel="stylesheet" type="text/css" href="{% static "bootstrap/css/github.min.css" %}">
+  <link rel="stylesheet" type="text/css" href="{% static "bootstrap/css/bootstrap-datepicker.adminlte.min.css" %}">
 {% endblock styles %}
 
 {% block content %}
@@ -138,12 +145,13 @@
                   {% endif %}
                {% endfor %}
 
-                 <div class="form-group">
-                  <label >  Sleccione la Hora del turno </label>
-                      <input class="form-control" name="TimeTurn" type="time" placeholder="Hora Del Turno" autocomplete="off" max="19:00:00" min="7:00:00" 
-                               step="1" required autofocus  >
-              
+                 <div class="input-group clockpicker">
+                <label >  Sleccione la Hora del turno </label>
+                    <input type="text" name="TimeTurn" placeholder="Hora Del Turno" class="form-control" autocomplete="off" 
+                               step="1" required autofocus/>
+
                 </div>
+                <br>
                 <div class="form-group ">
                   <label>Comentarios Adicionales</label>
                   <textarea name="extraInfoTurn" rows="6"  placeholder="Ingrese algun tipo de infomacion adicional si lo desea" maxlength="300" autofocus="" id="id_extraInfoTurn" cols="2" autocomplete="off," class="form-control"></textarea>
@@ -208,6 +216,28 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
 <script src="{% static "plugins/fullcalendar/fullcalendar.min.js" %}"></script>
 <!-- Page specific script -->
+<script type="text/javascript" src="{% static "bootstrap/js/bootstrap-clockpicker.min.js" %}"></script>
+  <script type="text/javascript" src="{% static "bootstrap/js/highlight.min.js" %}"></script>
+<!-- Page specific script -->
+<script type="text/javascript" src="{% static "bootstrap/js/bootstrap-clockpicker.min.js" %}"></script>
+
+<script>
+
+$('.clockpicker').clockpicker({
+  placement: 'top',
+  donetext: 'GUARDAR'
+});
+
+</script>
+
+<script>
+  $("#TurnDate").datepicker({
+    format: 'yyyy-mm-dd',
+     autoclose: true
+  });
+</script>
+
+
 <script>
   $(function () {
 

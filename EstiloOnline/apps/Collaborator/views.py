@@ -17,6 +17,9 @@ from apps.scripts.validatePerfil import validatePerfil
 from apps.UserProfile.forms import UsuarioForm
 from apps.UserProfile.forms import ProfileForm
 
+# enviar correos
+from django.core.mail import send_mail
+from django.core.mail import send_mass_mail
 
 #vista para crear el nuevo colaborador
 @login_required(login_url = 'Demo:login' )
@@ -48,6 +51,20 @@ def NuevoColaborador(request):
 				colaborador = Form3.save(commit=False)
 				colaborador.user = tb_profile.objects.get(user__id = user.id)
 				colaborador.save()
+				#mandar mensaje de nuevo usuario
+				#Enviaremos los correos a el colaborador y al cliente 
+				#cliente
+				usuario = perfil.mailUser #trato de traer el colaborador del formulario
+				email_subject_usuario = 'Estilo Online Nuevo Colaborador'
+				email_body_usuario = "Hola %s, gracias por crearte un nuevo perfil colaborador , ya puedes crear nuevos turnos y muchas cosas mas para mas informacion ingrese aqui http://estiloonline.pythonanywhere.com" %(perfil.nameUser)
+				message_usuario = (email_subject_usuario, email_body_usuario , 'as.estiloonline@gmail.com', [usuario])
+				#mensaje para apreciasoft
+				email_subject_Soporte = 'Nuevo Colaborador Registrado'
+				email_body_Soporte = "se ha registrado un nuevo perfil de colaborador con nombre %s para verificar ingrese aqui http://estiloonline.pythonanywhere.com" %(perfil.nameUser)
+				message_Soporte = (email_subject_Soporte, email_body_Soporte , 'as.estiloonline@gmail.com', ['soporte@apreciasoft.com'])
+				#enviamos el correo
+				send_mass_mail((message_usuario, message_Soporte), fail_silently=False)
+
 				return redirect ('Colaboradores:ListColaboradores')
 		else:
 			Form = UsuarioForm()

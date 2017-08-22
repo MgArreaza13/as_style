@@ -76,15 +76,19 @@ def NuevoTurnParaHoy(request):
 				email_subject_Colaborador = 'Nuevo Turno Solicitado Por Cliente'
 				email_body_Colaborador = "Hola %s, El presente mensaje es para informarle que ha recibido una nueva solicitud para un turno si desea revisarla y confirmarla ingrese aqui http://estiloonline.pythonanywhere.com" %(colaborador)
 				email_colaborador = colaborador.mailUser
-				message_colaborador = (email_subject_Colaborador, email_body_Colaborador , 'mg.arreaza.13@gmail.com', [email_colaborador])
+				message_colaborador = (email_subject_Colaborador, email_body_Colaborador , 'as.estiloonline@gmail.com', [email_colaborador])
 				#cliente
 				client = tb_profile.objects.get(user__username=turno.client) #trato de traer el colaborador del formulario
 				email_subject_client = 'Nuevo Turno Solicitado'
 				email_body_Client = "Hola %s, El presente mensaje es para informarle que se ha enviado una nueva solicitud para un turno si desea revisarla y confirmarla ingrese aqui http://estiloonline.pythonanywhere.com" %(client)
 				email_client = client.mailUser
-				message_client = (email_subject_client, email_body_Client, 'mg.arreaza.13@gmail.com', [email_client])
+				message_client = (email_subject_client, email_body_Client, 'as.estiloonline@gmail.com', [email_client])
+				#mensaje para apreciasoft
+				email_subject_Soporte = 'Nuevo Turno Solicitado en Estilo Online'
+				email_body_Soporte = "Hola, soporte Apreciasoft, El presente mensaje es para informarle que el cliente  %s ha enviado una nueva solicitud para de turno para el colaborador %s , si desea revisarla ingrese aqui http://estiloonline.pythonanywhere.com" %(client,colaborador)
+				message_Soporte = (email_subject_Soporte, email_body_Soporte , 'as.estiloonline@gmail.com', ['soporte@apreciasoft.com'])
 				#enviamos el correo
-				send_mass_mail((message_colaborador, message_client), fail_silently=False)
+				send_mass_mail((message_colaborador, message_client, message_Soporte), fail_silently=False)
 				turno.save()
 				return redirect('Turnos:index')
 			elif data == 1: # collaborador ocupado para esa hora y fecha
@@ -177,15 +181,20 @@ def NuevoTurn(request):
 				email_subject_Colaborador = 'Nuevo Turno Solicitado Por Cliente'
 				email_body_Colaborador = "Hola %s, El presente mensaje es para informarle que ha recibido una nueva solicitud para un turno si desea revisarla y confirmarla ingrese aqui http://estiloonline.pythonanywhere.com" %(colaborador)
 				email_colaborador = colaborador.mailUser
-				message_colaborador = (email_subject_Colaborador, email_body_Colaborador , 'mg.arreaza.13@gmail.com', [email_colaborador])
+				message_colaborador = (email_subject_Colaborador, email_body_Colaborador , 'as.estiloonline@gmail.com', [email_colaborador])
 				#cliente
 				client = tb_profile.objects.get(user__username=turno.client) #trato de traer el colaborador del formulario
 				email_subject_client = 'Nuevo Turno Solicitado'
 				email_body_Client = "Hola %s, El presente mensaje es para informarle que se ha enviado una nueva solicitud para un turno si desea revisarla y confirmarla ingrese aqui http://estiloonline.pythonanywhere.com" %(client)
 				email_client = client.mailUser
-				message_client = (email_subject_client, email_body_Client, 'mg.arreaza.13@gmail.com', [email_client])
+				message_client = (email_subject_client, email_body_Client, 'as.estiloonline@gmail.com', [email_client])
+				#mensaje para apreciasoft
+				email_subject_Soporte = 'Nuevo Turno Solicitado en Estilo Online'
+				email_body_Soporte = "Hola, soporte Apreciasoft, El presente mensaje es para informarle que el cliente  %s ha enviado una nueva solicitud para de turno para el colaborador %s , si desea revisarla ingrese aqui http://estiloonline.pythonanywhere.com" %(client,colaborador)
+				message_Soporte = (email_subject_Soporte, email_body_Soporte , 'as.estiloonline@gmail.com', ['soporte@apreciasoft.com'])
 				#enviamos el correo
-				send_mass_mail((message_colaborador, message_client), fail_silently=False)
+				send_mass_mail((message_colaborador, message_client, message_Soporte), fail_silently=False)
+				
 				return redirect('Turnos:listTurnos')
 			elif data == 1: # collaborador ocupado para esa hora y fecha
 				mensaje = "El Colaborador que desea Contratar esta Ocupado Para El Dia y la hora deseado intente con otro collaborador o con otro dia"

@@ -16,6 +16,9 @@ from apps.UserProfile.forms import UsuarioForm
 from apps.UserProfile.forms import ProfileForm
 #script de validacion de perfil
 from apps.scripts.validatePerfil import validatePerfil
+# enviar correos
+from django.core.mail import send_mail
+from django.core.mail import send_mass_mail
 
 
 # Create your views here.
@@ -53,6 +56,19 @@ def NuevoClient(request):
 				cliente.phoneNumberClientTwo = request.POST['phoneNumberClientTwo']
 				cliente.addressClient = request.POST['addressClient']
 				cliente.save()
+				#mandar mensaje de nuevo usuario
+				#Enviaremos los correos a el colaborador y al cliente 
+				#cliente
+				usuario = perfil.mailUser #trato de traer el colaborador del formulario
+				email_subject_usuario = 'Estilo Online Nuevo Cliente'
+				email_body_usuario = "Hola %s, gracias por crearte un nuevo perfil de cliente, ya puedes crear nuevos turnos y muchas cosas mas para mas informacion ingrese aqui http://estiloonline.pythonanywhere.com" %(perfil.nameUser)
+				message_usuario = (email_subject_usuario, email_body_usuario , 'as.estiloonline@gmail.com', [usuario])
+				#mensaje para apreciasoft
+				email_subject_Soporte = 'Nuevo cliente Registrado'
+				email_body_Soporte = "se ha registrado un nuevo perfil de cliente con nombre %s para verificar ingrese aqui http://estiloonline.pythonanywhere.com" %(perfil.nameUser)
+				message_Soporte = (email_subject_Soporte, email_body_Soporte , 'as.estiloonline@gmail.com', ['soporte@apreciasoft.com'])
+				#enviamos el correo
+				send_mass_mail((message_usuario, message_Soporte), fail_silently=False)
 				return redirect ('Clientes:ClientesHome')
 	else:
 		Form	= UsuarioForm
@@ -77,6 +93,19 @@ def NuevoClientProfile(request):
 			cliente.phoneNumberClientTwo = request.POST['phoneNumberClientTwo']
 			cliente.addressClient = request.POST['addressClient']
 			cliente.save()
+			#mandar mensaje de nuevo usuario
+			#Enviaremos los correos a el colaborador y al cliente 
+			#cliente
+			usuario = perfil.mailUser #trato de traer el colaborador del formulario
+			email_subject_usuario = 'Estilo Online Nuevo Cliente'
+			email_body_usuario = "Hola %s, gracias por crearte un nuevo perfil de cliente, ya puedes crear nuevos turnos y muchas cosas mas para mas informacion ingrese aqui http://estiloonline.pythonanywhere.com" %(perfil.nameUser)
+			message_usuario = (email_subject_usuario, email_body_usuario , 'as.estiloonline@gmail.com', [usuario])
+			#mensaje para apreciasoft
+			email_subject_Soporte = 'Nuevo cliente Registrado'
+			email_body_Soporte = "se ha registrado un nuevo perfil de cliente con nombre %s para verificar ingrese aqui http://estiloonline.pythonanywhere.com" %(perfil.nameUser)
+			message_Soporte = (email_subject_Soporte, email_body_Soporte , 'as.estiloonline@gmail.com', ['soporte@apreciasoft.com'])
+			#enviamos el correo
+			send_mass_mail((message_usuario, message_Soporte), fail_silently=False)
 			return redirect ('Clientes:ClientesHome')
 	else:
 		Form2	= ProfileForm
