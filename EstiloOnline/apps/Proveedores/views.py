@@ -44,6 +44,7 @@ def NuevoProveedor(request):
 	result = validatePerfil(tb_profile.objects.filter(user=request.user))
 	perfil = result[0]
 	Form = ProveedorForm
+	fallido = None
 	if request.method == 'POST':
 		Form = ProveedorForm(request.POST or None)
 		if Form.is_valid():
@@ -63,10 +64,12 @@ def NuevoProveedor(request):
 			message_Soporte = (email_subject_Soporte, email_body_Soporte , 'as.estiloonline@gmail.com', ['soporte@apreciasoft.com'])
 			#enviamos el correo
 			send_mass_mail((message_usuario, message_Soporte), fail_silently=False)
-			return redirect('Proveedores:ListProveedores')
+			mensaje = "Hemos Guardado de manera exitosa su nuevo proveedor"
+			return render(request, 'Proveedores/NuevoProveedor.html' , {'Form':Form, 'perfil':perfil, 'mensaje':mensaje})		
 		else:
 			Form = ProveedorForm()
-	return render(request, 'Proveedores/NuevoProveedor.html' , {'Form':Form, 'perfil':perfil})
+			fallido = "No hemos podido guardar su nuevo proveedor, verifiquelo e intente de nuevo"
+	return render(request, 'Proveedores/NuevoProveedor.html' , {'Form':Form, 'perfil':perfil, 'fallido':fallido})
 
 
 
@@ -75,6 +78,7 @@ def EditarProveedor(request, id_proveedor):
 	result = validatePerfil(tb_profile.objects.filter(user=request.user))
 	perfil = result[0]
 	proveedorEditar= tb_proveedor.objects.get(id=id_proveedor)
+	fallido = None
 	if request.method == 'GET':
 		Form= ProveedorForm(instance = proveedorEditar)
 	else:
@@ -83,8 +87,9 @@ def EditarProveedor(request, id_proveedor):
 			proveedor = Form.save(commit=False)
 			proveedor.user = request.user
 			proveedor.save()
-			return redirect ('Proveedores:ListProveedores')
-	return render (request, 'Proveedores/NuevoProveedor.html' , {'Form':Form, 'perfil':perfil})
+			mensaje = 'hemos guardado de manera exitosa tus nuevos datos'
+			return render (request, 'Proveedores/NuevoProveedor.html' , {'Form':Form, 'perfil':perfil, 'mensaje':mensaje})
+	return render (request, 'Proveedores/NuevoProveedor.html' , {'Form':Form, 'perfil':perfil, 'fallido':fallido})
 
 
 @login_required(login_url = 'Demo:login' )
@@ -92,7 +97,9 @@ def EliminarProveedor(request, id_proveedor):
 	result = validatePerfil(tb_profile.objects.filter(user=request.user))
 	perfil = result[0]
 	proveedorBorrar= tb_proveedor.objects.get(id=id_proveedor)
+	fallido = None
 	if request.method == 'POST':
 		proveedorBorrar.delete()
-		return redirect ('Proveedores:ListProveedores')
+		mensaje = 'Hemos Borrado manera exitosa todos sus registros'
+		return render (request, 'Proveedores/DeteteProveedores.html', {'proveedorBorrar':proveedorBorrar, 'perfil':perfil, 'mensaje':mensaje})
 	return render (request, 'Proveedores/DeteteProveedores.html', {'proveedorBorrar':proveedorBorrar, 'perfil':perfil})

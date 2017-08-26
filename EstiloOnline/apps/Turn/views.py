@@ -55,7 +55,8 @@ def NuevoTurnParaHoy(request):
 	perfil = result[0]
 	Form = TurnForm
 	fecha =  date.today()
-	mensaje = None
+	mensaje1 = None
+	fallido = None
 	if request.method == 'POST':
 		Form = TurnForm(request.POST or None)
 		fecha =  date.today()
@@ -90,16 +91,20 @@ def NuevoTurnParaHoy(request):
 				#enviamos el correo
 				send_mass_mail((message_colaborador, message_client, message_Soporte), fail_silently=False)
 				turno.save()
-				return redirect('Turnos:index')
+				mensaje = 'Felicidades Hemos podido guardar su turno de manera exitosa'
+				return render(request, 'Turn/NuevoTurnoHoy.html' , {'Form':Form,'turnos':turnos ,'fecha':fecha , 'mensaje1':mensaje1, 'perfil':perfil, 'mensaje':mensaje})
 			elif data == 1: # collaborador ocupado para esa hora y fecha
-				mensaje = "El Colaborador que desea Contratar esta Ocupado Para El Dia y la hora deseado intente con otro collaborador o con otro dia"
+				mensaje1 = "El Colaborador que desea Contratar esta Ocupado Para El Dia y la hora deseado intente con otro collaborador o con otro dia"
 				Form = TurnForm()
+				fallido = "No hemos podido cargar sus datos correctamente, verifique e intente nuevamente"
 		else:
 			mensaje = "Errores en los datos Verifiquelos, y vuelva a intentarlo"
 			fecha =  date.today()
 			Form = TurnForm()
+			fallido = "No hemos podido cargar sus datos correctamente, verifique e intente nuevamente"
+
 	
-	return render(request, 'Turn/NuevoTurnoHoy.html' , {'Form':Form,'turnos':turnos ,'fecha':fecha , 'mensaje':mensaje, 'perfil':perfil})
+	return render(request, 'Turn/NuevoTurnoHoy.html' , {'Form':Form,'turnos':turnos ,'fecha':fecha , 'mensaje1':mensaje1, 'perfil':perfil, 'fallido':fallido})
 
 
 #Edita los Status de los turnos
@@ -109,6 +114,7 @@ def EditTurnStatus(request , id_turn):
 	perfil = result[0]
 	turnos = tb_turn.objects.filter(dateTurn = date.today()).order_by('HoraTurn')
 	TurnEditar = tb_turn.objects.get(id = id_turn)
+	fallido = None
 	if request.method == 'GET':
 		Form= EditTurnForm(instance=TurnEditar)
 	else:
@@ -125,8 +131,9 @@ def EditTurnStatus(request , id_turn):
 			turno.isProcessClient = TurnEditar.isProcessClient
 			turno.isProcessCollaborator = TurnEditar.isProcessCollaborator
 			turno.save()
-			return redirect ('Turnos:index')
-	return render (request, 'Turn/ResumenTurnos.html', {'turnos':turnos,'Form':Form, 'TurnEditar':TurnEditar, 'perfil':perfil})
+			mensaje = "hemos cargado sus nuevos datos de manera exitosa"
+			return render (request, 'Turn/ResumenTurnos.html', {'turnos':turnos,'Form':Form, 'TurnEditar':TurnEditar, 'perfil':perfil, 'mensaje':mensaje})
+	return render (request, 'Turn/ResumenTurnos.html', {'turnos':turnos,'Form':Form, 'TurnEditar':TurnEditar, 'perfil':perfil, 'fallido':fallido})
 
 
 #lista todo los turnos en la tabla
@@ -159,7 +166,8 @@ def NuevoTurn(request):
 	turnos = tb_turn.objects.filter(statusTurn__nameStatus="En Espera")
 	perfil = result[0]
 	Form = TurnForm
-	mensaje = None
+	mensaje1 = None
+	fallido = None
 	if request.method == 'POST':
 		Form = TurnForm(request.POST or None)
 		colaboradorOcupado = tb_turn.objects.filter(dateTurn=request.POST['TurnDate']).filter(statusTurn__nameStatus="En Espera").filter(HoraTurn=request.POST['TimeTurn']).filter(collaborator=request.POST['collaborator'])	
@@ -194,15 +202,17 @@ def NuevoTurn(request):
 				message_Soporte = (email_subject_Soporte, email_body_Soporte , 'as.estiloonline@gmail.com', ['soporte@apreciasoft.com'])
 				#enviamos el correo
 				send_mass_mail((message_colaborador, message_client, message_Soporte), fail_silently=False)
-				
-				return redirect('Turnos:listTurnos')
+				mensaje = "Hemos Guardado sus datos de manera correcta"
+				return render(request, 'Turn/NuevoTurno.html' , {'Form':Form ,'turnos':turnos ,'mensaje1':mensaje1, 'perfil':perfil, 'mensaje':mensaje})
 			elif data == 1: # collaborador ocupado para esa hora y fecha
-				mensaje = "El Colaborador que desea Contratar esta Ocupado Para El Dia y la hora deseado intente con otro collaborador o con otro dia"
+				mensaje1 = "El Colaborador que desea Contratar esta Ocupado Para El Dia y la hora deseado intente con otro collaborador o con otro dia"
 				Form = TurnForm()
+				fallido = "Tuvimos un error al cargar sus datos, verifiquelo e intente de nuevo"
 		else:
-				mensaje = "Errores en los datos Verifiquelos, y vuelva a intentarlo"
+				mensaje1 = "Errores en los datos Verifiquelos, y vuelva a intentarlo"
 				Form = TurnForm()
-	return render(request, 'Turn/NuevoTurno.html' , {'Form':Form ,'turnos':turnos ,'mensaje':mensaje, 'perfil':perfil})
+				fallido = "Tuvimos un error al cargar sus datos, verifiquelo e intente de nuevo"
+	return render(request, 'Turn/NuevoTurno.html' , {'Form':Form ,'turnos':turnos ,'mensaje1':mensaje1, 'perfil':perfil, 'fallido':fallido})
 
 #edita los turnos en general
 @login_required(login_url = 'Demo:login' )
@@ -211,7 +221,7 @@ def EditTurn(request , id_turn):
 	result = validatePerfil(tb_profile.objects.filter(user=request.user))
 	turnos = tb_turn.objects.filter(statusTurn__nameStatus="En Espera")
 	perfil = result[0]
-	
+	fallido = None
 	if request.method == 'GET':
 		Form= TurnForm(instance=TurnEditar)
 	else:
@@ -222,8 +232,9 @@ def EditTurn(request , id_turn):
 			turno.dateTurn = request.POST['TurnDate']
 			turno.HoraTurn = request.POST['TimeTurn']
 			turno.save()
-			return redirect ('Turnos:listTurnos')
-	return render (request, 'Turn/NuevoTurno.html', {'turnos':turnos,'Form':Form , 'perfil':perfil})
+			mensaje = "Guardamos sus datos de manera exitosa"
+			return render (request, 'Turn/NuevoTurno.html', {'turnos':turnos,'Form':Form , 'perfil':perfil, 'mensaje':mensaje})
+	return render (request, 'Turn/NuevoTurno.html', {'turnos':turnos,'Form':Form , 'perfil':perfil, 'fallido':fallido})
 
 #edita los turnos en general
 @login_required(login_url = 'Demo:login' )
@@ -265,5 +276,6 @@ def DeleteTurn(request , id_turn):
 	TurnoBorrar = tb_turn.objects.get(id = id_turn)
 	if request.method == 'POST':
 		TurnoBorrar.delete()
-		return redirect ('Turnos:listTurnos')
+		mensaje = "hemos borrado sus datos de manera exitosa"
+		return render (request, 'Turn/DeleteTurno.html', {'TurnoBorrar':TurnoBorrar, 'perfil':perfil, 'mensaje':mensaje})
 	return render (request, 'Turn/DeleteTurno.html', {'TurnoBorrar':TurnoBorrar, 'perfil':perfil})

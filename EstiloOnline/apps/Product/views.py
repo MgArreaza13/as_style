@@ -46,16 +46,19 @@ def NuevoProducto(request):
 	result = validatePerfil(tb_profile.objects.filter(user=request.user))
 	perfil = result[0]
 	Form = ProductForm
+	fallido = None
 	if request.method == 'POST':
 		Form = ProductForm(request.POST or None)
 		if Form.is_valid():
 			producto = Form.save(commit=False)
 			producto.user = request.user
 			producto.save()
-			return redirect('Productos:ListProductos')
+			mensaje = "Hemos cargado de manera exitosa su nuevo Producto"
+			return render(request, 'Product/NuevoProducto.html' , {'Form':Form, 'perfil':perfil, 'mensaje':mensaje})
 		else:
 			Form = ProductForm()
-	return render(request, 'Product/NuevoProducto.html' , {'Form':Form, 'perfil':perfil})
+			fallid0 = "Hemos tenido problema al registrar sus datos, verifiquelos e intente nuevamente"
+	return render(request, 'Product/NuevoProducto.html' , {'Form':Form, 'perfil':perfil, 'falido': fallido})
 
 
 
@@ -64,6 +67,7 @@ def EditarProducto(request, id_producto):
 	productoEditar= tb_product.objects.get(id=id_producto)
 	result = validatePerfil(tb_profile.objects.filter(user=request.user))
 	perfil = result[0]
+	fallido = None
 	if request.method == 'GET':
 		Form= ProductForm(instance = productoEditar)
 	else:
@@ -72,8 +76,9 @@ def EditarProducto(request, id_producto):
 			producto = Form.save(commit=False)
 			producto.user = request.user
 			producto.save()
-			return redirect ('Productos:ListProductos')
-	return render (request, 'Product/NuevoProducto.html' , {'Form':Form, 'perfil':perfil})
+			mensaje = "Hemos guardado correctamente sus nuevos datos"
+			return render (request, 'Product/NuevoProducto.html' , {'Form':Form, 'perfil':perfil, 'mensaje':mensaje})
+	return render (request, 'Product/NuevoProducto.html' , {'Form':Form, 'perfil':perfil, 'fallido':fallido})
 
 
 @login_required(login_url = 'Demo:login' )
@@ -81,7 +86,9 @@ def EliminarProducto(request, id_producto):
 	result = validatePerfil(tb_profile.objects.filter(user=request.user))
 	perfil = result[0]
 	productoBorrar= tb_product.objects.get(id=id_producto)
+	fallido = None
 	if request.method == 'POST':
 		productoBorrar.delete()
-		return redirect ('Productos:ListProductos')
+		mensaje = 'Hemos Borrado Correctamente sus datos'
+		return render (request, 'Product/DeleteProduct.html', {'productoBorrar':productoBorrar, 'perfil':perfil, 'mensaje':mensaje})
 	return render (request, 'Product/DeleteProduct.html', {'productoBorrar':productoBorrar, 'perfil':perfil})

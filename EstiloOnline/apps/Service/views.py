@@ -18,17 +18,20 @@ def NuevoService(request):
 	result = validatePerfil(tb_profile.objects.filter(user=request.user))
 	perfil = result[0]
 	Form = ServiceForm
+	fallido = None
 	if request.method == 'POST':
 		Form = ServiceForm(request.POST or None)
 		if Form.is_valid():
 			servicio = Form.save(commit=False)
 			servicio.user = request.user
 			servicio.save()
-			return redirect('Servicios:listService')
+			mensaje = "Se ha Cargado su servicio de manera Exitosa"
+			return render(request, 'Service/NuevoServicio.html' , {'Form':Form,'perfil':perfil, "mensaje":mensaje})
 		else:
 			Form = ServiceForm()
+			fallido = "hubo un error a cargar su servicio verifique sus datos e intentelo de nuevo"
 	
-	return render(request, 'Service/NuevoServicio.html' , {'Form':Form, 'perfil':perfil})
+	return render(request, 'Service/NuevoServicio.html' , {'Form':Form, 'perfil':perfil, "fallido":fallido})
 
 
 
@@ -45,7 +48,8 @@ def EditService(request, id_service):
 			servicio = Form.save(commit=False)
 			servicio.user = request.user
 			servicio.save()
-			return redirect ('Servicios:listService')
+			mensaje = "Datos guardados correctamente"
+			return render (request, 'Service/NuevoServicio.html' , {'Form':Form, 'perfil':perfil, 'mensaje':mensaje})
 	return render (request, 'Service/NuevoServicio.html' , {'Form':Form, 'perfil':perfil})
 
 
@@ -57,7 +61,8 @@ def DeleteService(request, id_service):
 	serviceBorrar= tb_service.objects.get(id=id_service)
 	if request.method == 'POST':
 		serviceBorrar.delete()
-		return redirect ('Servicios:listService')
+		mensaje = "datos borrado correctamente"
+		return render (request, 'Service/DeleteService.html', {'serviceBorrar':serviceBorrar, 'perfil':perfil, 'mensaje':mensaje})
 	return render (request, 'Service/DeleteService.html', {'serviceBorrar':serviceBorrar, 'perfil':perfil})
 
 

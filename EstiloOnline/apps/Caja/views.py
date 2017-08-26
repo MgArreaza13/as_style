@@ -47,6 +47,7 @@ def NuevoIngreso(request):
 	Form = IngresoForm
 	result = validatePerfil(tb_profile.objects.filter(user=request.user))
 	perfil = result[0]
+	fallido = None
 	if request.method == 'POST':
 		Form = IngresoForm(request.POST or None)
 		if Form.is_valid():
@@ -58,10 +59,12 @@ def NuevoIngreso(request):
 			else:
 				ingreso.descripcion = request.POST['descripcion']
 			ingreso.save()
-			return redirect('Caja:IngresoList')
+			mensaje = 'Hemos Cargado Su ingreso de manera exitosa'
+			return render(request, 'Caja/NuevoIngreso.html' , {'Form':Form, 'perfil':perfil, 'mensaje':mensaje})
 		else:
 			Form = IngresoForm()
-	return render(request, 'Caja/NuevoIngreso.html' , {'Form':Form, 'perfil':perfil})
+			fallido = "Hemos tenido algun problema con sus datos, por eso no hemos procesado su ingreso, verifiquelo e intentelo de nuevo"
+	return render(request, 'Caja/NuevoIngreso.html' , {'Form':Form, 'perfil':perfil, 'fallido':fallido})
 
 
 
@@ -106,6 +109,7 @@ def NuevoEgreso(request):
 	Form = EgresoForm
 	result = validatePerfil(tb_profile.objects.filter(user=request.user))
 	perfil = result[0]
+	fallido = None
 	if request.method == 'POST':
 		Form = EgresoForm(request.POST or None)
 		if Form.is_valid():
@@ -116,7 +120,10 @@ def NuevoEgreso(request):
 			else:
 				egreso.descripcion = request.POST['descripcion']
 			egreso.save()
-			return redirect('Caja:EgresoList')
+			mensaje = 'Hemos Cargado Su egreso de manera exitosa'
+			return render(request, 'Caja/NuevoEgreso.html' , {'Form':Form, 'perfil':perfil, 'mensaje':mensaje})
+
 		else:
 			Form = EgresoForm()
-	return render(request, 'Caja/NuevoEgreso.html' , {'Form':Form, 'perfil':perfil})
+			fallido = "Hemos tenido algun problema con sus datos, por eso no hemos procesado su ingreso, verifiquelo e intentelo de nuevo"
+	return render(request, 'Caja/NuevoEgreso.html' , {'Form':Form, 'perfil':perfil, 'fallido':fallido})
