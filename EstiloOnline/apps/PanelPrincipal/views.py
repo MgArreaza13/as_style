@@ -37,6 +37,36 @@ def inicio(request):
 	fecha = date.today()
 	servicios = tb_service.objects.all()[:10]
 	productos = tb_product.objects.all()[:10]
+	dataturn = tb_turn.objects.all() #traigo todos los turnos 
+	data = [] #creo la data que rendeare luego 
+	ing = [] #ingresos chart
+	egr = [] #egresos chart
+
+	counte = 0
+	queryingresos = tb_ingreso.objects.all()
+	queryegresos = tb_egreso.objects.all()
+	for mes in range(1,13): #mes variara de 1 a 12
+		count = 0 #contador en cero luego de cada mes
+		for fecha1 in range(0,len(dataturn)): # se ecargara de recorrer todo los turnos 
+			if mes == dataturn[fecha1].dateTurn.month and fecha.year ==  dataturn[fecha1].dateTurn.year : # si la en el listdo de turnos hay uno igual al mes en curso aumentara el contador
+				count += 1
+		data.append(count) # agrego a la data la sumatoria de los turnos del mes en curso
+	#ingreso
+	for mes in range(1,13): #mes variara de 1 a 12
+		counti = 0 #contador en cero luego de cada mes
+		for fecha1 in range(0,len(queryingresos)): # se ecargara de recorrer todo los turnos 
+			if mes == queryingresos[fecha1].dateCreate.month and fecha.year ==  queryingresos[fecha1].dateCreate.year : # si la en el listdo de turnos hay uno igual al mes en curso aumentara el contador
+				counti = counti + queryingresos[fecha1].monto
+		ing.append(counti)
+	#egresos 
+
+	for mes in range(1,13): #mes variara de 1 a 12
+		counten = 0 #contador en cero luego de cada mes
+		for fecha1 in range(0,len(queryegresos)): # se ecargara de recorrer todo los turnos 
+			if mes == queryegresos[fecha1].dateCreate.month and fecha.year ==  queryegresos[fecha1].dateCreate.year : # si la en el listdo de turnos hay uno igual al mes en curso aumentara el contador
+				counten = counten + queryegresos[fecha1].monto
+		egr.append(counten)
+
 	#queryset 
 	turnos_hoy =  tb_turn.objects.filter(dateTurn=date.today()).filter(statusTurn__nameStatus='En Espera').count()
 	ingresos_hoy = tb_ingreso.objects.filter(dateCreate=date.today()).aggregate(total=Sum('monto'))
@@ -49,6 +79,9 @@ def inicio(request):
 	'turnos_hoy':turnos_hoy,
 	'ingresos_hoy':ingresos_hoy,
 	'egresos_hoy':egresos_hoy,
+	'data':data,
+	'ing':ing,
+	'egr':egr
 
 
 	}
