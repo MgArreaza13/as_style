@@ -41,13 +41,22 @@
                      {% if form.subject.errors %}
                          <ol>
                           {% for error in form.subject.errors %}
-                              <li><strong>{{ error|escape }}</strong></li>
+                              <div class="alert alert-danger alert-dismissible">
+                          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                          <h4><i class="icon fa fa-ban"></i> Alert!</h4>
+                          {{ error|escape }}
+                        </div>
                           {% endfor %}
                         </ol>
                     {% endif %}
                     {% if   field.errors  %}
                       
-                    {{ field.errors }}
+                    <div class="alert alert-danger alert-dismissible">
+                          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                          <h4><i class="icon fa fa-ban"></i> Alert!</h4>
+                          
+                           {{ field.errors }}
+                        </div>
                     {% endif %}
         
           
@@ -71,7 +80,11 @@
           
       
                   {% if field.help_text %}
-                    <script> console.log('{{ field.help_text|safe }}')</script>
+                     <div class="alert alert-info alert-dismissible">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                <h4><i class="icon fa fa-info"></i> Considere!</h4>
+               {{ field.help_text|safe }}
+              </div>
                   {% endif %}
                {% endfor %}
                <div class="form-group">

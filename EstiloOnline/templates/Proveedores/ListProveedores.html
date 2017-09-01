@@ -114,9 +114,9 @@
                   <th>NOMBRE</th>
                   <th>RAZON <br> SOCIAL</th>
                   <th>CUIT</th>
+                  <th>FECHA <br> DE REGISTRO</th>
                   <th>TELEFONO</th>
                   <th>DIRECCION</th>
-                  <th>FECHA <br> DE REGISTRO</th>
                   <th>USUARIO <br> CREADO</th>
                   <th>ACCIONES</th>
                 </tr>
@@ -133,6 +133,7 @@
                             </td>
                             <td>{{proveedor.razonSocial}}</td>
                             <td>{{proveedor.cuit}}</td>
+                            <td>{{proveedor.dateCreate}}</td>
                             <td>{{proveedor.phoneNumberProveedor}}</td>
                             
                             <td>
@@ -142,7 +143,6 @@
                                   </span>
                             </td>
 
-                            <td>{{proveedor.dateCreate}}</td>
                             <td><a href="">{{proveedor.user}}</a></td>
                             <td>
                                 <a href="{% url "Proveedores:EditarProveedor" proveedor.id %}" class="label label-success">EDITAR</a>
@@ -165,9 +165,9 @@
                   <th>NOMBRE</th>
                   <th>RAZON <br> SOCIAL</th>
                   <th>CUIT</th>
+                  <th>FECHA <br> DE REGISTRO</th>
                   <th>TELEFONO</th>
                   <th>DIRECCION</th>
-                  <th>FECHA <br> DE REGISTRO</th>
                   <th>USUARIO <br> CREADO</th>
                   <th>ACCIONES</th>
                 </tr>
@@ -202,32 +202,36 @@
 
 {% block scripts %}
   <!-- jQuery 2.2.3 -->
-<script src="{% static 'plugins/jQuery/jquery-2.2.3.min.js' %}"></script>
+<script src="{% static "plugins/jQuery/jquery-2.2.3.min.js" %}"></script>
 <!-- Bootstrap 3.3.6 -->
-<script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+<script src="{% static "bootstrap/js/bootstrap.min.js" %}"></script>
+
 <!-- DataTables -->
 <script src="{% static 'plugins/datatables/jquery.dataTables.min.js' %}"></script>
 <script src="{% static 'plugins/datatables/dataTables.bootstrap.min.js' %}"></script>
 <!-- SlimScroll -->
-<script src="{% static 'plugins/slimScroll/jquery.slimscroll.min.js' %}"></script>
+<!-- jQuery 2.2.3 -->
+<!-- jQuery UI 1.11.4 -->
+<script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
+<!-- Slimscroll -->
+<script src="{% static "plugins/slimScroll/jquery.slimscroll.min.js" %}"></script>
 <!-- FastClick -->
-<script src="{% static 'plugins/fastclick/fastclick.js' %}"></script>
+<script src="{% static "plugins/fastclick/fastclick.js" %}"></script>
 <!-- AdminLTE App -->
-<script src="{% static 'dist/js/app.min.js' %}"></script>
+<script src="{% static "dist/js/app.min.js" %}"></script>
 <!-- AdminLTE for demo purposes -->
-<script src="{% static 'dist/js/demo.js' %}"></script>
+<script src="{% static "dist/js/demo.js" %}"></script>
+<!-- fullCalendar 2.2.5 -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
+<script src="{% static "plugins/fullcalendar/fullcalendar.min.js" %}"></script>
+<script type="text/javascript" src="{% static "bootstrap/js/bootstrap-clockpicker.min.js" %}"></script>
+  <script type="text/javascript" src="{% static "bootstrap/js/highlight.min.js" %}"></script>
+<!-- Page specific script -->
+<script type="text/javascript" src="{% static "bootstrap/js/bootstrap-clockpicker.min.js" %}"></script>
+<script type="text/javascript" src="{% static "bootstrap/js/bootstrap-datepicker.adminlte.min.js" %}"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/datatables/1.9.4/jquery.dataTables.js" data-semver="1.9.4" data-require="datatables@*"></script>
+<script src="{% static "bootstrap/js/filtrado.js" %}"></script>
+
 <!-- page script -->
-<script>
-  $(function () {
-    $("#example1").DataTable();
-    $('#example2').DataTable({
-      "paging": true,
-      "lengthChange": false,
-      "searching": false,
-      "ordering": true,
-      "info": true,
-      "autoWidth": false
-    });
-  });
-</script>
+
 {% endblock scripts %}
