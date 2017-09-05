@@ -624,9 +624,8 @@
             </span>
           </a>
           <ul class="treeview-menu" style="display: none;">
-            <li><a href="{% url "Turnos:index" %}"><i class="fa fa-calendar"></i> Resumen </a></li>
-            <li><a href="{% url "Turnos:listTurnos" %}"><i class="fa fa-calendar"></i> Listado Turnos </a></li>
-           
+            
+           <li><a href="{% url "Turnos:NuevoTurnClient" request.user.id %}"><i class="fa fa-plus"></i> Nuevo turno </a></li>
             
             
             
@@ -695,6 +694,7 @@
          
           </ul>
         </li>
+        <!--
         <li class="treeview">
           <a href="#">
             <i class="fa fa-odnoklassniki"></i> <span>COLABORADORES</span>
@@ -709,6 +709,7 @@
              
           </ul>
         </li>
+        -->
         <li class="treeview">
           <a href="{% url "Colaboradores:ColaboradorProfile" request.user.id %}">
             <i class="fa fa-odnoklassniki"></i>

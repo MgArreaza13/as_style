@@ -7,9 +7,12 @@ from apps.Collaborator.models import tb_collaborator
 from apps.Turn.models import tb_turn
 from apps.Caja.models import tb_ingreso
 from apps.Caja.models import tb_egreso
+from apps.Client.models import tb_client
 #FORMULARIOS
 from apps.Turn.forms import TurnForm
 from apps.Turn.forms import EditTurnForm
+from apps.Turn.forms import NewTurnFormClient
+
 #datos para la vista principal arriba de las citas y los ingresos.
 from django.db.models import Count, Min, Sum, Avg
 from datetime import date 
@@ -213,6 +216,67 @@ def NuevoTurn(request):
 				Form = TurnForm()
 				fallido = "Tuvimos un error al cargar sus datos, verifiquelo e intente de nuevo"
 	return render(request, 'Turn/NuevoTurno.html' , {'Form':Form ,'turnos':turnos ,'mensaje1':mensaje1, 'perfil':perfil, 'fallido':fallido})
+
+
+#crea los turnos para los clientes, en sesion
+@login_required(login_url = 'Demo:login' )
+def NuevoTurnClient(request, id_client):
+	result = validatePerfil(tb_profile.objects.filter(user=request.user))
+	turnos = tb_turn.objects.filter(statusTurn__nameStatus="En Espera")
+	perfil = result[0]
+	Form = NewTurnFormClient
+	mensaje1 = None
+	fallido = None
+	if request.method == 'POST':
+		Form = NewTurnFormClient(request.POST or None)
+		colaboradorOcupado = tb_turn.objects.filter(dateTurn=request.POST['TurnDate']).filter(statusTurn__nameStatus="En Espera").filter(HoraTurn=request.POST['TimeTurn']).filter(collaborator=request.POST['collaborator'])	
+		data = len(colaboradorOcupado)
+		if Form.is_valid():
+			if data == 0: #no encontro un collaborador ocupado para ese dia y hora 
+				turno = Form.save(commit=False)
+				turno.user = request.user
+				turno.client = tb_client.objects.get(user__id = id_client)
+				turno.dateTurn = request.POST['TurnDate']
+				turno.HoraTurn = request.POST['TimeTurn']
+				if request.POST['extraInfoTurn'] == "":
+					turno.extraInfoTurn = 'Sin Comentarios'
+				else:
+					turno.extraInfoTurn = request.POST['extraInfoTurn']
+				turno.save()
+				#Enviaremos los correos a el colaborador y al cliente 
+				#colaborador
+				colaborador = tb_profile.objects.get(nameUser=turno.collaborator) #trato de traer el colaborador del formulario
+				email_subject_Colaborador = 'Nuevo Turno Solicitado Por Cliente'
+				email_body_Colaborador = "Hola %s, El presente mensaje es para informarle que ha recibido una nueva solicitud para un turno si desea revisarla y confirmarla ingrese aqui http://estiloonline.pythonanywhere.com" %(colaborador)
+				email_colaborador = colaborador.mailUser
+				message_colaborador = (email_subject_Colaborador, email_body_Colaborador , 'as.estiloonline@gmail.com', [email_colaborador])
+				#cliente
+				client = tb_profile.objects.get(user__username=turno.client) #trato de traer el colaborador del formulario
+				email_subject_client = 'Nuevo Turno Solicitado'
+				email_body_Client = "Hola %s, El presente mensaje es para informarle que se ha enviado una nueva solicitud para un turno si desea revisarla y confirmarla ingrese aqui http://estiloonline.pythonanywhere.com" %(client)
+				email_client = client.mailUser
+				message_client = (email_subject_client, email_body_Client, 'as.estiloonline@gmail.com', [email_client])
+				#mensaje para apreciasoft
+				email_subject_Soporte = 'Nuevo Turno Solicitado en Estilo Online'
+				email_body_Soporte = "Hola, soporte Apreciasoft, El presente mensaje es para informarle que el cliente  %s ha enviado una nueva solicitud para de turno para el colaborador %s , si desea revisarla ingrese aqui http://estiloonline.pythonanywhere.com" %(client,colaborador)
+				message_Soporte = (email_subject_Soporte, email_body_Soporte , 'as.estiloonline@gmail.com', ['soporte@apreciasoft.com'])
+				#enviamos el correo
+				send_mass_mail((message_colaborador, message_client, message_Soporte), fail_silently=False)
+				mensaje = "Hemos Guardado sus datos de manera correcta"
+				return render(request, 'Turn/NuevoTurno.html' , {'Form':Form ,'turnos':turnos ,'mensaje1':mensaje1, 'perfil':perfil, 'mensaje':mensaje})
+			elif data == 1: # collaborador ocupado para esa hora y fecha
+				mensaje1 = "El Colaborador que desea Contratar esta Ocupado Para El Dia y la hora deseado intente con otro collaborador o con otro dia"
+				Form = NewTurnFormClient()
+				fallido = "Tuvimos un error al cargar sus datos, verifiquelo e intente de nuevo"
+		else:
+				mensaje1 = "Errores en los datos Verifiquelos, y vuelva a intentarlo"
+				Form = NewTurnFormClient()
+				fallido = "Tuvimos un error al cargar sus datos, verifiquelo e intente de nuevo"
+	return render(request, 'Turn/NuevoTurno.html' , {'Form':Form ,'turnos':turnos ,'mensaje1':mensaje1, 'perfil':perfil, 'fallido':fallido})
+
+
+
+
 
 #edita los turnos en general
 @login_required(login_url = 'Demo:login' )

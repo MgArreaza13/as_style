@@ -8,7 +8,7 @@ from apps.Collaborator.views import ColaboradorProfile
 from apps.Collaborator.views import HistorialCollaborador
 from apps.Collaborator.views import agenda
 from apps.Collaborator.views import turnos
-
+from apps.Collaborator.views import editTurnosColaborador
 urlpatterns = [
 
 	#url(r'^$', Clientes , name='ClientesHome'  ),
@@ -16,6 +16,7 @@ urlpatterns = [
 	url(r'^list/$', ListColaboradores , name='ListColaboradores'  ),
 	url(r'^Nuevo/$', NuevoColaborador , name='NuevoColaborador'  ),
 	url(r'^turnos/(?P<id_colaborador>\d+)$', turnos , name='turnos'  ),
+	url(r'^turnos/(?P<id_colaborador>\d+)/(?P<id_turn>\d+)$', editTurnosColaborador , name='editTurnosColaborador'  ),
 	url(r'^Historial/(?P<id_colaborador>\d+)$', HistorialCollaborador, name='HistorialCollaborador'  ),
 	url(r'^Agenda/(?P<id_colaborador>\d+)$', agenda, name='agenda'  ),
 	url(r'^Editar/(?P<id_colaborador>\d+)$', EditarColaborador, name='EditarColaborador'  ),

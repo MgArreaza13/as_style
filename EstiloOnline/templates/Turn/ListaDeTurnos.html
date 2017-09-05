@@ -247,7 +247,6 @@
                       {% elif TurnEditar.id != turno.id   %}
                         <tr>
                           <td><a href="#">{{turno.id}}</a></td>
-                          <td>{{turno.dateTurn}}</td>
                           <td>
                                 <a href="{% url "Clientes:ClienteProfile" turno.client.id %}" class="product-title">{{turno.client}}</a>
                           </td>
@@ -256,6 +255,7 @@
                           </td>
                          
                                <td>{{turno.HoraTurn}}</td>
+                          <td>{{turno.dateTurn}}</td>
                           
                           <td>{{turno.extraInfoTurn}}</td>
                           

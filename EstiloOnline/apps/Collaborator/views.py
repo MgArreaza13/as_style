@@ -11,7 +11,7 @@ from datetime import date
 from apps.Turn.models import tb_turn
 from apps.Caja.models import tb_ingreso
 from apps.Caja.models import tb_egreso
-
+from apps.Turn.forms import EditTurnForm
 from apps.UserProfile.models import tb_profile
 from apps.scripts.validatePerfil import validatePerfil
 from apps.UserProfile.forms import UsuarioForm
@@ -221,4 +221,58 @@ def turnos (request, id_colaborador):
 	'perfil':perfil,
 	}
 	return render(request,'Collaborator/turnos.html', context)
+
+
+#vista para editar los turnos del colaborador en sesion 
+@login_required(login_url = 'Demo:login' )
+def editTurnosColaborador (request, id_colaborador, id_turn):
+	collaborador = tb_collaborator.objects.get(user__user_id = id_colaborador)
+	turnos = tb_turn.objects.filter(collaborator__user_id = id_colaborador).order_by('dateTurn','dateTurn' )
+	result = validatePerfil(tb_profile.objects.filter(user=request.user))
+	perfil = result[0]
+	#queryset 
+	turnos_hoy =  tb_turn.objects.filter(dateTurn=date.today()).filter(statusTurn__nameStatus='En Espera').count()
+	ingresos_hoy = tb_ingreso.objects.filter(dateCreate=date.today()).aggregate(total=Sum('monto'))
+	egresos_hoy  = tb_egreso.objects.filter(dateCreate=date.today()).aggregate(total=Sum('monto'))
+	formulario = True
+	TurnEditar = tb_turn.objects.get(id = id_turn)
+	if request.method == 'GET':
+		idturn = id_turn
+		Form= EditTurnForm(instance=TurnEditar)
+	else:
+		idturn = id_turn
+		Form= EditTurnForm(request.POST,instance=TurnEditar)
+		if  Form.is_valid():
+			turno 		 = Form.save(commit=False)
+			turno.user	 = request.user
+			turno.dateTurn = TurnEditar.dateTurn
+			turno.HoraTurn = TurnEditar.HoraTurn
+			turno.client = TurnEditar.client
+			turno.collaborator = TurnEditar.collaborator
+			turno.extraInfoTurn = TurnEditar.extraInfoTurn
+			turno.servicioPrestar = TurnEditar.servicioPrestar
+			turno.isProcessClient = TurnEditar.isProcessClient
+			turno.isProcessCollaborator = TurnEditar.isProcessCollaborator
+			turno.save()
+			return redirect ('Panel:inicio')
+
+	context = {
+	'perfil':perfil,
+	'Form':Form ,
+	'TurnEditar':TurnEditar,
+	'turnos':turnos,
+	'collaborador':collaborador,
+	'turnos_hoy':turnos_hoy,
+	'ingresos_hoy':ingresos_hoy,
+	'egresos_hoy':egresos_hoy,
+	'perfil':perfil,
+	}
+	return render(request,'Collaborator/turnos.html', context)
+	
+
+	
+
+	
+	
+		
 
