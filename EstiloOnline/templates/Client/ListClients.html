@@ -107,13 +107,16 @@
             </div>
             <div style="background-color: rgba(154, 153, 158, 0.09);" class="box-body">
             <h5 class="box-title">Filtrar por Fecha </h5>
-              <div class="form-group col-md-6">
+              <div class="form-group col-md-5">
                     <label for="exampleInputEmail1">DESDE</label>
-                    <input type="text" id="datepicker_from" class="form-control" id="exampleInputEmail1" placeholder="SELECCIONE LA FECHA DE INICIO ">
+                    <input type="text" id="datepicker_from" class="form-control"  placeholder="SELECCIONE LA FECHA DE INICIO ">
                 </div>
-                <div class="form-group col-md-6">
+                <div class="form-group col-md-5">
                     <label for="exampleInputEmail1">HASTA</label>
-                    <input type="text" id="datepicker_to" class="form-control" id="exampleInputEmail1" placeholder="SELECCIONE LA FECHA FINAL">
+                    <input type="text" id="datepicker_to" class="form-control"  placeholder="SELECCIONE LA FECHA FINAL">
+                </div>
+                <div style="margin-top:1.8em;" class="form-group col-md-2">
+                    <button class="btn btn-block btn-primary" id="btn-reload"> FILTRAR </button>
                 </div>
               
             </div>
@@ -127,6 +130,7 @@
                   <th>NOMBRE</th>
                   <th>DNI</th>
                   <th>FECHA DE REGISTRO</th>
+                  <th class="hidden">fechaNumero</th>
                   <th>NUMERO P</th>
                   <th>NUMERO S</th>
                   <th>ACCIONES</th>
@@ -156,6 +160,7 @@
 
                           </span>
                     </td>
+                    <td class="hidden">{{ cliente.dateCreate|date:"m-d-Y" }}</td>
                     </td>
                     <td>{{cliente.phoneNumberClient}}</td>
                     <td>{{cliente.phoneNumberClientTwo}}</td>

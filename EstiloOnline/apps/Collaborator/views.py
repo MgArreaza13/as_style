@@ -270,9 +270,14 @@ def editTurnosColaborador (request, id_colaborador, id_turn):
 	return render(request,'Collaborator/turnos.html', context)
 	
 
-	
+
+
+
+from apps.Collaborator.serializers import CollaboratorSerializer
+
+from rest_framework import viewsets	
 
 	
-	
-		
-
+class CollaboratorViewset(viewsets.ModelViewSet):
+	queryset = tb_collaborator.objects.all()
+	serializer_class = CollaboratorSerializer

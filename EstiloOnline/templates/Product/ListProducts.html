@@ -116,6 +116,7 @@
                   <th>FOTO</th>
                   <th>DESCRICPCION</th>
                   <th>FECHA <br> CREADA</th>
+                  <th class="hidden">fechaNumero</th>
                   <th>PROVEEDOR</th>
                   <th>PRECIO <br> LIST</th>
                   <th>PRECIO <br> COST</th>
@@ -146,6 +147,7 @@
                             </span>
                       </td>
                       <td>{{producto.dateCreate}}</td>
+                      <td class="hidden">{{ producto.dateCreate|date:"m-d-Y" }}</td>
                       <td>
                             <a href="javascript:void(0)" class="product-title">{{producto.proveedor}} </a>
                       </td>

@@ -105,18 +105,34 @@
             <div class="box-header">
               <h3 class="box-title">Historial de Citas de {{cliente.user.nameUser}}</h3>
             </div>
+            <div style="background-color: rgba(154, 153, 158, 0.09);" class="box-body">
+            <h5 class="box-title">Filtrar por Fecha </h5>
+              <div class="form-group col-md-5">
+                    <label for="exampleInputEmail1">DESDE</label>
+                    <input type="text" id="datepicker_from" class="form-control"  placeholder="SELECCIONE LA FECHA DE INICIO ">
+                </div>
+                <div class="form-group col-md-5">
+                    <label for="exampleInputEmail1">HASTA</label>
+                    <input type="text" id="datepicker_to" class="form-control"  placeholder="SELECCIONE LA FECHA FINAL">
+                </div>
+                <div style="margin-top:1.8em;" class="form-group col-md-2">
+                    <button class="btn btn-block btn-primary" id="btn-reload"> FILTRAR </button>
+                </div>
+              
+            </div>
             <!-- /.box-header -->
             <div class="box-body">
               <table id="example1" class="table table-bordered table-striped">
                 <thead>
                 <tr>
                   <th>COD</th>
-                  <th>FECHA</th>
                   <th>COLABORADOR</th>
                   
                   <th>HORA</th>
                   <th>INFO</th>
                   <th>STATUS</th>
+                  <th>FECHA</th>
+                  <th class="hidden">fechaNumero</th>
                   <th>ACCIONES</th>
                 </tr>
                 </thead>
@@ -127,7 +143,6 @@
                 {% for turno in turnos  %}
                     <tr>
                     <td><a href="#">{{turno.codTurn}}</a></td>
-                    <td>{{turno.dateTurn}}</td>
                     <td>
                           <a href="{% url "Colaboradores:ColaboradorProfile" turno.collaborator.id %}" class="product-title">{{turno.collaborator}}</a>
                     </td>
@@ -159,6 +174,8 @@
                             <span style="background-color:#00c0ef;" class="label">{{turno.statusTurn}}</span>
                       </td>
                     {% endif %}
+                    <td>{{turno.dateTurn}}</td>
+                    <td class="hidden">{{ turno.dateTurn|date:"m-d-Y" }}</td>
 
                     <td>
                         <a href="{% url "Turnos:EditTurn" turno.id %}" style="background-color:#001F3F;" class="label">EDITAR</a>

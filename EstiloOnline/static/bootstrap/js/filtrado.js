@@ -1,4 +1,4 @@
-$(function() {
+$(document).ready(function() {
   var oTable = $('#example1').DataTable({
       "paging": true,
       "lengthChange": true,
@@ -8,55 +8,62 @@ $(function() {
       "autoWidth": true
     });
 
-
-
-
   $("#datepicker_from").datepicker({
     showOn: "button",
+    autoclose: true,
     buttonImage: "images/calendar.gif",
     buttonImageOnly: false,
     "onSelect": function(date) {
       minDateFilter = new Date(date).getTime();
       oTable.draw();
+      
     }
   }).keyup(function() {
     minDateFilter = new Date(this.value).getTime();
-    oTable.draw();
+    oTable.draw();  
   });
 
   $("#datepicker_to").datepicker({
     showOn: "button",
+    autoclose: true,
     buttonImage: "images/calendar.gif",
     buttonImageOnly: false,
     "onSelect": function(date) {
       maxDateFilter = new Date(date).getTime();
       oTable.draw();
+      
     }
   }).keyup(function() {
     maxDateFilter = new Date(this.value).getTime();
     oTable.draw();
+    
+  });
+
+  $('#btn-reload').click(function(){
+     oTable.draw();
   });
 
 });
 
-// Date range filter
+
 minDateFilter = "";
 maxDateFilter = "";
 
+
 $.fn.dataTableExt.afnFiltering.push(
   function(oSettings, aData, iDataIndex) {
-    if (typeof aData._date == 'undefined') {
-      aData._date = new Date(aData[4]).getTime();
-    }
-
+    console.log(aData)
+    maxDateFilter = new Date($('#datepicker_from').val()).getTime();
+    maxDateFilter = new Date($('#datepicker_to').val()).getTime();
+    var d = new Date(aData[5]).getTime();
     if (minDateFilter && !isNaN(minDateFilter)) {
-      if (aData._date < minDateFilter) {
+      if (d < minDateFilter) {
         return false;
       }
     }
 
     if (maxDateFilter && !isNaN(maxDateFilter)) {
-      if (aData._date > maxDateFilter) {
+      if (d > maxDateFilter) {
         return false;
       }
     }
@@ -64,5 +71,7 @@ $.fn.dataTableExt.afnFiltering.push(
     return true;
   }
 );
+
+
 
 

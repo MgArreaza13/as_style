@@ -19,6 +19,14 @@ from django.contrib import admin
 from django.conf import settings
 from django.conf.urls.static import static
 
+from rest_framework import routers
+
+from apps.Collaborator.views import CollaboratorViewset
+
+router =  routers.DefaultRouter()
+
+router.register(r'colaboradores2', CollaboratorViewset)
+
 urlpatterns = [
 	url(r'^', include('apps.PanelPrincipal.urls', namespace='Panel')),
     url(r'^usuarios/', include('apps.UserProfile.urls', namespace='Usuarios')),
@@ -35,6 +43,6 @@ urlpatterns = [
     #url(r'^media/(?P<path>.*)$', 'django.views.static.serve', settings.MEDIA_ROOT), 
     url('', include('social.apps.django_app.urls', namespace='social')),
 ]
-
+urlpatterns += router.urls
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
