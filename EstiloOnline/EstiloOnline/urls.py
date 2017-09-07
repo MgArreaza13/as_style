@@ -18,14 +18,21 @@ from django.conf import settings
 from django.contrib import admin
 from django.conf import settings
 from django.conf.urls.static import static
-
+#rest framework
 from rest_framework import routers
-
-from apps.Collaborator.views import CollaboratorViewset
-
 router =  routers.DefaultRouter()
+#modulos 
 
-router.register(r'colaboradores2', CollaboratorViewset)
+#Colaboradores
+from apps.Collaborator.views import CollaboratorViewset
+router.register(r'api/colaboradores', CollaboratorViewset)
+
+from apps.Collaborator.views import typeCollaboratorViewset
+from apps.Collaborator.views import UserProfileViewset
+
+
+router.register(r'tiposcolaboradores2', typeCollaboratorViewset)
+router.register(r'user2', UserProfileViewset)
 
 urlpatterns = [
 	url(r'^', include('apps.PanelPrincipal.urls', namespace='Panel')),
