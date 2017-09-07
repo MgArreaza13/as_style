@@ -21,20 +21,63 @@ from django.conf.urls.static import static
 #rest framework
 from rest_framework import routers
 router =  routers.DefaultRouter()
+
 #modulos 
 
-#Colaboradores
+###################CLIENT###########################
+from apps.Client.views import ClienteViewset
+router.register(r'api/clientes', ClienteViewset)
+##################COLABORADORES######################
 from apps.Collaborator.views import CollaboratorViewset
 router.register(r'api/colaboradores', CollaboratorViewset)
+##################CONFIGURACION######################
+from apps.Configuracion.views import TipoIngresoViewset
+from apps.Configuracion.views import TipoEgresoViewset
+from apps.Configuracion.views import TipoServicioViewset
+from apps.Configuracion.views import TipoProductoViewset
+from apps.Configuracion.views import TipoComisionViewset
+from apps.Configuracion.views import TipoColaboradorViewset
+from apps.Configuracion.views import StatusViewset
+from apps.Configuracion.views import SucursalesViewset
+from apps.Configuracion.views import FormasDePagoViewset
 
-from apps.Collaborator.views import typeCollaboratorViewset
-from apps.Collaborator.views import UserProfileViewset
+router.register(r'api/tipoingreso', TipoIngresoViewset)
+router.register(r'api/tipoegreso', TipoEgresoViewset)
+router.register(r'api/tiposervicio', TipoServicioViewset)
+router.register(r'api/tipoproducto', TipoProductoViewset)
+router.register(r'api/tipocomision', TipoComisionViewset)
+router.register(r'api/tipocolaborador', TipoColaboradorViewset)
+router.register(r'api/status', StatusViewset)
+router.register(r'api/sucursales', SucursalesViewset)
+router.register(r'api/fromasdepago', FormasDePagoViewset)
+
+################PRODUCTOS############################
+from apps.Product.views import ProductViewset
+router.register(r'api/productos', ProductViewset)
+
+################PROVEEDORES##########################
+from apps.Proveedores.views import ProveedoresViewset
+router.register(r'api/proveedores', ProveedoresViewset)
+
+################SERVICE#############################
+from apps.Service.views import ServicioViewset
+router.register(r'api/servicios', ServicioViewset)
+
+###############TURNOS##############################
+from apps.Turn.views import TurnViewsets
+router.register(r'api/turnos', TurnViewsets)
 
 
-router.register(r'tiposcolaboradores2', typeCollaboratorViewset)
-router.register(r'user2', UserProfileViewset)
+##############USERPROFILE##################################
+from apps.UserProfile.views import UserViewset 
+from apps.UserProfile.views import UserProfileViewset
+router.register(r'api/usuarios', UserViewset)
+router.register(r'api/perfiles', UserProfileViewset)
+
+
 
 urlpatterns = [
+    url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
 	url(r'^', include('apps.PanelPrincipal.urls', namespace='Panel')),
     url(r'^usuarios/', include('apps.UserProfile.urls', namespace='Usuarios')),
     url(r'^clientes/', include('apps.Client.urls', namespace='Clientes')),

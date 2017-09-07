@@ -274,10 +274,6 @@ def editTurnosColaborador (request, id_colaborador, id_turn):
 
 #########################SERVICiOS################################
 from apps.Collaborator.serializers import CollaboratorSerializer
-from apps.Collaborator.serializers import typeCollaboradorSerializer
-
-from apps.Configuracion.models import tb_tipoCollaborador
-from apps.Collaborator.serializers import userProfileSerializer
 
 from rest_framework import viewsets	
 
@@ -286,10 +282,3 @@ class CollaboratorViewset(viewsets.ModelViewSet):
 	queryset = tb_collaborator.objects.all()
 	serializer_class = CollaboratorSerializer
 
-class typeCollaboratorViewset(viewsets.ModelViewSet):
-	queryset = tb_tipoCollaborador.objects.all()
-	serializer_class = typeCollaboradorSerializer
-
-class UserProfileViewset(viewsets.ModelViewSet):
-	queryset = tb_profile.objects.all()
-	serializer_class = userProfileSerializer

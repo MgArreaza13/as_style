@@ -103,3 +103,13 @@ def EliminarProveedor(request, id_proveedor):
 		mensaje = 'Hemos Borrado manera exitosa todos sus registros'
 		return render (request, 'Proveedores/DeteteProveedores.html', {'proveedorBorrar':proveedorBorrar, 'perfil':perfil, 'mensaje':mensaje})
 	return render (request, 'Proveedores/DeteteProveedores.html', {'proveedorBorrar':proveedorBorrar, 'perfil':perfil})
+
+
+
+########################Servicios###########################
+from rest_framework import viewsets
+from apps.Proveedores.serializers import ProveedorSerializer
+
+class ProveedoresViewset(viewsets.ModelViewSet):
+	queryset = tb_proveedor.objects.all()
+	serializer_class = ProveedorSerializer

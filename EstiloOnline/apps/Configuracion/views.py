@@ -495,3 +495,56 @@ def BorrarFormaDePago(request , id_FormaDePago):
 		FormadePagoBorrar.delete()
 		return redirect ('Configuracion:Configuracion')
 	return render (request, 'Configuracion/DeleteFormaDePago.html', {'FormadePagoBorrar':FormadePagoBorrar, 'perfil':perfil})
+
+
+
+##################SERVICIOS#############################
+
+from rest_framework import viewsets 
+
+from apps.Configuracion.serializers import TipoIngresoSerializer
+from apps.Configuracion.serializers import TipoEgresoSerializer
+from apps.Configuracion.serializers import TipoServicioSerializer
+from apps.Configuracion.serializers import TipoProductoSerializer
+from apps.Configuracion.serializers import TipoComisionSerializer
+from apps.Configuracion.serializers import TipoColaboradorSerializer
+from apps.Configuracion.serializers import StatusSerializer
+from apps.Configuracion.serializers import SucursalesSerializer
+from apps.Configuracion.serializers import FormasDePagoSerializer
+
+
+class TipoIngresoViewset(viewsets.ModelViewSet):
+	queryset = tb_ingreso.objects.all()
+	serializer_class = TipoIngresoSerializer
+
+class TipoEgresoViewset(viewsets.ModelViewSet):
+	queryset = tb_egreso.objects.all()
+	serializer_class = TipoEgresoSerializer
+
+class TipoServicioViewset(viewsets.ModelViewSet):
+	queryset = tb_tipoServicio.objects.all()
+	serializer_class = TipoServicioSerializer
+
+class TipoProductoViewset(viewsets.ModelViewSet):
+	queryset = tb_tipoProducto.objects.all()
+	serializer_class = TipoProductoSerializer
+
+class TipoComisionViewset(viewsets.ModelViewSet):
+	queryset = tb_tipoComision.objects.all()
+	serializer_class = TipoComisionSerializer
+
+class TipoColaboradorViewset(viewsets.ModelViewSet):
+	queryset = tb_tipoCollaborador.objects.all()
+	serializer_class = TipoColaboradorSerializer
+
+class StatusViewset(viewsets.ModelViewSet):
+	queryset = tb_status.objects.all()
+	serializer_class = StatusSerializer
+
+class SucursalesViewset(viewsets.ModelViewSet):
+	queryset = tb_sucursales.objects.all()
+	serializer_class = SucursalesSerializer
+
+class FormasDePagoViewset(viewsets.ModelViewSet):
+	queryset = tb_formasDePago.objects.all()
+	serializer_class = FormasDePagoSerializer

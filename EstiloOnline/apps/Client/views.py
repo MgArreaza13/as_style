@@ -431,3 +431,19 @@ def DeleteClient(request , id_Client):
 		mensaje = "Hemos Borrado Correctamente su registro"
 		return render (request, 'Client/DeleteCliente.html', {'ClientBorrar':ClientBorrar, 'perfil':perfil, "mensaje":mensaje})
 	return render (request, 'Client/DeleteCliente.html', {'ClientBorrar':ClientBorrar, 'perfil':perfil})
+
+
+
+
+
+
+##### rest ###############################
+
+from rest_framework import viewsets	
+from apps.Client.serializers import ClientSerializer
+
+##### Servicio #####
+
+class ClienteViewset(viewsets.ModelViewSet):
+	queryset = tb_client.objects.all()
+	serializer_class = ClientSerializer

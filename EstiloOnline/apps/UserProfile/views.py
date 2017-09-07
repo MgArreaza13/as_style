@@ -192,3 +192,22 @@ def Registro(request):
 			Form	= UsuarioForm
 			Form2	= ProfileForm		
 	return render (request, 'UserProfile/registro.html', {'Form':Form , 'Form2':Form2})
+
+
+
+
+#########SERVICIOS############################
+
+
+from rest_framework import viewsets
+from django.contrib.auth.models import User 
+from apps.UserProfile.serializers import UserSerializer
+from apps.UserProfile.serializers import UserProfileSerializer
+
+class UserViewset(viewsets.ModelViewSet):
+	queryset = User.objects.all()
+	serializer_class = UserSerializer
+
+class UserProfileViewset(viewsets.ModelViewSet):
+	queryset = tb_profile.objects.all()
+	serializer_class = UserProfileSerializer

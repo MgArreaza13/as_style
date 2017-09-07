@@ -343,3 +343,16 @@ def DeleteTurn(request , id_turn):
 		mensaje = "hemos borrado sus datos de manera exitosa"
 		return render (request, 'Turn/DeleteTurno.html', {'TurnoBorrar':TurnoBorrar, 'perfil':perfil, 'mensaje':mensaje})
 	return render (request, 'Turn/DeleteTurno.html', {'TurnoBorrar':TurnoBorrar, 'perfil':perfil})
+
+
+
+
+##########################SRRVICIOS############################
+
+
+from rest_framework import viewsets
+from apps.Turn.serializers import turnSerializer
+
+class TurnViewsets(viewsets.ModelViewSet):
+	queryset = tb_turn.objects.all()
+	serializer_class = turnSerializer
