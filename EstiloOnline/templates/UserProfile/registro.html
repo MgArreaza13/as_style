@@ -61,8 +61,9 @@
                   <li><strong>{{ error|escape }}</strong></li>
               {% endfor %}
             </ol>
+            {{ field.errors }}
             {% endif %}
-          {{ field.errors }}
+          
         
           {% if field.name == "username" %}
 

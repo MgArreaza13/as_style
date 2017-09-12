@@ -20,5 +20,6 @@ class tb_collaborator(models.Model):
 	typeCollaborador		=	models.ForeignKey(tb_tipoCollaborador, on_delete=models.CASCADE, null=False, default='')
 	Typecomision			=	models.CharField(max_length=30,null=False,choices=PAGO_CHOICES,default='porcentaje',)
 	comision				=	models.IntegerField(default='', null=False)
+	MontoAcumulado			=	models.IntegerField(default=0, null=False, blank=True)
 	def __str__(self):
 		return self.user.nameUser

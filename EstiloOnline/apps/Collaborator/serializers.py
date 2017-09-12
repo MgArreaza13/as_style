@@ -19,5 +19,6 @@ class CollaboratorSerializer(serializers.HyperlinkedModelSerializer):
 			   'Typecomision',
 			   'typeCollaborador',
 			   'comision',
+			   'MontoAcumulado',
 
 			   )

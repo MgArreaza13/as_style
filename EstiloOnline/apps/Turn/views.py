@@ -131,8 +131,7 @@ def EditTurnStatus(request , id_turn):
 			turno.collaborator = TurnEditar.collaborator
 			turno.extraInfoTurn = TurnEditar.extraInfoTurn
 			turno.servicioPrestar = TurnEditar.servicioPrestar
-			turno.isProcessClient = TurnEditar.isProcessClient
-			turno.isProcessCollaborator = TurnEditar.isProcessCollaborator
+			turno.isPay = TurnEditar.isPay
 			turno.save()
 			mensaje = "hemos cargado sus nuevos datos de manera exitosa"
 			return render (request, 'Turn/ResumenTurnos.html', {'turnos':turnos,'Form':Form, 'TurnEditar':TurnEditar, 'perfil':perfil, 'mensaje':mensaje})
@@ -322,9 +321,7 @@ def EditTurnList(request , id_turn):
 			turno.client = TurnEditar.client
 			turno.collaborator = TurnEditar.collaborator
 			turno.extraInfoTurn = TurnEditar.extraInfoTurn
-			turno.servicioPrestar = TurnEditar.servicioPrestar
-			turno.isProcessClient = TurnEditar.isProcessClient
-			turno.isProcessCollaborator = TurnEditar.isProcessCollaborator
+			turno.isPay = TurnEditar.isPay
 			turno.save()
 			return redirect ('Turnos:listTurnos')
 	return render (request, 'Turn/ListaDeTurnos.html', {'TurnEditar':TurnEditar,'turnos':turnos,'Form':Form , 'perfil':perfil})

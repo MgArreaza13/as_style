@@ -69,9 +69,10 @@ def NuevoColaborador(request):
 				return redirect ('Colaboradores:ListColaboradores')
 				return render(request, 'Collaborator/NuevoCollaborador.html' , {'Form':Form , 'Form2':Form2, 'Form3':Form3, 'perfil':perfil, 'mensaje':mensaje})
 		else:
-			Form = UsuarioForm()
-			Form2 = ProfileForm()
-			Form3 = ColaboradorForm()
+			Form = UsuarioForm(request.POST , request.FILES or None)
+			Form2 = ProfileForm(request.POST , request.FILES or None)
+			Form3 = ColaboradorForm(request.POST , request.FILES or None)
+			
 			fallido = "hemos tenido problemas al cargar los datos , verifiquelos e intente de nuevo"
 	return render(request, 'Collaborator/NuevoCollaborador.html' , {'Form':Form , 'Form2':Form2, 'Form3':Form3, 'perfil':perfil, 'fallido':fallido})
 
@@ -251,8 +252,7 @@ def editTurnosColaborador (request, id_colaborador, id_turn):
 			turno.collaborator = TurnEditar.collaborator
 			turno.extraInfoTurn = TurnEditar.extraInfoTurn
 			turno.servicioPrestar = TurnEditar.servicioPrestar
-			turno.isProcessClient = TurnEditar.isProcessClient
-			turno.isProcessCollaborator = TurnEditar.isProcessCollaborator
+			turno.isPay = TurnEditar.isPay
 			turno.save()
 			return redirect ('Panel:inicio')
 

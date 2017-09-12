@@ -23,7 +23,7 @@ class ColaboradorForm(forms.ModelForm):
 		'comision',
 		
 		]
-		exclude = ['user',]
+		exclude = ['user','MontoAcumulado']
 
 		labels = {
 		'cuid':'Numero de CUIT',  

@@ -116,7 +116,9 @@ def NuevoPerfil(request):
 def NuevoUsuario(request):
 	result = validatePerfil(tb_profile.objects.filter(user=request.user))
 	perfil = result[0]
-	fallido - None
+	fallido = None
+	Form	= UsuarioForm()
+	Form2	= ProfileForm()
 	if request.method == 'POST':
 		Form	= UsuarioForm(request.POST , request.FILES  or None)
 		Form2	= ProfileForm(request.POST, request.FILES  or None)
@@ -148,10 +150,11 @@ def NuevoUsuario(request):
 
 				return render(request, 'UserProfile/NuevoUsuario.html' , {'Form2':Form2 ,'Form':Form , 'perfil':perfil, 'mensaje':mensaje})
 
-	else:
-		Form	= UsuarioForm
-		Form2	= ProfileForm
-		fallido = "No pudimos guardar sus datos, intentalo de nuevo luego de verificarlos"
+		else:
+			print('fallido')
+			Form	= UsuarioForm(request.POST , request.FILES  or None)
+			Form2	= ProfileForm(request.POST, request.FILES  or None)
+			fallido = "No pudimos guardar sus datos, intentalo de nuevo luego de verificarlos"
 	return render(request, 'UserProfile/NuevoUsuario.html' , {'Form2':Form2 ,'Form':Form , 'perfil':perfil, 'fallido':fallido})
 
 

@@ -40,23 +40,7 @@
            <div class="box-body">
           <!-- Formulario de Usuarios de Django Default -->
       {% for field in Form %}
-          {% if form.subject.errors %}
-            <ol>
-              {% for error in form.subject.errors %}
-                  <div class="alert alert-danger alert-dismissible">
-                          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                          <h4><i class="icon fa fa-ban"></i> Alert!</h4>
-                          {{ error|escape }}
-                        </div>
-              {% endfor %}
-            </ol>
-            {% endif %}
-          <div class="alert alert-danger alert-dismissible">
-                          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                          <h4><i class="icon fa fa-ban"></i> Alert!</h4>
-                          
-                           {{ field.errors }}
-                        </div>}
+          
         
           {% if field.name == "username" %}
 
@@ -86,13 +70,21 @@
         
         {% endif %}
       
-        {% if field.help_text %}
-          <div class="alert alert-info alert-dismissible">
-                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                <h4><i class="icon fa fa-info"></i> Considere!</h4>
-               {{ field.help_text|safe }}
-              </div>
-        {% endif %}
+        {% if field.errors %}
+                        <div class="alert alert-danger alert-dismissible">
+                          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                          <h4><i class="icon fa fa-ban"></i> Alert!</h4>
+                          
+                           {{ field.errors }}
+                        </div>
+                        {% elif field.help_text %}
+                          <div class="alert alert-info alert-dismissible">
+                          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                          <h4><i class="icon fa fa-info"></i> Considere!</h4>
+                         {{ field.help_text|safe }}
+                        </div>
+               
+                   {% endif %}
      {% endfor %}
      <!-- Final Formulario de Usuarios de Django Default -->
 
@@ -176,39 +168,10 @@
     </section>
     <!-- /.content -->
 </div>
-<div class="content-wrapper" style="min-height: 1126px;">
-    <!-- Content Header (Page header) -->
-    <section class="content-header">
-      <h1>
-        404 Error Page
-      </h1>
-      <ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li><a href="#">Examples</a></li>
-        <li class="active">404 error</li>
-      </ol>
-    </section>
 
-    <!-- Main content -->
-    <section class="content">
-      <div class="error-page">
-        <h2 class="headline text-yellow"> 404</h2>
+{% else %}
 
-        <div class="error-content">
-          <h3><i class="fa fa-warning text-yellow"></i> Oops! Page not found.</h3>
-
-          <p>
-            We could not find the page you were looking for.
-            Meanwhile, you may <a href="#">return to dashboard</a> or try using the search form.
-          </p>
-
-        </div>
-        <!-- /.error-content -->
-      </div>
-      <!-- /.error-page -->
-    </section>
-    <!-- /.content -->
-  </div>
+{% include "Base/404.html" %}
   
 {% endif %}
 {% endblock content %}

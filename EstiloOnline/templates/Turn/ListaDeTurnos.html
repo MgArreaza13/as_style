@@ -260,7 +260,7 @@
                          
                                <td>{{turno.HoraTurn}}</td>
                           <td>{{turno.dateTurn}}</td>
-                          
+                          <td class="hidden">{{ turno.dateTurn|date:"m-d-Y" }}</td>
                           <td>{{turno.extraInfoTurn}}</td>
                           
                           {% if turno.statusTurn.nameStatus == 'En Espera' %}

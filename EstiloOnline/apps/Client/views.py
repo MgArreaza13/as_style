@@ -72,11 +72,12 @@ def NuevoClient(request):
 				send_mass_mail((message_usuario, message_Soporte), fail_silently=False)
 				mensaje = "Gracias, hemos registrado de manera exitosa todos los datos, su nuevo cliente se regristro de manera exitosa"
 				return render(request, 'Client/NuevoCliente.html' , {'perfil':perfil, 'Form':Form, 'Form2':Form2, 'Form3':Form3, 'mensaje':mensaje})
-	else:
-		Form	= UsuarioForm
-		Form2	= ProfileForm
-		Form3   = ClientForm
-		fallido = "Ha introducido un dato erroneo, verifique cuidadosamente, e intentelo nuevamente"
+		else:
+			print('hello')
+			Form	= UsuarioForm(request.POST , request.FILES  or None)
+			Form2	= ProfileForm(request.POST , request.FILES  or None)
+			Form3   = ClientForm(request.POST , request.FILES  or None)
+			fallido = "Ha introducido un dato erroneo, verifique cuidadosamente, e intentelo nuevamente"
 	return render(request, 'Client/NuevoCliente.html' , {'perfil':perfil, 'Form':Form, 'Form2':Form2, 'Form3':Form3, 'fallido':fallido})
 
 

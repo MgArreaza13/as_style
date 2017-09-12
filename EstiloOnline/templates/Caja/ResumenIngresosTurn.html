@@ -145,13 +145,12 @@
                 <thead>
                 <tr>
                   <th>COD</th>
-                  <th>USER</th>
-                  <th>SERVICIO</th>
+                  <th>COLABORADOR</th>
+                  <th>CLIENTE</th>
                   <th>FORMA DE PAGO</th>
                   <th>FECHA</th>
                   <th class="hidden">fechaNumero</th>
                   <th>MONTO</th>
-                  <th>COMENTARIO <br> ADICIONALES</th>
                   <th>TIPO</th>
                 </tr>
                 </thead>
@@ -160,8 +159,8 @@
                 {% for ingreso in ingresos  %}
                     <tr>
                       <td>{{ingreso.id}}</td>
-                      <td>{{ingreso.user.username}}</td>
-                      <td>{{ingreso.service}}</td>
+                      <td>{{ingreso.turn.collaborator}}</td>
+                      <td>{{ingreso.turn.client}}</td>
                       <td>{{ingreso.tipoPago}}</td>
                       <td>{{ingreso.dateCreate}}</td>
                       <td class="hidden">{{ ingreso.dateCreate|date:"m-d-Y" }}</td>
@@ -183,12 +182,12 @@
                 <tfoot>
                 <tr>
                    <th>COD</th>
-                  <th>USER</th>
-                  <th>SERVICIO</th>
+                  <th>COLABORADOR</th>
+                  <th>CLIENTE</th>
                   <th>FORMA DE PAGO</th>
                   <th>FECHA</th>
+                  <th class="hidden">fechaNumero</th>
                   <th>MONTO</th>
-                  <th>COMENTARIO <br> ADICIONALES</th>
                   <th>TIPO</th>
                 </tr>
                 </tfoot>

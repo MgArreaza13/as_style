@@ -13,6 +13,5 @@ class turnSerializer(serializers.HyperlinkedModelSerializer):
 		'collaborator',
 		'extraInfoTurn',
 		'servicioPrestar',
-		'isProcessClient',
-		'isProcessCollaborator',
-		'statusTurn',)
+		'statusTurn',
+		'isPay',)

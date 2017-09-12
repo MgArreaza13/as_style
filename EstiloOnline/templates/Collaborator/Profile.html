@@ -45,11 +45,18 @@
                   {% endif %}
                   
                 </li>
+
                  {% if turnos_cancelados == None %}
                      <b>Clientes Cancelados</b> <a class="pull-right">0</a>
                     {% else %} 
                       <b>Clientes Cancelados</b> <a class="pull-right">{{turnos_cancelados}}</a>
                   {% endif %}
+                </li>
+                 <li class="list-group-item">
+                 
+                     <b>Monto Acumulado</b> <a class="pull-right">${{colaborador.MontoAcumulado}}</a>
+                    
+                  
                 </li>
               </ul>
 
