@@ -12,6 +12,7 @@ from apps.Configuracion.models import tb_tipoComision
 from apps.Configuracion.models import tb_sucursales
 from apps.Configuracion.models import tb_formasDePago
 from apps.UserProfile.models import tb_profile
+from apps.Configuracion.models import tb_logo
 #forms
 from apps.Configuracion.forms import tipoIngresoForm
 from apps.Configuracion.forms import tipoEgresoForm
@@ -22,6 +23,7 @@ from apps.Configuracion.forms import tipoProductoForm
 from apps.Configuracion.forms import tipoComisionForm
 from apps.Configuracion.forms import sucursalesForm
 from apps.Configuracion.forms import formasDePagoForm
+from apps.Configuracion.forms import logoForm
 
 # Create your views here.
 
@@ -46,6 +48,7 @@ def Configuracion(request):
 	tipoDeStatus		=	tb_status.objects.all()
 	sucursales 			=	tb_sucursales.objects.all()
 	formasdepago 		= 	tb_formasDePago.objects.all()
+	logo 				=   tb_logo.objects.all()
 
 	#queryset 
 	turnos_hoy =  tb_turn.objects.filter(dateTurn=date.today()).filter(statusTurn__nameStatus='En Espera').count()
@@ -55,6 +58,7 @@ def Configuracion(request):
 	perfil = result[0]
 
 	contexto = {
+	'logo':logo,
 	'perfil':perfil,
 	'TipoDeIngreso':tipoDeIngreso,
 	'TipoDeEgreso':tipoDeEgreso,
@@ -70,6 +74,55 @@ def Configuracion(request):
 	'egresos_hoy':egresos_hoy,
 	}
 	return render(request, 'Configuracion/configuracion.html', contexto)
+
+
+
+#logo
+@login_required(login_url = 'Demo:login' )
+def NuevoLogo(request):
+	result = validatePerfil(tb_profile.objects.filter(user=request.user))
+	perfil = result[0]
+	Form = logoForm
+	if request.method == 'POST':
+		Form = logoForm(request.POST, request.FILES or None)
+		if Form.is_valid():
+			logo = Form.save(commit=False)
+			logo.user = request.user
+			logo.save()
+			return redirect('Configuracion:Configuracion')
+		else:
+			Form = logoForm()
+	return render(request, 'Configuracion/logo.html' , {'Form':Form, 'perfil':perfil})
+
+
+
+@login_required(login_url = 'Demo:login' )
+def EditarLogo(request, id_logo):
+	logo = tb_logo.objects.get(id=id_logo)
+	result = validatePerfil(tb_profile.objects.filter(user=request.user))
+	perfil = result[0]
+	if request.method == 'GET':
+		Form=logoForm(instance = logo )
+	else:
+		Form = logoForm(request.POST, request.FILES , instance = logo )
+		if Form.is_valid():
+			logo = Form.save(commit=False)
+			logo.user = request.user
+			logo.save()
+			return redirect ('Configuracion:Configuracion')
+	return render (request, 'Configuracion/logo.html' , {'Form':Form, 'perfil':perfil})
+
+
+
+@login_required(login_url = 'Demo:login' )
+def BorrarLogo(request, id_logo):
+	logo= tb_logo.objects.get(id=id_logo)
+	result = validatePerfil(tb_profile.objects.filter(user=request.user))
+	perfil = result[0]
+	if request.method == 'POST':
+		logo.delete()
+		return redirect ('Configuracion:Configuracion')
+	return render (request, 'Configuracion/DeleteLogo.html', {'logo':logo, 'perfil':perfil})
 
 
 

@@ -75,6 +75,12 @@ router.register(r'api/usuarios', UserViewset)
 router.register(r'api/perfiles', UserProfileViewset)
 
 
+############NOTIFICACIONE############
+from apps.Notificaciones.views import NotificacionViewsets
+
+router.register(r'api/notificaciones', NotificacionViewsets)
+
+
 
 urlpatterns = [
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
@@ -91,6 +97,7 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     #url(r'^static/(?P<path>.*)$', 'django.views.static.serve' , settings.STATIC_ROOT),
     #url(r'^media/(?P<path>.*)$', 'django.views.static.serve', settings.MEDIA_ROOT), 
+    url(r'^notificaciones/', include('apps.Notificaciones.urls', namespace='Notificaciones')),
     url('', include('social.apps.django_app.urls', namespace='social')),
 ]
 urlpatterns += router.urls

@@ -13,6 +13,7 @@ from apps.Configuracion.models import tb_tipoCollaborador
 from apps.Configuracion.models import tb_status
 from apps.Configuracion.models import tb_sucursales
 from apps.Configuracion.models import tb_formasDePago
+from apps.Configuracion.models import tb_logo
 
 class tipoIngresoForm(forms.ModelForm):
 	
@@ -25,6 +26,22 @@ class tipoIngresoForm(forms.ModelForm):
 
 		labels = {
 		'nameTipoIngreso':'Ingrese El nombre del Ingreso', 		
+		}
+		widgets = {
+		}
+
+
+class logoForm(forms.ModelForm):
+	
+	class Meta:
+		model = tb_logo
+		fields = [
+		'logo',
+		]
+		exclude = ['user','dateCreate']
+
+		labels = {
+		'logo':'Ingrese el Logo del sistema', 		
 		}
 		widgets = {
 		}

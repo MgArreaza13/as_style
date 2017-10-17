@@ -43,10 +43,18 @@ from apps.Configuracion.views import EditarFormaDePago
 from apps.Configuracion.views import BorrarFormaDePago
 
 
+# logo
+
+from apps.Configuracion.views import NuevoLogo
+from apps.Configuracion.views import EditarLogo
+from apps.Configuracion.views import BorrarLogo
 
 urlpatterns = [
 
 	url(r'^$', Configuracion , name='Configuracion'  ),
+	url(r'^logo/Nuevo/$', NuevoLogo , name='NuevoLogo'  ),
+	url(r'^logo/Editar/(?P<id_logo>\d+)$', EditarLogo, name='EditarLogo'  ),
+	url(r'^logo/Borrar/(?P<id_logo>\d+)$', BorrarLogo, name='BorrarLogo'  ),
 	#ingresos
 	url(r'^TipoIngreso/Nuevo/$', NuevoTipoIngreso , name='NuevoTipoIngreso'  ),
 	url(r'^TipoIngreso/Editar/(?P<id_tipoIngreso>\d+)$', EditarTipoIngreso, name='EditarTipoIngreso'  ),
