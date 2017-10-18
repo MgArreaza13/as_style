@@ -239,6 +239,7 @@ $('.clockpicker').clockpicker({
 
 
 <script>
+
   $(function () {
 
     /* initialize the external events
@@ -294,14 +295,32 @@ $('.clockpicker').clockpicker({
 
       {% for turno in turnos %}
         {
-          title: '{{turno.collaborator}}{{turno.HoraTurn}}',
-          start: '{{ turno.dateTurn|date:"Y-m-d" }}',
+          title: 'RESERVADO',
+          start: '{{ turno.dateTurn|date:"Y-m-d" }} {{turno.HoraTurn}}',
+          end:'{{ turno.dateTurn|date:"Y-m-d" }} {{turno.HoraTurnEnd}}',
           backgroundColor: "#f56954", //red
-          borderColor: "#f56954" //red
+          borderColor: "#f56954",//red
+          titulo:'{{turno.servicioPrestar}}',
+          cliente:'{{turno.client}}',
+          fecha_de_inicio:'{{ turno.dateTurn|date:"d-m-Y" }}',
+          hora_de_inicio:'{{ turno.HoraTurn }}',
+          
         },
       {% endfor %}
+      
+      
       ],
-      editable: false,
+      eventClick: function(calEvent) {
+
+        
+       
+
+        // creo el modal  
+
+       
+
+    },
+      
       droppable: true, // this allows things to be dropped onto the calendar !!!
       drop: function (date, allDay) { // this function is called when something is dropped
 

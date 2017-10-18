@@ -125,10 +125,10 @@
                   
                 {% for Servicio in Listado  %}
                     <tr>
-                      <td><a href="#">{{Servicio.codService}}</a></td>
+                      <td><a href="#">{{Servicio.id}}</a></td>
                       <td>
                         <div class="product-img">
-                          <img style="width:105px; height:110px;" src="{% static 'dist/img/peinado.jpg' %}" alt="Product Image">
+                          <img style="width:105px; height:110px;" src="http://estiloonline.pythonanywhere.com/media/{{Servicio.image}}" alt="Product Image">
                         </div>
                       </td>
                       <td>

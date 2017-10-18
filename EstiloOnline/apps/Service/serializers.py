@@ -5,10 +5,11 @@ class ServiceSerializers (serializers.HyperlinkedModelSerializer):
 	class Meta:
 		model = tb_service
 		fields = (
+			'id',
+			'urls',
 			'user',
 			'nameService',
 			'descriptionService',
 			'tipoServicio',
-			'codService',
 			'priceList',
 			)

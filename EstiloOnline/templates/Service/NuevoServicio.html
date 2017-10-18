@@ -1,4 +1,70 @@
 {% extends "../Base/BasePanel.html" %}
+{% load staticfiles %}
+{% block styles %}
+  
+
+<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+  <!-- Bootstrap 3.3.6 -->
+  <link rel="stylesheet" href="{% static "bootstrap/css/bootstrap.min.css" %}">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
+  <!-- Ionicons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="{% static 'dist/css/AdminLTEmultipoint.min.css'%}">
+  <!-- AdminLTE Skins. Choose a skin from the css/skins
+       folder instead of downloading all of them to reduce the load. -->
+  <link rel="stylesheet" href="{% static 'dist/css/skins/_all-skinsmultipoint.min.css' %}">
+  <!-- iCheck -->
+  <link rel="stylesheet" href="{% static 'plugins/iCheck/flat/blue.css' %}">
+  <!-- Morris chart -->
+  <link rel="stylesheet" href="{% static 'plugins/morris/morris.css'%}">
+  <!-- jvectormap -->
+  <link rel="stylesheet" href="{% static 'plugins/jvectormap/jquery-jvectormap-1.2.2.css'%}">
+  <!-- Date Picker -->
+  <link rel="stylesheet" href="{% static 'plugins/datepicker/datepicker3.css'%}">
+  <!-- Daterange picker -->
+  <link rel="stylesheet" href="{% static 'plugins/daterangepicker/daterangepicker.css'%}">
+  <!-- bootstrap wysihtml5 - text editor -->
+  <link rel="stylesheet" href="{% static 'plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css'%}">
+   <link rel="stylesheet" href="{% static "plugins/fullcalendar/fullcalendar.min.css" %}">
+  <link rel="stylesheet" href="{% static "plugins/fullcalendar/fullcalendar.print.css" %}" media="print">
+
+
+
+
+  <script type="text/javascript" src="{% static "bootstrap/js/jquery-1.8.0.min.js" %}"></script>
+
+
+
+  <link rel="stylesheet" type="text/css" href="{% static "bootstrap/css/bootstrap-clockpicker.min.css" %}">
+  <link rel="stylesheet" type="text/css" href="{% static "bootstrap/css/github.min.css" %}">
+  <link rel="stylesheet" type="text/css" href="{% static "bootstrap/css/bootstrap-datepicker.adminlte.min.css" %}">
+  <link rel="stylesheet" href="{% static "bootstrap/css/miguel.css" %}">
+
+  <style>
+    
+    .hide-bullets {
+    list-style:none;
+    margin-left: -40px;
+    margin-top:20px;
+}
+
+.thumbnail {
+    padding: 0;
+}
+
+.carousel-inner>.item>img, .carousel-inner>.item>a>img {
+    width: 100%;
+}
+  </style>
+
+
+  
+{% endblock styles %}
+
+
+  
 
 {% block content %}
 {% if user.is_authenticated and user.is_staff == True and user.is_superuser == True%}
@@ -21,108 +87,114 @@
       <div class="row">
         <!-- left column -->
         <div class="col-lg-2 col-sm-0"></div>
-        <div class="col-lg-8 col-sm-12">
-          <!-- general form elements -->
-          
-          <div class="box box-info">
-            <div class="box-header with-border">
-              <h3 class="box-title">Nuevo Servicio</h3>
-            </div>
-            <!-- /.box-header -->
-            <!-- form start -->
-            <form action="" method="post">
-              {% csrf_token %}
-              <div class="box-body">
-                  
-                  {% for field in Form %}
-                     {% if Form.subject.errors %}
-                         <ol>
-                          {% for error in Form.subject.errors %}
-                              <li><strong>{{ error|escape }}</strong></li>
-                          {% endfor %}
-                        </ol>
-                    {% endif %}
-                    
-                    {{ field.errors }}
+
+            <div class="col-lg-8 col-sm-12">
+              <!-- general form elements -->
+              
+              <div class="box box-info">
+                <div class="box-header with-border">
+                  <h3 class="box-title">Nuevo Servicio</h3>
+                </div>
+                <!-- /.box-header -->
+                <!-- form start -->
+                <form action="" method="post" enctype="multipart/form-data">
+                  {% csrf_token %}
+                  <div class="box-body">
+                      
+                      {% for field in Form %}
+                         {% if Form.subject.errors %}
+                             <ol>
+                              {% for error in Form.subject.errors %}
+                                  <li><strong>{{ error|escape }}</strong></li>
+                              {% endfor %}
+                            </ol>
+                        {% endif %}
+                        
+                        {{ field.errors }}
 
 
-                    {% if field.name == 'nameService' %}
+                        {% if field.name == 'nameService' %}
+                              <div class="form-group ">
+                                <label>Nombre</label>
+                                <input class="form-control" placeholder="{{field.label}}" autocomplete="off" 
+                                required autofocus maxlength="{{field.max_length}}" {{ field }}
+                        
+                            </div>
+
+                        {% elif field.name == 'image' %}
                           <div class="form-group ">
-                            <label>Nombre</label>
-                            <input class="form-control" placeholder="{{field.label}}" autocomplete="off" 
-                            required autofocus maxlength="{{field.max_length}}" {{ field }}
+                                  <label>Seleccione una imagen para mostrar</label>
+                                 {{ field }}
+                          
+                              </div>
+                         {% elif field.name == 'phoneNumberClient' %}
+                          <div class="form-group ">
+                                  <label>Numero 1</label>
+                                  <input class="form-control" placeholder="{{field.label}}" autocomplete="off" 
+                                  required autofocus maxlength="{{field.max_length}}" {{ field }}
+                          
+                              </div>
+                        {% elif field.name == 'priceList' %}
+                          <div class="form-group ">
+                                  <label>Precio</label>
+                                  <input class="form-control" placeholder="{{field.label}}" autocomplete="off" 
+                                  required autofocus maxlength="{{field.max_length}}" {{ field }}
+                          
+                              </div>
+
+                        {% elif field.name == 'descriptionService' %}
+                          <div class="form-group ">
+                                  <label>Descripcion</label>
+                                 {{ field }}
+                          
+                              </div>
+
+                         {% elif field.name == 'tipoServicio' %}
+                          <div class="form-group ">
+                                  <label>Tipo De Servicio</label>
+                                 {{ field }}
+                          
+                              </div>
+
+
+                          
+                        {% endif %}
+            
+              
+
+              
+          
+                      {% if field.help_text %}
+                        <script> console.log('{{ field.help_text|safe }}')</script>
+                      {% endif %}
+                   {% endfor %}
+
+                   
+                   <div class="input-group clockpicker">
+                <label >  Sleccione la Hora de Duracion del servicio </label>
+                    <input type="text" name="TimeTurn" placeholder="duracion del servicio " class="form-control" autocomplete="off" 
+                               step="1" required autofocus/>
+
+                </div>
                     
-                        </div>
-
-                    {% elif field.name == 'codService' %}
-                      <div class="form-group ">
-                              <label>Codigo</label>
-                              <input class="form-control" placeholder="{{field.label}}" autocomplete="off" 
-                              required autofocus maxlength="{{field.max_length}}" {{ field }}
-                      
-                          </div>
-                     {% elif field.name == 'phoneNumberClient' %}
-                      <div class="form-group ">
-                              <label>Numero 1</label>
-                              <input class="form-control" placeholder="{{field.label}}" autocomplete="off" 
-                              required autofocus maxlength="{{field.max_length}}" {{ field }}
-                      
-                          </div>
-                    {% elif field.name == 'priceList' %}
-                      <div class="form-group ">
-                              <label>Precio</label>
-                              <input class="form-control" placeholder="{{field.label}}" autocomplete="off" 
-                              required autofocus maxlength="{{field.max_length}}" {{ field }}
-                      
-                          </div>
-
-                    {% elif field.name == 'descriptionService' %}
-                      <div class="form-group ">
-                              <label>Descripcion</label>
-                             {{ field }}
-                      
-                          </div>
-
-                     {% elif field.name == 'tipoServicio' %}
-                      <div class="form-group ">
-                              <label>Tipo De Servicio</label>
-                             {{ field }}
-                      
-                          </div>
 
 
-                      
-                    {% endif %}
-        
-          
+                    
+                  
+                 
+                  
+                  </div>
+                  <!-- /.box-body -->
 
-          
-      
-                  {% if field.help_text %}
-                    <script> console.log('{{ field.help_text|safe }}')</script>
-                  {% endif %}
-               {% endfor %}
-
-               
-               
-                
-
-
-                
-              
-             
-              
+                  <div class="box-footer">
+                    <button type="submit" class="btn btn-primary">GUARDAR</button>
+                    <a href="{% url "Servicios:listService" %}" class="btn btn-danger">REGRESAR</a>
+                  </div>
+                </form>
               </div>
-              <!-- /.box-body -->
+              <!-- /.box -->
+            </div>
 
-              <div class="box-footer">
-                <button type="submit" class="btn btn-primary">GUARDAR</button>
-                <a href="{% url "Servicios:listService" %}" class="btn btn-danger">REGRESAR</a>
-              </div>
-            </form>
-          </div>
-          <!-- /.box -->
-        </div>
         <div class="col-lg-2 col-sm-0"></div>
         <!--/.col (left) -->
         <!-- right column -->
@@ -139,4 +211,397 @@
   
 {% endif %}
 {% endblock content %}
+{% block scripts %}
+
+<!-- jQuery 2.2.3 -->
+<script src="{% static "plugins/jQuery/jquery-2.2.3.min.js" %}"></script>
+<!-- Bootstrap 3.3.6 -->
+<script src="{% static "bootstrap/js/bootstrap.min.js" %}"></script>
+<!-- jQuery UI 1.11.4 -->
+<script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
+<!-- Slimscroll -->
+<script src="{% static "plugins/slimScroll/jquery.slimscroll.min.js" %}"></script>
+<!-- FastClick -->
+<script src="{% static "plugins/fastclick/fastclick.js" %}"></script>
+<!-- AdminLTE App -->
+<script src="{% static "dist/js/app.min.js" %}"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="{% static "dist/js/demo.js" %}"></script>
+<!-- fullCalendar 2.2.5 -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
+<script src="{% static "plugins/fullcalendar/fullcalendar.min.js" %}"></script>
+<script type="text/javascript" src="{% static "bootstrap/js/bootstrap-clockpicker.min.js" %}"></script>
+  <script type="text/javascript" src="{% static "bootstrap/js/highlight.min.js" %}"></script>
+<!-- Page specific script -->
+<script type="text/javascript" src="{% static "bootstrap/js/bootstrap-clockpicker.min.js" %}"></script>
+<script type="text/javascript" src="{% static "bootstrap/js/bootstrap-datepicker.adminlte.min.js" %}"></script>
+<script src="{% static 'bootstrap/js/notificaciones.js'%}"></script>
+
+
+<script>
+  
+
+    jQuery(document).ready(function($) {
+ 
+        $('#myCarousel').carousel({
+                interval: 5000
+        });
+ 
+        //Handles the carousel thumbnails
+        $('[id^=carousel-selector-]').click(function () {
+        var id_selector = $(this).attr("id");
+        try {
+            var id = /-(\d+)$/.exec(id_selector)[1];
+            console.log(id_selector, id);
+            jQuery('#myCarousel').carousel(parseInt(id));
+        } catch (e) {
+            console.log('Regex failed!', e);
+        }
+    });
+        // When the carousel slides, auto update the text
+        $('#myCarousel').on('slid.bs.carousel', function (e) {
+                 var id = $('.item.active').data('slide-number');
+                $('#carousel-text').html($('#slide-content-'+id).html());
+        });
+});
+</script>
+
+<script>
+
+
+  
+ 
+  validateSelect();
+
+function validateSelect(){
+    var id_servicio = $("#servicio").val();
+
+    $.ajax({
+        url: 'http://multipoint.pythonanywhere.com/reservas/ajax/validacion/',
+        data: {
+          'id_servicio': id_servicio
+      },
+      dataType: 'json',
+      success: function (data) {
+          if (data.value) {
+            tot = parseFloat(document.form1.total.value);
+            var miguel = parseFloat(data.value);
+            console.log(miguel)
+            document.form1.total.value = miguel; 
+            $('#Monto').html(miguel)
+        }
+    }
+});
+}
+
+$("#servicio").change(function () {
+    validateSelect();
+});
+</script>
+
+<script>
+
+function miguel(isChecked, myValue) {
+  if(isChecked){
+    console.log('miguel'+myValue);
+    console.log(myValue);
+    
+    $('#ServicioSeleccionado').val(myValue);
+  }
+  else{
+    
+     $('#ServicioSeleccionado').val('None');
+  }
+
+}
+
+
+
+function Suma(isChecked, myValue)
+{
+tot = parseFloat(document.form1.total.value);
+myValue = parseFloat(myValue);
+if (isChecked) {
+ document.form1.total.value = tot + myValue; 
+ $('#Monto').html(tot + myValue)
+
+}
+else{
+  document.form1.total.value = tot - myValue;
+  $('#Monto').html(tot - myValue)
+} 
+}
+</script>
+
+
+<script>
+  
+$("#siguientePaso").click(function () {
+        if($('#displayMenu').val()==0){
+          $(".paso2").css("display", "block");
+          $('.paso2').addClass('animated bounceInDown');
+          $(".paso1").css("display", "none");
+          $('#displayMenu').val(1)
+
+        }else{
+          //$('.tipo_publicacion').removeClass('animated bounceInDown');
+          //$('.tipo_publicacion').addClass('animated bounceOutRight');
+          $(".tipo_publicacion").css("display", "none");
+          $('#displayMenu').val(0)
+        }
+        
+      });
+
+$("#siguientePaso2").click(function () {
+        if($('#displayMenu2').val()==0){
+          $(".paso3").css("display", "block");
+          $('.paso3').addClass('animated bounceInDown');
+          $(".paso2").css("display", "none");
+          $('#displayMenu2').val(1)
+
+        }else{
+          //$('.tipo_publicacion').removeClass('animated bounceInDown');
+          //$('.tipo_publicacion').addClass('animated bounceOutRight');
+          $(".tipo_publicacion").css("display", "none");
+          $('#displayMenu').val(0)
+        }
+        
+      });
+
+
+
+
+  $("#regresar").click(function () {
+        if($('#displayMenu').val()==1){
+          $(".paso1").css("display", "block");
+          $('.paso1').addClass('animated bounceInDown');
+          $(".paso2").css("display", "none");
+          $('#displayMenu').val(0)
+
+        }else{
+          //$('.tipo_publicacion').removeClass('animated bounceInDown');
+          //$('.tipo_publicacion').addClass('animated bounceOutRight');
+          $(".tipo_publicacion").css("display", "none");
+          $('#displayMenu').val(0)
+        }
+        
+      });
+
+  $("#regresar2").click(function () {
+        if($('#displayMenu2').val()==1){
+          $(".paso2").css("display", "block");
+          $('.paso2').addClass('animated bounceInDown');
+          $(".paso3").css("display", "none");
+          $('#displayMenu2').val(0)
+
+        }else{
+          //$('.tipo_publicacion').removeClass('animated bounceInDown');
+          //$('.tipo_publicacion').addClass('animated bounceOutRight');
+          $(".tipo_publicacion").css("display", "none");
+          $('#displayMenu').val(0)
+        }
+        
+      });
+
+
+</script>
+
+
+<script>
+
+$('.clockpicker').clockpicker({
+  placement: 'top',
+  donetext: 'GUARDAR'
+});
+
+</script>
+
+<script>
+  $("#TurnDate").datepicker({
+    format: 'yyyy-mm-dd',
+     autoclose: true
+  });
+</script>
+<script>
+  $(function () {
+
+    /* initialize the external events
+     -----------------------------------------------------------------*/
+    function ini_events(ele) {
+      ele.each(function () {
+
+        // create an Event Object (http://arshaw.com/fullcalendar/docs/event_data/Event_Object/)
+        // it doesn't need to have a start or end
+        var eventObject = {
+          title: $.trim($(this).text()) // use the element's text as the event title
+        };
+
+        // store the Event Object in the DOM element so we can get to it later
+        $(this).data('eventObject', eventObject);
+
+        // make the event draggable using jQuery UI
+        $(this).draggable({
+          zIndex: 1070,
+          revert: true, // will cause the event to go back to its
+          revertDuration: 0  //  original position after the drag
+        });
+
+      });
+    }
+ 
+    ini_events($('#external-events div.external-event'));
+
+    /* initialize the calendar
+     -----------------------------------------------------------------*/
+    //Date for the calendar events (dummy data)
+    var date = new Date();
+    var d = date.getDate(),
+        m = date.getMonth(),
+        y = date.getFullYear();
+    
+    $('#calendar').fullCalendar({
+      header: {
+        left: 'prev,next today',
+        center: 'title',
+        right: 'month,agendaWeek,agendaDay'
+      },
+      buttonText: {
+        today: 'Hoy',
+        month: 'Mes',
+        week: 'Semana',
+        day: 'Dia'
+      },
+
+
+      //Random default events
+      events: [
+
+      {% for turno in turnos %}
+        {
+          title: '{{turno.servicioPrestar}}'+ ' - ' +'{{turno.HoraTurn}}',
+          start: '{{ turno.dateTurn|date:"Y-m-d" }}',
+          backgroundColor: "#f56954", //red
+          borderColor: "#f56954",//red
+          titulo:'{{turno.servicioPrestar}}',
+          cliente:'{{turno.client}}',
+          fecha_de_inicio:'{{ turno.dateTurn|date:"d-m-Y" }}',
+          hora_de_inicio:'{{ turno.HoraTurn }}',
+          
+        },
+      {% endfor %}
+      {% for ReservasWeb in ReservasWeb %}
+        {
+          title: '{{ReservasWeb.servicioPrestar}}'+ ' - ' +'{{ReservasWeb.HoraTurn}}',
+          start: '{{ ReservasWeb.dateTurn|date:"Y-m-d" }}',
+          backgroundColor: "#f56954", //red
+          borderColor: "#f56954", // red 
+          titulo:'{{ReservasWeb.servicioPrestar}}',
+          cliente:'{{ReservasWeb.nombre}}',
+          fecha_de_inicio:'{{ ReservasWeb.dateTurn|date:"d-m-Y" }}',
+          hora_de_inicio:'{{ ReservasWeb.HoraTurn }}',
+        },
+      {% endfor %}
+      
+      ],
+      eventClick: function(calEvent) {
+
+        
+       
+
+        // creo el modal  
+
+        var modal = '<div class="col-lg-12">'+
+          '<div  class="modal" id="myModal" role="dialog">'+
+            '<div class="modal-dialog">'+
+              '<div style="margin-left: 7em;" class="modal-content">'+
+                '<div class="modal-header">'+
+                  '<button type="button" class="close" data-dismiss="modal" aria-label="'+
+                  'Close">'+
+                    '<span aria-hidden="true">×</span></button>'+
+                  '<h4 class="modal-title">Reserva</h4>'+
+                '</div>'+
+                '<div class="modal-body">'+
+                  '<p>Reserva de '+ calEvent.titulo +' para la fecha '+calEvent.fecha_de_inicio +' solicitado por el cliente '+calEvent.cliente +' para la hora '+calEvent.hora_de_inicio +'</p>'+
+                '</div>'+
+               '<div class="modal-footer">'+
+                '<button type="button" class="btn btn-primary"'+
+                  'data-dismiss="'+
+                  'modal">Cerrar</button>'+
+                '</div>'+
+              '</div>'+
+              
+            '</div>'+
+            
+          '</div>'+
+           
+         '</div>';
+
+         $('#miguel').html(modal);
+          $("#myModal").modal("show");
+
+    },
+      editable: true,
+      droppable: true, // this allows things to be dropped onto the calendar !!!
+      drop: function (date, allDay) { // this function is called when something is dropped
+
+        // retrieve the dropped element's stored Event Object
+        var originalEventObject = $(this).data('eventObject');
+
+        // we need to copy it, so that multiple events don't have a reference to the same object
+        var copiedEventObject = $.extend({}, originalEventObject);
+
+        // assign it the date that was reported
+        copiedEventObject.start = date;
+        copiedEventObject.allDay = allDay;
+        copiedEventObject.backgroundColor = $(this).css("background-color");
+        copiedEventObject.borderColor = $(this).css("border-color");
+
+        // render the event on the calendar
+        // the last `true` argument determines if the event "sticks" (http://arshaw.com/fullcalendar/docs/event_rendering/renderEvent/)
+        $('#calendar').fullCalendar('renderEvent', copiedEventObject, true);
+
+        // is the "remove after drop" checkbox checked?
+        if ($('#drop-remove').is(':checked')) {
+          // if so, remove the element from the "Draggable Events" list
+          $(this).remove();
+        }
+
+      }
+    });
+
+    /* ADDING EVENTS */
+    var currColor = "#3c8dbc"; //Red by default
+    //Color chooser button
+    var colorChooser = $("#color-chooser-btn");
+    $("#color-chooser > li > a").click(function (e) {
+      e.preventDefault();
+      //Save color
+      currColor = $(this).css("color");
+      //Add color effect to button
+      $('#add-new-event').css({"background-color": currColor, "border-color": currColor});
+    });
+    $("#add-new-event").click(function (e) {
+      e.preventDefault();
+      //Get value and make sure it is not null
+      var val = $("#new-event").val();
+      if (val.length == 0) {
+        return;
+      }
+
+      //Create events
+      var event = $("<div />");
+      event.css({"background-color": currColor, "border-color": currColor, "color": "#fff"}).addClass("external-event");
+      event.html(val);
+      $('#external-events').prepend(event);
+
+      //Add draggable funtionality
+      ini_events(event);
+
+      //Remove event from text input
+      $("#new-event").val("");
+    });
+  });
+</script>
+{% endblock scripts %}
+
 

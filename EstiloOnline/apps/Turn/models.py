@@ -44,11 +44,17 @@ class tb_turn (models.Model):
 	dateTurn				=	models.DateField(auto_now=False, auto_now_add=False, blank=False, null=False, default='')
 	#TypeHora				=	models.CharField(max_length=30,null=False,choices=TURNO_CHOICES,default='Mañana',)
 	HoraTurn				=	models.TimeField(auto_now=False, auto_now_add=False, blank=False, null=False, default='')
+	HoraTurnEnd				=	models.TimeField(auto_now=False, auto_now_add=False, blank=False, null=False, default='')
 	client					=  	models.ForeignKey(tb_client, on_delete=models.CASCADE, null=False, default='')
 	collaborator			=	models.ForeignKey(tb_collaborator, on_delete=models.CASCADE, null=False, default='')
 	extraInfoTurn			=	models.TextField(default='', null=False, max_length=300)
 	servicioPrestar			= 	models.ForeignKey(tb_service,on_delete=models.CASCADE, null=False, default='')
+	isPay			 		=	models.BooleanField(null=False, blank=True , default=False)
+	#isProcessCollaborator 	=	models.BooleanField()
+	#montoAPagar				=   models.IntegerField(default=0, null=False, blank=True)
+	#ingenico_id             =  	models.TextField(default='None', null=False, max_length=3000)
+	#
 	statusTurn 				=	models.ForeignKey(tb_status, on_delete=models.CASCADE, null=False, default='')
-	isPay 					=	models.BooleanField()
+	#PagoOnline			 	=	models.BooleanField(null=False, blank=True , default=False)
 	def __str__(self):
 		return self.client.user.nameUser

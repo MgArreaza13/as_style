@@ -34,13 +34,13 @@
                   <div class="info-box bg-green">
                     <span class="info-box-icon"><i class="fa fa-bank  "></i></span>
 
-                    <div class="info-box-content">
+                   <div class="info-box-content">
                          <span class="info-box-text">Total <br> Ingresos</span>
-                       {% if total_ingresos == None %}
+                       {% if total_ingresos.total == None %}
                             0$
                             {% else %}
                         
-                             <span class="info-box-number">{{total_ingresos}}<strong>$</strong></span>
+                             <span class="info-box-number">{{total_ingresos.total}}<strong>$</strong></span>
                             
                           {% endif %}
                      </div>

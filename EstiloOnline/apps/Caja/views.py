@@ -19,11 +19,8 @@ from apps.UserProfile.models import tb_profile
 ###############LISTADO PRINCIPAL DE LOS INGRESOS, MUESTRA LA TABLA DE INGRESOS################
 @login_required(login_url = 'Demo:login' )
 def IngresoList(request):
-	total_ingresos =[]
 	ingresos = tb_ingreso.objects.all().order_by('id') # query para todo los ingresos
-	total_ingresos_normal = tb_ingreso.objects.all().aggregate(total=Sum('monto'))
-	total_ingresos_turn	 = tb_ingresoTurn.objects.all().aggregate(total=Sum('monto'))
-	total_ingresos = total_ingresos_normal['total'] + total_ingresos_turn['total']
+	total_ingresos = tb_ingreso.objects.all().aggregate(total=Sum('monto'))
 	total_egresos  = tb_egreso.objects.all().aggregate(total=Sum('monto'))
 	total_efectivo_caja = []
 	total_pago_efectivo = tb_ingreso.objects.filter(tipoPago__nameFormasDePago='Efectivo').aggregate(total=Sum('monto'))

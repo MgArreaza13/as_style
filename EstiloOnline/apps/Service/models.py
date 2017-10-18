@@ -10,11 +10,12 @@ class tb_service(models.Model):
 	nameService			=	 models.CharField(default='', null=False, max_length=30)
 	descriptionService	=	 models.TextField(default='', null=False)
 	tipoServicio		=	 models.ForeignKey(tb_tipoServicio, on_delete=models.CASCADE, null=False, default='')
-	codService			=	 models.PositiveIntegerField(default='', null=False)
+	#codService			=	 models.PositiveIntegerField(default='', null=False)
 	#addressClient 		=	 models.CharField(default='', null=False, max_length=30)
 	#clientProviderKf	=	 models.ForeignKey(tb_client, on_delete=models.CASCADE, null=False, default='')
 	#iduserAdd			=	 models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 	priceList			=    models.IntegerField(default='', null=False)
+	image 				= 	models.ImageField(upload_to='servicios/img/', default='', null=False, )
 	#urlPhoto			=    models.URLField(max_length=300)
 	#StatusKf			=	 models.ForeignKey(tb_status_turn, on_delete=models.CASCADE, null=False, default='')
 	

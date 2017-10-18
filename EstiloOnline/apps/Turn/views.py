@@ -22,7 +22,8 @@ from apps.scripts.validatePerfil import validatePerfil
 # enviar correos
 from django.core.mail import send_mail
 from django.core.mail import send_mass_mail
-
+from apps.Notificaciones.models import Notificacion
+from apps.scripts.SumarHora import sumar_hora
 
 #Resumen de todos los turnos, parte principal
 @login_required(login_url = 'Demo:login' )
@@ -76,6 +77,7 @@ def NuevoTurnParaHoy(request):
 				else:
 					turno.extraInfoTurn = request.POST['extraInfoTurn']
 				#Envio de mensajes 
+				turno.HoraTurnEnd = sumar_hora(request.POST['TimeTurn'], "3:00")
 				colaborador = tb_profile.objects.get(nameUser=turno.collaborator) #trato de traer el colaborador del formulario
 				email_subject_Colaborador = 'Nuevo Turno Solicitado Por Cliente'
 				email_body_Colaborador = "Hola %s, El presente mensaje es para informarle que ha recibido una nueva solicitud para un turno si desea revisarla y confirmarla ingrese aqui http://estiloonline.pythonanywhere.com" %(colaborador)
@@ -170,6 +172,7 @@ def NuevoTurn(request):
 	Form = TurnForm
 	mensaje1 = None
 	fallido = None
+	notificacion = Notificacion()
 	if request.method == 'POST':
 		Form = TurnForm(request.POST or None)
 		colaboradorOcupado = tb_turn.objects.filter(dateTurn=request.POST['TurnDate']).filter(statusTurn__nameStatus="En Espera").filter(HoraTurn=request.POST['TimeTurn']).filter(collaborator=request.POST['collaborator'])	
@@ -180,11 +183,17 @@ def NuevoTurn(request):
 				turno.user = request.user
 				turno.dateTurn = request.POST['TurnDate']
 				turno.HoraTurn = request.POST['TimeTurn']
+				turno.HoraTurnEnd = sumar_hora(request.POST['TimeTurn'], "3:00")
 				if request.POST['extraInfoTurn'] == "":
 					turno.extraInfoTurn = 'Sin Comentarios'
 				else:
 					turno.extraInfoTurn = request.POST['extraInfoTurn']
 				turno.save()
+				######NOTIFICACION####################
+				notificacion.nombre = turno.client.user.nameUser
+				notificacion.dateTurn = turno.dateTurn
+
+				notificacion.save()
 				#Enviaremos los correos a el colaborador y al cliente 
 				#colaborador
 				colaborador = tb_profile.objects.get(nameUser=turno.collaborator) #trato de traer el colaborador del formulario
@@ -237,6 +246,7 @@ def NuevoTurnClient(request, id_client):
 				turno.client = tb_client.objects.get(user__id = id_client)
 				turno.dateTurn = request.POST['TurnDate']
 				turno.HoraTurn = request.POST['TimeTurn']
+				turno.HoraTurnEnd = sumar_hora(request.POST['TimeTurn'], "3:00")
 				if request.POST['extraInfoTurn'] == "":
 					turno.extraInfoTurn = 'Sin Comentarios'
 				else:
