@@ -127,6 +127,7 @@
                   <th>COD</th>
                   <th>CLIENTE</th>
                   <th>COLABORADOR</th>
+                  <th>FORMA DE PAGO</th>
                   <th>HORA</th>
                   <th>FECHA</th>
                   <th class="hidden">fechaNumero</th>
@@ -150,6 +151,11 @@
                     <td>
                           <a href="{% url "Colaboradores:ColaboradorProfile" turno.collaborator.id %}" class="product-title">{{turno.collaborator}}</a>
                     </td>
+                     {% if reserva.PagoOnline == 'True' %}
+                            <td> Pagado Online </td>
+                            {% else %}
+                            <td>Paga Por Sucursal</td>
+                          {% endif %}
                    
                          <td>{{turno.HoraTurn}}</td>
                     
@@ -257,6 +263,11 @@
                           <td>
                                 <a href="{% url "Colaboradores:ColaboradorProfile" turno.collaborator.id %}" class="product-title">{{turno.collaborator}}</a>
                           </td>
+                          {% if reserva.PagoOnline == 'True' %}
+                            <td> Pagado Online </td>
+                            {% else %}
+                            <td>Paga Por Sucursal</td>
+                          {% endif %}
                          
                                <td>{{turno.HoraTurn}}</td>
                           <td>{{turno.dateTurn}}</td>
@@ -303,6 +314,7 @@
                   <th>COD</th>
                   <th>CLIENTE</th>
                   <th>COLABORADOR</th>
+                  <th>FORMA DE PAGO</th>
                   <th>HORA</th>
                   <th>FECHA</th>
                   <th>INFO</th>

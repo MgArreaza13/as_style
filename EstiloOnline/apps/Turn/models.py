@@ -55,6 +55,6 @@ class tb_turn (models.Model):
 	#ingenico_id             =  	models.TextField(default='None', null=False, max_length=3000)
 	#
 	statusTurn 				=	models.ForeignKey(tb_status, on_delete=models.CASCADE, null=False, default='')
-	#PagoOnline			 	=	models.BooleanField(null=False, blank=True , default=False)
+	PagoOnline			 	=	models.BooleanField(null=False, blank=True , default=False)
 	def __str__(self):
 		return self.client.user.nameUser
