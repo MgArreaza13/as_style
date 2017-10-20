@@ -11,7 +11,7 @@ class tb_product (models.Model):
 	nameProduct			=	 models.CharField(default='', null=False, max_length=30)
 	descriptionProduct	=	 models.CharField(default='', null=False, max_length=330)
 	tipoProducto 		=	 models.ForeignKey(tb_tipoProducto, on_delete=models.CASCADE, null=False, default='' )
-	codProduct			=	 models.PositiveIntegerField(default='', null=False)
+	#codProduct			=	 models.PositiveIntegerField(default='', null=False)
 	proveedor			=	 models.ForeignKey(tb_proveedor, on_delete=models.CASCADE, null=False, default='' )
 	#addressClient 		=	 models.CharField(default='', null=False, max_length=30)
 	#clientProviderKf	=	 models.ForeignKey(tb_client, on_delete=models.CASCADE, null=False, default='')
@@ -19,7 +19,7 @@ class tb_product (models.Model):
 	priceList			=    models.IntegerField(default='', null=False)
 	priceCost			=    models.IntegerField(default='', null=False)
 	alertMinStock		=    models.IntegerField(default='', null=False)
-	urlPhoto			=    models.URLField(max_length=3000)
+	image 				= 	models.ImageField(upload_to='productos/img/', default='', null=False, )
 	dateCreate			=	 models.DateField(auto_now=True, blank=False)
 	#StatusKf			=	 models.ForeignKey(tb_status_turn, on_delete=models.CASCADE, null=False, default='')
 	

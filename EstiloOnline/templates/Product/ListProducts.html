@@ -105,18 +105,28 @@
             <div class="box-header">
               <h3 class="box-title">Lista de Productos </h3>
             </div>
+            <div style="background-color: rgba(154, 153, 158, 0.09);" class="box-body">
+            <h5 class="box-title">Filtrar por Fecha </h5>
+              <div class="form-group col-md-6">
+                    <label for="exampleInputEmail1">DESDE</label>
+                    <input type="text" id="datepicker_from" class="form-control" id="exampleInputEmail1" placeholder="SELECCIONE LA FECHA DE INICIO ">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="exampleInputEmail1">HASTA</label>
+                    <input type="text" id="datepicker_to" class="form-control" id="exampleInputEmail1" placeholder="SELECCIONE LA FECHA FINAL">
+                </div>
+              
+            </div>
             <!-- /.box-header -->
             <div class="box-body">
               <table id="example1" class="table table-bordered table-striped">
                 <thead>
                 <tr>
-                  
                   <th>COD</th>
                   <th>NOMBRE</th>
                   <th>FOTO</th>
                   <th>DESCRICPCION</th>
                   <th>FECHA <br> CREADA</th>
-                  <th class="hidden">fechaNumero</th>
                   <th>PROVEEDOR</th>
                   <th>PRECIO <br> LIST</th>
                   <th>PRECIO <br> COST</th>
@@ -131,13 +141,12 @@
                {% for producto in productos  %}
                     <tr>
                       <td><a href="">{{producto.id}}</a></td>
-                      <td><a href="">{{producto.codProduct}}</a></td>
                       <td>
                             <a href="javascript:void(0)" class="product-title">{{producto.nameProduct}} </a>
                       </td>
                       <td>
                         <div class="product-img">
-                          <img style="width:80px; height:70px;" src="{{producto.urlPhoto}}" alt="Product Image">
+                          <img style="width:80px; height:70px;" src="http://estiloonline.pythonanywhere.com/media/{{producto.image}}" alt="Product Image">
                         </div>
                       </td>
                       <td>
@@ -147,7 +156,6 @@
                             </span>
                       </td>
                       <td>{{producto.dateCreate}}</td>
-                      <td class="hidden">{{ producto.dateCreate|date:"m-d-Y" }}</td>
                       <td>
                             <a href="javascript:void(0)" class="product-title">{{producto.proveedor}} </a>
                       </td>
@@ -159,7 +167,7 @@
                             <span class="label label-warning">${{producto.priceCost}} </span>
                       </td>
                       <td>
-                            <span class="label label-warning">${{producto.alertMinStock}} </span>
+                            <span class="label label-warning">{{producto.alertMinStock}} </span>
                       </td>
                       <td>
                             <a href="javascript:void(0)" class="product-title">{{producto.user}} </a>
@@ -181,7 +189,6 @@
                 </tbody>
                 <tfoot>
                 <tr>
-                  
                   <th>COD</th>
                   <th>NOMBRE</th>
                   <th>FOTO</th>
@@ -255,6 +262,7 @@
 <script type="text/javascript" src="{% static "bootstrap/js/bootstrap-datepicker.adminlte.min.js" %}"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/datatables/1.9.4/jquery.dataTables.js" data-semver="1.9.4" data-require="datatables@*"></script>
 <script src="{% static "bootstrap/js/filtrado.js" %}"></script>
+<script src="{% static 'bootstrap/js/notificaciones.js'%}"></script>
 
 <!-- page script -->
 

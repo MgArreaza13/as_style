@@ -9,11 +9,11 @@ class ProductSerializer(serializers.HyperlinkedModelSerializer):
 			'nameProduct',
 			'descriptionProduct',
 			'tipoProducto',
-			'codProduct',
+			'proveedor',
 			'proveedor',
 			'priceList',
 			'priceCost',
 			'alertMinStock',
-			'urlPhoto',
+			'image',
 			'dateCreate',
 			)

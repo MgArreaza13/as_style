@@ -30,7 +30,7 @@
   <link rel="stylesheet" href="{% static 'plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css'%}">
    <link rel="stylesheet" href="{% static "plugins/fullcalendar/fullcalendar.min.css" %}">
   <link rel="stylesheet" href="{% static "plugins/fullcalendar/fullcalendar.print.css" %}" media="print">
-
+ <link rel="stylesheet" href="{% static "bootstrap/css/miguel.css" %}">
 
 
 
@@ -43,6 +43,129 @@
   <link rel="stylesheet" type="text/css" href="{% static "bootstrap/css/bootstrap-datepicker.adminlte.min.css" %}">
 
 
+ <style>
+    
+    .hide-bullets {
+    list-style:none;
+    margin-left: -40px;
+    margin-top:20px;
+}
+
+.thumbnail {
+    padding: 0;
+}
+
+.carousel-inner>.item>img, .carousel-inner>.item>a>img {
+    width: 100%;
+
+}
+@import url(http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css);
+.col-item
+{
+    border: 1px solid #E1E1E1;
+    border-radius: 5px;
+    background: #FFF;
+}
+.col-item .photo img
+{
+    margin: 0 auto;
+    width: 100%;
+}
+
+.col-item .info
+{
+    padding: 10px;
+    border-radius: 0 0 5px 5px;
+    margin-top: 1px;
+}
+
+.col-item:hover .info {
+    background-color: #F5F5DC;
+}
+.col-item .price
+{
+    /*width: 50%;*/
+    float: left;
+    margin-top: 5px;
+}
+
+.col-item .price h5
+{
+    line-height: 20px;
+    margin: 0;
+}
+
+.price-text-color
+{
+    color: #219FD1;
+}
+
+.col-item .info .rating
+{
+    color: #777;
+}
+
+.col-item .rating
+{
+    /*width: 50%;*/
+    float: left;
+    font-size: 17px;
+    text-align: right;
+    line-height: 52px;
+    margin-bottom: 10px;
+    height: 52px;
+}
+
+.col-item .separator
+{
+    border-top: 1px solid #E1E1E1;
+}
+
+.clear-left
+{
+    clear: left;
+}
+
+.col-item .separator p
+{
+    line-height: 20px;
+    margin-bottom: 0;
+    margin-top: 10px;
+    text-align: center;
+}
+
+.col-item .separator p i
+{
+    margin-right: 5px;
+}
+.col-item .btn-add
+{
+    width: 50%;
+    float: left;
+}
+
+.col-item .btn-add
+{
+    border-right: 1px solid #E1E1E1;
+}
+
+.col-item .btn-details
+{
+    width: 50%;
+    float: left;
+    padding-left: 10px;
+}
+.controls
+{
+    margin-top: 20px;
+}
+[data-slide="prev"]
+{
+    margin-right: 10px;
+}
+
+  </style>
+
   
 {% endblock styles %}
 
@@ -53,7 +176,7 @@
     <!-- Content Header (Page header) -->
      <section class="content-header">
       <h1>
-        NUEVO TURNO 
+        NUEVA RESERVA WEB
         <small>Control panel</small>
       </h1>
       <ol class="breadcrumb">
@@ -69,8 +192,9 @@
           <!-- general form elements -->
           <div class="box box-info">
             <div class="box-header with-border">
-              <h3 class="box-title">Nuevo Turno</h3>
+              <h3 class="box-title">Nueva Reserva Web </h3>
             </div>
+
             <!-- /.box-header -->
             <!-- form start -->
             {% if mensaje1 %}
@@ -80,11 +204,15 @@
                 {{mensaje1}}
               </div>
            {% endif %}
-            <form action="" method="post">
+            <form name="form1" action="" method="post">
               {% csrf_token %}
-              <div class="box-body">
-                  
-                  {% for field in Form %}
+
+
+              <div class="box-body paso1">
+              <div class="box-header with-border">
+                <h3 class="box-title">PASO 1</h3>
+              </div>
+                {% for field in Form %}
                      {% if Form.subject.errors %}
                          <ol>
                           {% for error in Form.subject.errors %}
@@ -102,44 +230,255 @@
                              {{ field }}
                       
                           </div>
-                    {% elif field.name == 'collaborator' %}
-                      <div class="form-group ">
-                              <label>Seleccione Colaborador</label>
-                             {{ field }}
+                    
                       
-                          </div>
-                    {% elif field.name == 'statusTurn' %}
+                    {% endif %}
+        
+               {% endfor %}
+
+               <div class="container col-md-12">
+          <div id="main_area">
+        <!-- Slider -->
+        <div class="row">
+
+        <div class="box-body">
+              <div class="row">
+            <div class="col-md-8">
+                <h4>
+                    Seleccione el Colaborador  A contratar</h4>
+            </div>
+            <div class="col-md-4">
+                <!-- Controls -->
+                <div class="controls pull-right ">
+                    <a class="left fa fa-chevron-left btn btn-success" href="#carousel-example"
+                        data-slide="prev"></a><a class="right fa fa-chevron-right btn btn-success" href="#carousel-example"
+                            data-slide="next"></a>
+                </div>
+            </div>
+        </div>
+        <div id="carousel-example" class="carousel slide " data-ride="carousel">
+            <!-- Wrapper for slides -->
+            <div class="carousel-inner">
+                <div class="item active">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <img style="width:350px; height:320px;" class="img-responsive"  src="{% static "img/EO_LOGO2.png" %}" alt="Logo">
+                        </div>
+                       
+                        
+                       
+                    </div>
+                </div>
+                 {% for colaborador  in colaboradores  %}
+                <div class="item">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="col-item">
+                                <div class="photo">
+                                    <img src="http://localhost:8000/media/{{colaborador.user.image}}" style="width:350px; height:280px;" class="img-responsive" alt="a" />
+                                </div>
+                                <div class="info">
+                                    <div class="row">
+                                        <div class="price col-md-12">
+                                            <h3>
+                                                {{colaborador.user}}</h3>
+                                                <h4>{{colaborador.typeCollaborador}}</h4>
+                                            
+                                        </div>
+                                        
+                                    </div>
+                                    <div class="separator clear-left col-md-12">
+                                        <p class="btn-add col-sm-6">
+                                            <button type="button" name="{{productos.nameProduct}}"  name="{{productos.nameProduct}}"  value="{{productos.priceList}}" class="btn btn-success btn-block" onclick="Paso2(); Desabilitar(this); ProductSeleccionado(this.name); "><i class="fa fa-shopping-cart"></i>CONTRATAR</button></p>
+                                        <p style=""class="btn-details col-sm-6">
+                                            <button type="button" class="btn btn-info btn-block" id="InfoServicio" value={{productos.id}} onclick="queryProducto(this.value)"><i class="fa fa-list"></i>VER MAS</button></p>
+                                    </div>
+                                    <div class="clearfix">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                       
+                       
+                    </div>
+                </div>
+
+                 {% endfor %}
+          <input type="hidden" id="ProductosSeleccionados" name="ProductosSeleccionados" value=" ">
+            </div>
+        </div>
+            </div>
+            
+            
+        </div>
+        <!--<div style="text-align:center;"  class="box-footer">
+                <a id="siguientePaso" href="javascript:void(0)" class="btn btn-primary"> PASO 2</a>
+              
+                
+              </div> -->
+
+    </div>
+</div> 
+
+
+
+
+              </div>
+
+
+
+
+
+
+
+
+
+
+           <div class="box-body paso2">
+           <div class="box-header with-border">
+              <h3 class="box-title">SELECCIONE EL SERVICIO QUE DESEA COTIZAR</h3>
+            </div>
+                  
+                 <div class="container col-md-12">
+    <div id="main_area">
+        <!-- Slider -->
+        <div class="row">
+
+        <div class="col-sm-12">
+              <div class="box box-solid">
+            
+
+            <!-- /.box-header -->
+            <div class="box-body">
+              <div class="row">
+            <div class="col-md-5">
+                <h3>
+                    SERVICIOS</h3>
+            </div>
+            <div class="col-md-6">
+                <!-- Controls -->
+                <div class="controls pull-right ">
+                    <a class="left fa fa-chevron-left btn btn-primary" href="#carousel-example-generic"
+                        data-slide="prev"></a><a class="right fa fa-chevron-right btn btn-primary" href="#carousel-example-generic"
+                            data-slide="next"></a>
+
+                </div>
+            </div>
+        </div>
+        <div id="carousel-example-generic" class="carousel slide " data-ride="carousel">
+            <!-- Wrapper for slides -->
+            <div class="carousel-inner">
+                <div class="item active">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <img style="width:360px; height:320px;" class="img-responsive"  src="{% static "img/EO_LOGO2.png" %}" alt="Logo">
+                        </div>
+                       
+                        
+                       
+                    </div>
+                </div>
+        {% for servicios  in servicios  %}
+                <div class="item">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="col-item">
+                                <div class="photo">
+                                    <img src="http://localhost:8000/media/{{servicios.image}}" class="img-responsive" style="width:350px; height:260px;" alt="a" />
+                                </div>
+                                <div class="info">
+                                    <div class="row">
+                                        <div class="price col-md-12">
+                                            <h3>
+                                                {{servicios.nameService}} </h3>
+                                            <h4 class="price-text-color">
+                                                Costo: ${{servicios.priceList}}</h4>
+                                        </div>
+                                        
+                                    </div>
+                                    <div class="separator clear-left col-md-12">
+                                        <p class="btn-add col-sm-6">
+                                            <button type="button" name="{{servicios.id}}"  id="siguientePaso2" name="{{servicios.nameService}}"  value="{{servicios.priceList}}" class="btn btn-success btn-block" onclick="Suma(this.value);  ServiceSelected(this.name);"><i class="fa fa-shopping-cart"></i>COTIZAR</button></p>
+                                        <p style=""class="btn-details col-sm-6">
+                                            <button class="btn btn-info btn-block" id="InfoServicio" value={{servicios.id}} onclick="query(this.value)"><i class="fa fa-list"></i>VER MAS</button></p>
+                                    </div>
+                                    <div class="clearfix">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                       
+                     
+                    </div>
+                </div>
+
+                {% endfor %}
+                <input type="hidden" id="ServicioSeleccionado" name="ServicioSeleccionado" value="None">
+            </div>
+        </div>
+            </div>
+            <!-- /.box-body -->
+          </div>  
+        </div>
+            <!--/Slider-->
+        </div>
+     
+        <div style="text-align:center;"  class="box-footer">
+                 <a id="regresar2" href="javascript:void(0)" class="btn btn-danger btn-block">REGRESAR</a>
+              
+                
+              </div> 
+
+    </div>
+</div> 
+              
+                        
+           </div>
+
+
+           <div class="box-body paso3">
+
+           <div class="box-header with-border">
+                <h3 class="box-title">PASO 3</h3>
+              </div>
+              {% for field in Form %}
+                     {% if Form.subject.errors %}
+                         <ol>
+                          {% for error in Form.subject.errors %}
+                              <li><strong>{{ error|escape }}</strong></li>
+                          {% endfor %}
+                        </ol>
+                    {% endif %}
+                    
+                    {{ field.errors }}
+
+
+                    
+                    {% if field.name == 'statusTurn' %}
                       <div class="form-group ">
                               <label>Seleccione Status</label>
                              {{ field }}
                       
                           </div>
 
-                    {% elif field.name == 'servicioPrestar' %}
-                      <div class="form-group ">
-                              <label>Ingrese el servicio</label>
-                             {{ field }}
-                      
-                          </div>
 
-                  {% elif field.name == 'TypeHora' %}
-                      <div class="form-group ">
-                              <label>Ingrese el horario a convenir</label>
-                             {{ field }}
-                      
-                          </div>
-                      
                     {% endif %}
+
+                    
+
+                  
         
           
 
           
-      
-                  {% if field.help_text %}
-                    <script> console.log('{{ field.help_text|safe }}')</script>
-                  {% endif %}
                {% endfor %}
 
+              <div class="form-group ">
+                  <label>Comentarios Adicionales</label>
+                  <textarea name="extraInfoTurn" rows="6"  placeholder="Ingrese algun tipo de infomacion adicional si lo desea" maxlength="300" autofocus="" id="id_extraInfoTurn" cols="2" autocomplete="off," class="form-control"></textarea>
+                      
+                </div>  
+                <br>
                 <div class="input-group clockpicker">
                 <label >  Sleccione la Hora del turno </label>
                     <input type="text" name="TimeTurn" placeholder="Hora Del Turno" class="form-control" autocomplete="off" 
@@ -153,11 +492,19 @@
                                 required autofocus max="2030-12-31" />
                 </div>
               
-              <div class="form-group ">
-                  <label>Comentarios Adicionales</label>
-                  <textarea name="extraInfoTurn" rows="6"  placeholder="Ingrese algun tipo de infomacion adicional si lo desea" maxlength="300" autofocus="" id="id_extraInfoTurn" cols="2" autocomplete="off," class="form-control"></textarea>
-                      
-                </div>            
+
+
+                <div style="text-align:center;" class="form-group col-md-12">
+                  <h3>Monto A Pagar</h3>
+                  <p style="font-size: 4em;">$<estrong id="Monto">0</estrong></p>
+                  <input type="hidden" name="total" value="0">
+                  
+                </div>
+
+                <div style="text-align:center;" class="box-footer">
+                <button type="submit" class="btn btn-primary">GUARDAR</button>
+                <a id="regresar2" href="javascript:void(0)" class="btn btn-danger">REGRESAR</a>
+              </div>
            </div>
 
 
@@ -167,10 +514,6 @@
               
                         <!-- /.box-body -->
 
-              <div class="box-footer">
-                <button type="submit" class="btn btn-primary">GUARDAR</button>
-                <a href="{% url "Turnos:listTurnos" %}" class="btn btn-danger">REGRESAR</a>
-              </div>
             </form>
           </div>
           <!-- /.box -->
@@ -192,6 +535,9 @@
     </section>
     <!-- /.content -->
   </div>
+
+<input type="hidden" id="displayMenu" value="0">
+<input type="hidden" id="displayMenu2" value="0">
 
 
 
@@ -228,12 +574,313 @@
 
 
 <script>
+    //desabhilito el boton de cada producto luego que es agregado 
 
+    setInterval(function(){ validarBotonPaso1(); }, 300);
+
+    function validarBotonPaso1(){
+      if ($('#campo1').val() != "" && $('#campo2').val() != "" && $('#campo3').val() != ""){
+        
+        $('#siguientePaso').attr("disabled", false);
+      }
+      else{
+        
+        $('#siguientePaso').attr("disabled", true);
+      }
+    }
+
+    function Desabilitar(boton){
+      console.log(boton);
+      $(boton).attr("disabled", true);
+    }
+
+   function query(val){
+    var id_servicio =  val;
+    $.ajax({
+        url: 'http://multipoint.pythonanywhere.com/servicios/consulta/detail',
+        data: {
+          'id_servicio': id_servicio
+      },
+      dataType: 'json',
+      success: function (data) {
+           var modal = '<div class="col-lg-12">'+
+          '<div  class="modal" id="myModal" role="dialog">'+
+            '<div class="modal-dialog">'+
+              '<div style="margin-left: 7em;" class="modal-content">'+
+                '<div class="modal-header">'+
+                  '<button type="button" class="close" data-dismiss="modal" aria-label="'+
+                  'Close">'+
+                    '<span aria-hidden="true">×</span></button>'+
+                  '<h4 class="modal-title">Detalles de '+data.nombre+ '</h4>'+
+                '</div>'+
+                '<div class="modal-body">'+
+                  '<p>servicio de '+ data.nombre + ' que ofrece '+ data.descripcion+' y por un costo de $'+data.value+' </p>'+
+                '</div>'+
+               '<div class="modal-footer">'+
+                '<button type="button" class="btn btn-primary"'+
+                  'data-dismiss="'+
+                  'modal">Cerrar</button>'+
+                '</div>'+
+              '</div>'+
+              
+            '</div>'+
+            
+          '</div>'+
+           
+         '</div>';
+
+         $('#miguel').html(modal);
+          $("#myModal").modal("show");
+        
+    }
+});
+
+   }
+
+
+
+
+   function queryProducto(val){
+    var id_producto =  val;
+    $.ajax({
+        url: 'http://multipoint.pythonanywhere.com/productos/consulta/detail',
+        data: {
+          'id_producto': id_producto
+      },
+      dataType: 'json',
+      success: function (data) {
+           var modal = '<div class="col-lg-12">'+
+          '<div  class="modal" id="myModal" role="dialog">'+
+            '<div class="modal-dialog">'+
+              '<div style="margin-left: 7em;" class="modal-content">'+
+                '<div class="modal-header">'+
+                  '<button type="button" class="close" data-dismiss="modal" aria-label="'+
+                  'Close">'+
+                    '<span aria-hidden="true">×</span></button>'+
+                  '<h4 class="modal-title">Detalles de '+data.nombre+ '</h4>'+
+                '</div>'+
+                '<div class="modal-body">'+
+                  '<p>servicio de '+ data.nombre + ' que ofrece '+ data.descripcion+' y por un costo de $'+data.value+' </p>'+
+                '</div>'+
+               '<div class="modal-footer">'+
+                '<button type="button" class="btn btn-primary"'+
+                  'data-dismiss="'+
+                  'modal">Cerrar</button>'+
+                '</div>'+
+              '</div>'+
+              
+            '</div>'+
+            
+          '</div>'+
+           
+         '</div>';
+
+         $('#miguel').html(modal);
+          $("#myModal").modal("show");
+        
+    }
+});
+
+   }
+
+</script>
+<script>
+  
+
+    jQuery(document).ready(function($) {
+ 
+        $('#myCarousel').carousel({
+                interval: 5000
+        });
+ 
+        //Handles the carousel thumbnails
+        $('[id^=carousel-selector-]').click(function () {
+        var id_selector = $(this).attr("id");
+        try {
+            var id = /-(\d+)$/.exec(id_selector)[1];
+            console.log(id_selector, id);
+            jQuery('#myCarousel').carousel(parseInt(id));
+        } catch (e) {
+            console.log('Regex failed!', e);
+        }
+    });
+        // When the carousel slides, auto update the text
+        $('#myCarousel').on('slid.bs.carousel', function (e) {
+                 var id = $('.item.active').data('slide-number');
+                $('#carousel-text').html($('#slide-content-'+id).html());
+        });
+});
+</script>
+
+
+<script>
+
+
+  
+ 
+  validateSelect();
+
+function validateSelect(){
+    var id_servicio = $("#servicio").val();
+
+    $.ajax({
+        url: 'http://multipoint.pythonanywhere.com/reservas/ajax/validacion/',
+        data: {
+          'id_servicio': id_servicio
+      },
+      dataType: 'json',
+      success: function (data) {
+          if (data.value) {
+            tot = parseFloat(document.form1.total.value);
+            var miguel = parseFloat(data.value);
+            console.log(miguel)
+            document.form1.total.value = miguel; 
+            $('#Monto').html(miguel)
+        }
+    }
+});
+}
+
+$("#servicio").change(function () {
+    validateSelect();
+});
+</script>
+
+<script>
+
+function ServiceSelected(myValue) {
+   if(myValue){
+    
+    
+    $('#ServicioSeleccionado').val(myValue);
+  }
+  else{
+
+    
+     $('#ServicioSeleccionado').val('None');
+  }
+}
+
+function ProductSeleccionado(product) {
+      if(product){
+       
+       var  html = $('#ProductosSeleccionados').val();
+        html +=   '<li style="list-style:none;">'+ product +'</li>'  ;
+        
+        $('#ProductosSeleccionados').val(html);
+      }
+      else{
+         $('#ProductosSeleccionados').val(' ');
+      }
+    }
+
+
+
+function Suma(myValue)
+{
+  
+ 
+tot = parseFloat(document.form1.total.value);
+myValue = parseFloat(myValue);
+
+ document.form1.total.value = tot + myValue; 
+ $('#Monto').html(tot + myValue)
+
+/*
+else{
+  document.form1.total.value = tot - myValue;
+  $('#Monto').html(tot - myValue)
+} 
+*/
+}
+</script>
+<script>
+
+ 
+
+
+
+
+ 
+</script>
+
+<script>
+
+ function Paso2(){
+        if($('#displayMenu').val()==0){
+          $(".paso2").css("display", "block");
+          $('.paso2').addClass('animated bounceInDown');
+          $(".paso1").css("display", "none");
+          $('#displayMenu').val(1)
+
+        }else{
+          //$('.tipo_publicacion').removeClass('animated bounceInDown');
+          //$('.tipo_publicacion').addClass('animated bounceOutRight');
+          $(".tipo_publicacion").css("display", "none");
+          $('#displayMenu').val(0)
+        }
+        
+      }
+
+ 
+
+
+  $("#siguientePaso2").click(function () {
+        if($('#displayMenu2').val()==0){
+          $(".paso3").css("display", "block");
+          $('.paso3').addClass('animated bounceInDown');
+          $(".paso2").css("display", "none");
+          $('#displayMenu2').val(1)
+
+        }else{
+          //$('.tipo_publicacion').removeClass('animated bounceInDown');
+          //$('.tipo_publicacion').addClass('animated bounceOutRight');
+          $(".tipo_publicacion").css("display", "none");
+          $('#displayMenu').val(0)
+        }
+        
+      });
+
+
+  $("#regresar").click(function () {
+        if($('#displayMenu2').val()==1){
+          $(".paso2").css("display", "block");
+          $('.paso2').addClass('animated bounceInDown');
+          $(".paso3").css("display", "none");
+          $('#displayMenu2').val(0)
+
+        }else{
+          //$('.tipo_publicacion').removeClass('animated bounceInDown');
+          //$('.tipo_publicacion').addClass('animated bounceOutRight');
+          $(".tipo_publicacion").css("display", "none");
+          $('#displayMenu').val(0)
+        }
+        
+      });
+
+$("#regresar2").click(function () {
+        if($('#displayMenu').val()==1){
+          $(".paso1").css("display", "block");
+          $('.paso1').addClass('animated bounceInDown');
+          $(".paso2").css("display", "none");
+          $('#displayMenu').val(0)
+
+        }else{
+          //$('.tipo_publicacion').removeClass('animated bounceInDown');
+          //$('.tipo_publicacion').addClass('animated bounceOutRight');
+          $(".tipo_publicacion").css("display", "none");
+          $('#displayMenu').val(0)
+        }
+        
+      });
+
+</script>
+
+<script>
 $('.clockpicker').clockpicker({
   placement: 'top',
   donetext: 'GUARDAR'
 });
-
 </script>
 
 <script>
@@ -310,7 +957,19 @@ $('.clockpicker').clockpicker({
           
         },
       {% endfor %}
-      
+      {% for ReservasWeb in ReservasWeb %}
+        {
+          title: 'RESERVADO',
+          start: '{{ ReservasWeb.dateTurn|date:"Y-m-d" }} {{ReservasWeb.HoraTurn}}',
+          end:'{{ ReservasWeb.dateTurn|date:"Y-m-d" }} {{ReservasWeb.HoraTurnEnd}}',
+          backgroundColor: "#f56954", //red
+          borderColor: "#f56954", // red 
+          titulo:'{{ReservasWeb.servicioPrestar}}',
+          cliente:'{{ReservasWeb.nombre}}',
+          fecha_de_inicio:'{{ ReservasWeb.dateTurn|date:"d-m-Y" }}',
+          hora_de_inicio:'{{ ReservasWeb.HoraTurn }}',
+        },
+      {% endfor %}
       
       ],
       eventClick: function(calEvent) {
@@ -320,10 +979,37 @@ $('.clockpicker').clockpicker({
 
         // creo el modal  
 
-       
+        var modal = '<div class="col-lg-12">'+
+          '<div  class="modal" id="myModal" role="dialog">'+
+            '<div class="modal-dialog">'+
+              '<div style="margin-left: 7em;" class="modal-content">'+
+                '<div class="modal-header">'+
+                  '<button type="button" class="close" data-dismiss="modal" aria-label="'+
+                  'Close">'+
+                    '<span aria-hidden="true">×</span></button>'+
+                  '<h4 class="modal-title">Reserva</h4>'+
+                '</div>'+
+                '<div class="modal-body">'+
+                  '<p>Reserva de '+ calEvent.titulo +' para la fecha '+calEvent.fecha_de_inicio +' solicitado por el cliente '+calEvent.cliente +' para la hora '+calEvent.hora_de_inicio +'</p>'+
+                '</div>'+
+               '<div class="modal-footer">'+
+                '<button type="button" class="btn btn-primary"'+
+                  'data-dismiss="'+
+                  'modal">Cerrar</button>'+
+                '</div>'+
+              '</div>'+
+              
+            '</div>'+
+            
+          '</div>'+
+           
+         '</div>';
+
+         $('#miguel').html(modal);
+          $("#myModal").modal("show");
 
     },
-      
+      editable: false,
       droppable: true, // this allows things to be dropped onto the calendar !!!
       drop: function (date, allDay) { // this function is called when something is dropped
 

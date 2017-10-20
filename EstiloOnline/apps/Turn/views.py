@@ -2,6 +2,7 @@ from django.shortcuts import render , redirect
 from django.contrib.auth.decorators import login_required
 from datetime import date
 #Modelos 
+from apps.Service.models import tb_service
 from apps.Turn.models import tb_turn
 from apps.Collaborator.models import tb_collaborator
 from apps.Turn.models import tb_turn
@@ -168,6 +169,8 @@ def listTurnos(request):
 def NuevoTurn(request):
 	result = validatePerfil(tb_profile.objects.filter(user=request.user))
 	turnos = tb_turn.objects.filter(statusTurn__nameStatus="En Espera")
+	colaboradores = tb_collaborator.objects.all()
+	servicios = tb_service.objects.all()
 	perfil = result[0]
 	Form = TurnForm
 	mensaje1 = None
@@ -223,7 +226,7 @@ def NuevoTurn(request):
 				mensaje1 = "Errores en los datos Verifiquelos, y vuelva a intentarlo"
 				Form = TurnForm()
 				fallido = "Tuvimos un error al cargar sus datos, verifiquelo e intente de nuevo"
-	return render(request, 'Turn/NuevoTurno.html' , {'Form':Form ,'turnos':turnos ,'mensaje1':mensaje1, 'perfil':perfil, 'fallido':fallido})
+	return render(request, 'Turn/NuevoTurno.html' , {'Form':Form, 'servicios':servicios ,'colaboradores':colaboradores ,'turnos':turnos ,'mensaje1':mensaje1, 'perfil':perfil, 'fallido':fallido})
 
 
 #crea los turnos para los clientes, en sesion

@@ -5,7 +5,7 @@ from apps.Product.forms import ProductForm
 
 from apps.UserProfile.models import tb_profile
 from apps.scripts.validatePerfil import validatePerfil
-
+from django.http import JsonResponse
 
 #datos para la vista principal arriba de las citas y los ingresos.
 from django.db.models import Count, Min, Sum, Avg
@@ -13,6 +13,35 @@ from datetime import date
 from apps.Turn.models import tb_turn
 from apps.Caja.models import tb_ingreso
 from apps.Caja.models import tb_egreso
+
+
+
+
+def ProductiDetail(request):
+	id_producto = request.GET.get('id_producto', None)
+	pro=tb_product.objects.filter(id=id_producto)
+	producto = pro[0]
+	data = {
+        'value':producto.priceList,
+        'nombre':producto.nameProduct,
+        'descripcion':producto.descriptionProduct,
+
+    }
+	return JsonResponse(data)
+
+
+
+
+
+@login_required(login_url = 'Demo:login' )
+def pructosCliente(request):
+	result = validatePerfil(tb_profile.objects.filter(user=request.user))
+	perfil = result[0]
+	productos = tb_product.objects.all()
+	return render(request, 'Product/productosdetalles.html' , {'perfil':perfil,'productos':productos} )
+
+
+
 
 
 # Create your views here.
@@ -46,19 +75,17 @@ def NuevoProducto(request):
 	result = validatePerfil(tb_profile.objects.filter(user=request.user))
 	perfil = result[0]
 	Form = ProductForm
-	fallido = None
 	if request.method == 'POST':
-		Form = ProductForm(request.POST or None)
+		Form = ProductForm(request.POST, request.FILES or None)
 		if Form.is_valid():
+			print(request.POST)
 			producto = Form.save(commit=False)
 			producto.user = request.user
 			producto.save()
-			mensaje = "Hemos cargado de manera exitosa su nuevo Producto"
-			return render(request, 'Product/NuevoProducto.html' , {'Form':Form, 'perfil':perfil, 'mensaje':mensaje})
+			return redirect('Productos:ListProductos')
 		else:
 			Form = ProductForm()
-			fallid0 = "Hemos tenido problema al registrar sus datos, verifiquelos e intente nuevamente"
-	return render(request, 'Product/NuevoProducto.html' , {'Form':Form, 'perfil':perfil, 'falido': fallido})
+	return render(request, 'Product/NuevoProducto.html' , {'Form':Form, 'perfil':perfil})
 
 
 
@@ -67,18 +94,16 @@ def EditarProducto(request, id_producto):
 	productoEditar= tb_product.objects.get(id=id_producto)
 	result = validatePerfil(tb_profile.objects.filter(user=request.user))
 	perfil = result[0]
-	fallido = None
 	if request.method == 'GET':
 		Form= ProductForm(instance = productoEditar)
 	else:
-		Form = ProductForm(request.POST, instance = productoEditar)
+		Form = ProductForm(request.POST , request.FILES  ,  instance = productoEditar)
 		if Form.is_valid():
 			producto = Form.save(commit=False)
 			producto.user = request.user
 			producto.save()
-			mensaje = "Hemos guardado correctamente sus nuevos datos"
-			return render (request, 'Product/NuevoProducto.html' , {'Form':Form, 'perfil':perfil, 'mensaje':mensaje})
-	return render (request, 'Product/NuevoProducto.html' , {'Form':Form, 'perfil':perfil, 'fallido':fallido})
+			return redirect ('Productos:ListProductos')
+	return render (request, 'Product/NuevoProducto.html' , {'Form':Form, 'perfil':perfil})
 
 
 @login_required(login_url = 'Demo:login' )
@@ -86,11 +111,9 @@ def EliminarProducto(request, id_producto):
 	result = validatePerfil(tb_profile.objects.filter(user=request.user))
 	perfil = result[0]
 	productoBorrar= tb_product.objects.get(id=id_producto)
-	fallido = None
 	if request.method == 'POST':
 		productoBorrar.delete()
-		mensaje = 'Hemos Borrado Correctamente sus datos'
-		return render (request, 'Product/DeleteProduct.html', {'productoBorrar':productoBorrar, 'perfil':perfil, 'mensaje':mensaje})
+		return redirect ('Productos:ListProductos')
 	return render (request, 'Product/DeleteProduct.html', {'productoBorrar':productoBorrar, 'perfil':perfil})
 
 

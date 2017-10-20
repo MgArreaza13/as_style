@@ -31,7 +31,7 @@
             </div>
             <!-- /.box-header -->
             <!-- form start -->
-             <form action="" method="post">
+             <form action="" method="post" enctype="multipart/form-data">
               {% csrf_token %}
               <div class="box-body">
                   
@@ -54,16 +54,6 @@
                             required autofocus maxlength="{{field.max_length}}" {{ field }}
                     
                         </div>
-
-                    {% elif field.name == 'codProduct' %}
-                      <div class="form-group ">
-                              <label>Codigo</label>
-                              <input class="form-control" placeholder="{{field.label}}" autocomplete="off" 
-                              required autofocus maxlength="{{field.max_length}}" {{ field }}
-                      
-                          </div>
-
-
 
                     {% elif field.name == 'proveedor' %}
                       <div class="form-group ">
@@ -93,11 +83,10 @@
                               required autofocus maxlength="{{field.max_length}}" {{ field }}
                       
                           </div>
-                      {% elif field.name == 'urlPhoto' %}
+                      {% elif field.name == 'image' %}
                       <div class="form-group ">
-                              <label>Url de la foto a mostrar</label>
-                              <input class="form-control" placeholder="{{field.label}}" autocomplete="off" 
-                              required autofocus maxlength="{{field.max_length}}" {{ field }}
+                              <label>Seleccione la imagen del producto</label>
+                               {{ field }}
                       
                           </div>
 
@@ -114,13 +103,7 @@
                               <label>Tipo de Producto</label>
                              {{ field }}
                       
-                          </div>
-
-                    
-                    
-
-
-                      
+                          </div>          
                     {% endif %}
         
           

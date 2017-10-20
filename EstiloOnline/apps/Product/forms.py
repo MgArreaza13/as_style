@@ -15,12 +15,11 @@ class ProductForm(forms.ModelForm):
 		'nameProduct',
 		'descriptionProduct',
 		'tipoProducto',
-		'codProduct',
 		'proveedor',
 		'priceList',
 		'priceCost',
 		'alertMinStock',
-		'urlPhoto',
+		'image',
 		
 		]
 		exclude = ['user','dateCreate']
@@ -28,12 +27,11 @@ class ProductForm(forms.ModelForm):
 		labels = {
 		'nameProduct':'Ingrese El nombre del Producto',
 		'descriptionProduct':'Ingrese la Descripcion del Producto',
-		'codProduct':'Ingrese El codigo Del Producto',
 		'proveedor':'Seleccione al Proveedor del producto',
 		'priceList':'Precio para vender',
 		'priceCost':'Precio de costo del producto',
 		'alertMinStock':'Ingrese el monto que desea que le avise el stock',
-		'urlPhoto':'Ingrese la url de la foto del producto',
+		'image':'Ingrese la foto del producto',
 		
 		}
 		widgets = {
@@ -57,5 +55,3 @@ class ProductForm(forms.ModelForm):
 			'placeholder':'Proveedor'}),
 		
 		}
-          
-			
