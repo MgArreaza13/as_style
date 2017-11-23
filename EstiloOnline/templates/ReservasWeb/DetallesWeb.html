@@ -1,0 +1,576 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>{% block title %}MultiPoint{%endblock%}</title>
+
+
+ 
+    <!-- Tell the browser to be responsive to screen width -->
+  {% block styles %}
+  
+
+<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+  <!-- Bootstrap 3.3.6 -->
+  <link rel="stylesheet" href="{% static "bootstrap/css/bootstrap.min.css" %}">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
+  <!-- Ionicons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+  <!-- Theme style -->
+ <link rel="stylesheet" href="{% static 'dist/css/AdminLTEmultipoint.min.css'%}">
+  <!-- AdminLTE Skins. Choose a skin from the css/skins
+       folder instead of downloading all of them to reduce the load. -->
+  <link rel="stylesheet" href="{% static 'dist/css/skins/_all-skinsmultipoint.min.css' %}">
+  <!-- iCheck -->
+  <link rel="stylesheet" href="{% static 'plugins/iCheck/flat/blue.css' %}">
+  <!-- Morris chart -->
+  <link rel="stylesheet" href="{% static 'plugins/morris/morris.css'%}">
+  <!-- jvectormap -->
+  <link rel="stylesheet" href="{% static 'plugins/jvectormap/jquery-jvectormap-1.2.2.css'%}">
+  <!-- Date Picker -->
+  <link rel="stylesheet" href="{% static 'plugins/datepicker/datepicker3.css'%}">
+  <!-- Daterange picker -->
+  <link rel="stylesheet" href="{% static 'plugins/daterangepicker/daterangepicker.css'%}">
+  <!-- bootstrap wysihtml5 - text editor -->
+  <link rel="stylesheet" href="{% static 'plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css'%}">
+   <link rel="stylesheet" href="{% static "plugins/fullcalendar/fullcalendar.min.css" %}">
+  <link rel="stylesheet" href="{% static "plugins/fullcalendar/fullcalendar.print.css" %}" media="print">
+
+
+
+
+  <script type="text/javascript" src="{% static "bootstrap/js/jquery-1.8.0.min.js" %}"></script>
+
+
+
+  <link rel="stylesheet" type="text/css" href="{% static "bootstrap/css/bootstrap-clockpicker.min.css" %}">
+  <link rel="stylesheet" type="text/css" href="{% static "bootstrap/css/github.min.css" %}">
+  <link rel="stylesheet" type="text/css" href="{% static "bootstrap/css/bootstrap-datepicker.adminlte.min.css" %}">
+
+  <script src="{% static "plugins/jQuery/jquery-2.2.3.min.js" %}"></script>
+  <link rel="stylesheet" href="{% static "bootstrap/css/miguel.css" %}">
+{% endblock styles %}
+
+
+  
+
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+</head>
+<!-- ADD THE CLASS layout-top-nav TO REMOVE THE SIDEBAR. -->
+<body class="hold-transition skin-blue layout-top-nav">
+<div class="wrapper">
+
+  <header class="main-header">
+    <nav class="navbar navbar-static-top">
+      <div class="container">
+        <div class="navbar-header">
+         <a href="#" class="logo">
+      <!-- mini logo for sidebar mini 50x50 pixels -->
+      <span class="logo-mini"><b>Mp</b></span>
+      <!-- logo for regular state and mobile devices -->
+      <span style="height:15px; width:70px;" class="logo-lg">{% if logo != None %}
+              <img src="{{server}}/media/{{logo.logo}}" style="height:100px; width:170px; " alt=""> 
+            {% endif %}</span>
+    </a>
+        
+      <!-- /.container-fluid -->
+    </nav>
+  </header>
+  <!-- Full Width Column -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+     
+
+    <!-- Main content -->
+    
+<section class="invoice">
+      <!-- title row -->
+      <div class="row">
+        <div class="col-xs-12">
+          <h2 class="page-header">
+            <img src="{{server}}/media/{{logo.logo}}" style="height:100px; width:170px; " alt=""> 
+            <small class="pull-right">Fecha: {{fecha}}</small>
+          </h2>
+        </div>
+        <!-- /.col -->
+      </div>
+      <!-- info row -->
+      <div class="row invoice-info">
+        <div class="col-sm-4 invoice-col">
+          De
+          <address>
+            <strong>{{administrador.nameUser}}</strong><br>
+            correo: {{administrador.mailUser}}<br>
+            
+          </address>
+        </div>
+        <!-- /.col -->
+        <div class="col-sm-4 invoice-col">
+          Para
+          <address>
+            <strong>{{reserva.nombre}}</strong><br>
+            Telefono: {{reserva.telefono}} <br>
+            Correo: {{reserva.mail}}
+          </address>
+        </div>
+        <!-- /.col -->
+        <div class="col-sm-4 invoice-col">
+          
+          <b>Numero de Orden:</b> {{reserva.id}}<br>
+          
+        </div>
+        <!-- /.col -->
+      </div>
+      <!-- /.row -->
+
+      <!-- Table row -->
+      <div class="row">
+        <div class="col-xs-12 table-responsive">
+          <table class="table table-striped">
+            <thead>
+            <tr>
+              
+              <th>SERVICIO</th>
+              <th>FECHA</th>
+              <th>HORA</th>
+              <th>Subtotal</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+              
+              <td>{{reserva.servicioPrestar}} 
+              {% if reserva.description != 'Sin Descripcion' %} <br>
+                Con los siguientes productos :   <br>{{reserva.description |safe}}  
+              {% endif %}
+              </td>
+              <td>{{reserva.dateTurn}}</td>
+              <td>{{reserva.HoraTurn}}</td>
+              
+              <td>${{reserva.montoAPagar}}</td>
+            </tr>
+            
+            </tbody>
+          </table>
+        </div>
+        <!-- /.col -->
+      </div>
+      <!-- /.row -->
+
+      <div class="row">
+        <!-- accepted payments column -->
+        <div class="col-xs-6">
+          
+        </div>
+        <!-- /.col -->
+        <div class="col-xs-6">
+          <p class="lead">{{fecha}}</p>
+
+          <div class="table-responsive">
+            <table class="table">
+              <tbody><tr>
+                
+                <th>Total:</th>
+                <td>${{reserva.montoAPagar}}</td>
+              </tr>
+            </tbody></table>
+          </div>
+        </div>
+        <!-- /.col -->
+      </div>
+      <!-- /.row -->
+
+      <!-- this row will not appear when printing -->
+      <div class="row no-print">
+        
+      </div>
+    </section>
+
+    <input type="hidden" id="id_reserva" value="{{reserva.id}}">
+   
+    <!-- /.content -->
+  </div>
+  <input type="hidden" id="displayMenu" value="0">
+  <!-- /.content-wrapper -->
+ <footer class="main-footer">
+    <div class="pull-right hidden-xs">
+      <b>Version</b> 0.0.2
+    </div>
+    <strong>Copyright &copy; 2017  Desarrollado Por <a href="javascript:void(0)">Desidiumsoftware</a></strong> All rights
+    reserved.
+  </footer>
+</div>
+
+<div id="miguel">
+  
+</div>
+
+<!-- ./wrapper -->
+
+<!-- jQuery 3 -->
+
+{% block scripts %}
+
+<!-- jQuery 2.2.3 -->
+<script src="{% static "plugins/jQuery/jquery-2.2.3.min.js" %}"></script>
+<!-- Bootstrap 3.3.6 -->
+<script src="{% static "bootstrap/js/bootstrap.min.js" %}"></script>
+<!-- jQuery UI 1.11.4 -->
+<script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
+<!-- Slimscroll -->
+<script src="{% static "plugins/slimScroll/jquery.slimscroll.min.js" %}"></script>
+<!-- FastClick -->
+<script src="{% static "plugins/fastclick/fastclick.js" %}"></script>
+<!-- AdminLTE App -->
+<script src="{% static "dist/js/app.min.js" %}"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="{% static "dist/js/demo.js" %}"></script>
+<!-- fullCalendar 2.2.5 -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
+<script src="{% static "plugins/fullcalendar/fullcalendar.min.js" %}"></script>
+<!-- Page specific script -->
+<script type="text/javascript" src="{% static "bootstrap/js/bootstrap-clockpicker.min.js" %}"></script>
+  <script type="text/javascript" src="{% static "bootstrap/js/highlight.min.js" %}"></script>
+<!-- Page specific script -->
+<script type="text/javascript" src="{% static "bootstrap/js/bootstrap-clockpicker.min.js" %}"></script>
+<script type="text/javascript" src="{% static "bootstrap/js/bootstrap-datepicker.adminlte.min.js" %}"></script>
+<!--<script src="{% static 'bootstrap/js/notificaciones.js'%}"></script>-->
+
+<script>
+
+
+
+
+
+ function PagoSucursal(){
+
+  var modal = '<div class="col-lg-12">'+
+          '<div  class="modal modal-success fade in" id="myModal" role="dialog">'+
+            '<div class="modal-dialog">'+
+              '<div style="margin-left: 7em;" class="modal-content">'+
+                '<div class="modal-header">'+
+                  '<button type="button" class="close" data-dismiss="modal" aria-label="'+
+                  'Close">'+
+                    '<span aria-hidden="true">×</span></button>'+
+                  '<h4 class="modal-title">MUCHAS GRACIAS ! </h4>'+
+                '</div>'+
+                '<div class="modal-body">'+
+                  '<p>Gracias por Reservar, tu reserva sera valida por 24 hs hasta se acredite tu pago en Sucursal! te esperamos! </p>'+
+                '</div>'+
+               '<div class="modal-footer">'+
+                '<button onclick="redirecciona();" type="button" class="btn btn-outline"'+
+                  'data-dismiss="'+
+                  'modal">Cerrar</button>'+
+                '</div>'+
+              '</div>'+
+              
+            '</div>'+
+            
+          '</div>'+
+           
+         '</div>';
+
+         $('#miguel').html(modal);
+          $("#myModal").modal("show");
+
+        var pk = $('#id_reserva').val();
+        Correo(pk);
+
+        
+
+
+}
+
+
+function redirecciona(){
+  window.location.replace("{{server}}/");
+}
+
+
+ function Correo(pk){
+     $.ajax({
+        url: '{{server}}/reservas/Correo/Pago/Sucursal',
+        data: {
+          'pk': pk
+         },
+        dataType: 'json',
+        success: function (data) {
+          if (data) {
+            
+           console.log(data)
+           }
+           
+        }
+
+        
+      });
+
+  }
+
+
+  $('#pagoOnline').on('click',  function(){
+    var pk = $('#id_reserva').val();
+    validar(pk);
+    if (validar(pk) != 'PAYMENT_CREATED') {
+      setInterval(function () {
+        validar(pk);
+      }, 3000);
+    }
+    
+  });
+
+   
+
+  function validar(pk){
+     $.ajax({
+        url: '{{server}}/reservas/Procesar/Pago/Status',
+        data: {
+          'pk': pk
+         },
+        dataType: 'json',
+        success: function (data) {
+          if (data) {
+            
+           if (data.status== 'PAYMENT_CREATED') {
+             $.ajax({
+                  url: '{{server}}/reservas/Procesar/Pago/Status/change',
+                  data: {
+                    'pk': pk
+                   },
+                  dataType: 'json',
+                  success: function (data) {
+                                       
+                     }
+
+                });
+            alert('Gracias Por Realizar su pago');
+            window.location.replace("{{server}}/");
+           }
+
+           return data.status;
+
+           
+           }
+            
+            
+          }
+        
+      });
+
+  }
+
+
+
+
+
+
+
+</script>
+
+
+
+<script>
+  function Suma(isChecked, myValue)
+{
+tot = parseInt(document.form1.total.value);
+myValue = parseInt(myValue);
+if (isChecked) document.form1.total.value = tot + myValue;
+else document.form1.total.value = tot - myValue;
+}
+</script>
+
+<script>
+  $("#siguientePaso").click(function () {
+        if($('#displayMenu').val()==0){
+          $(".paso2").css("display", "block");
+          $('.paso2').addClass('animated bounceInDown');
+          $(".paso1").css("display", "none");
+          $('#displayMenu').val(1)
+
+        }else{
+          //$('.tipo_publicacion').removeClass('animated bounceInDown');
+          //$('.tipo_publicacion').addClass('animated bounceOutRight');
+          $(".tipo_publicacion").css("display", "none");
+          $('#displayMenu').val(0)
+        }
+        
+      });
+</script>
+
+<script>
+  $("#regresar").click(function () {
+        if($('#displayMenu').val()==1){
+          $(".paso1").css("display", "block");
+          $('.paso1').addClass('animated bounceInDown');
+          $(".paso2").css("display", "none");
+          $('#displayMenu').val(0)
+
+        }else{
+          //$('.tipo_publicacion').removeClass('animated bounceInDown');
+          //$('.tipo_publicacion').addClass('animated bounceOutRight');
+          $(".tipo_publicacion").css("display", "none");
+          $('#displayMenu').val(0)
+        }
+        
+      });
+</script>
+
+<script>
+$('.clockpicker').clockpicker({
+  placement: 'top',
+  donetext: 'GUARDAR'
+});
+</script>
+
+<script>
+  $("#TurnDate").datepicker({
+    format: 'yyyy-mm-dd',
+     autoclose: true
+  });
+</script>
+<script>
+  $(function () {
+
+    /* initialize the external events
+     -----------------------------------------------------------------*/
+    function ini_events(ele) {
+      ele.each(function () {
+
+        // create an Event Object (http://arshaw.com/fullcalendar/docs/event_data/Event_Object/)
+        // it doesn't need to have a start or end
+        var eventObject = {
+          title: $.trim($(this).text()) // use the element's text as the event title
+        };
+
+        // store the Event Object in the DOM element so we can get to it later
+        $(this).data('eventObject', eventObject);
+
+        // make the event draggable using jQuery UI
+        $(this).draggable({
+          zIndex: 1070,
+          revert: true, // will cause the event to go back to its
+          revertDuration: 0  //  original position after the drag
+        });
+
+      });
+    }
+ 
+    ini_events($('#external-events div.external-event'));
+
+    /* initialize the calendar
+     -----------------------------------------------------------------*/
+    //Date for the calendar events (dummy data)
+    var date = new Date();
+    var d = date.getDate(),
+        m = date.getMonth(),
+        y = date.getFullYear();
+    
+    $('#calendar').fullCalendar({
+      header: {
+        left: 'prev,next today',
+        center: 'title',
+        right: 'month,agendaWeek,agendaDay'
+      },
+      buttonText: {
+        today: 'Hoy',
+        month: 'Mes',
+        week: 'Semana',
+        day: 'Dia'
+      },
+
+
+      //Random default events
+      events: [
+
+      {% for turno in turnos %}
+        {
+          title: '{{turno.servicioPrestar}}-{{turno.HoraTurn}}',
+          start: '{{ turno.dateTurn|date:"Y-m-d" }}',
+          backgroundColor: "#f56954", //red
+          borderColor: "#f56954" //red
+        },
+      {% endfor %}
+      {% for ReservasWeb in reservas %}
+        {
+          title: '{{ReservasWeb.servicioPrestar}}'+ ' - ' +'{{ReservasWeb.HoraTurn}}',
+          start: '{{ ReservasWeb.dateTurn|date:"Y-m-d" }}',
+          backgroundColor: "#f56954", //red
+          borderColor: "#f56954" //red
+        },
+      {% endfor %}
+
+      ],
+      editable: false,
+      droppable: true, // this allows things to be dropped onto the calendar !!!
+      drop: function (date, allDay) { // this function is called when something is dropped
+
+        // retrieve the dropped element's stored Event Object
+        var originalEventObject = $(this).data('eventObject');
+
+        // we need to copy it, so that multiple events don't have a reference to the same object
+        var copiedEventObject = $.extend({}, originalEventObject);
+
+        // assign it the date that was reported
+        copiedEventObject.start = date;
+        copiedEventObject.allDay = allDay;
+        copiedEventObject.backgroundColor = $(this).css("background-color");
+        copiedEventObject.borderColor = $(this).css("border-color");
+
+        // render the event on the calendar
+        // the last `true` argument determines if the event "sticks" (http://arshaw.com/fullcalendar/docs/event_rendering/renderEvent/)
+        $('#calendar').fullCalendar('renderEvent', copiedEventObject, true);
+
+        // is the "remove after drop" checkbox checked?
+        if ($('#drop-remove').is(':checked')) {
+          // if so, remove the element from the "Draggable Events" list
+          $(this).remove();
+        }
+
+      }
+    });
+
+    /* ADDING EVENTS */
+    var currColor = "#3c8dbc"; //Red by default
+    //Color chooser button
+    var colorChooser = $("#color-chooser-btn");
+    $("#color-chooser > li > a").click(function (e) {
+      e.preventDefault();
+      //Save color
+      currColor = $(this).css("color");
+      //Add color effect to button
+      $('#add-new-event').css({"background-color": currColor, "border-color": currColor});
+    });
+    $("#add-new-event").click(function (e) {
+      e.preventDefault();
+      //Get value and make sure it is not null
+      var val = $("#new-event").val();
+      if (val.length == 0) {
+        return;
+      }
+
+      //Create events
+      var event = $("<div />");
+      event.css({"background-color": currColor, "border-color": currColor, "color": "#fff"}).addClass("external-event");
+      event.html(val);
+      $('#external-events').prepend(event);
+
+      //Add draggable funtionality
+      ini_events(event);
+
+      //Remove event from text input
+      $("#new-event").val("");
+    });
+  });
+</script>
+{% endblock scripts %}
+</body>
+</html>
+

@@ -8,6 +8,7 @@ from apps.Configuracion.models import tb_tipoCollaborador
 from apps.Configuracion.models import tb_status
 from apps.Configuracion.models import tb_sucursales
 from apps.Configuracion.models import tb_formasDePago
+from apps.Configuracion.models import tb_turn_sesion
 
 # Register your models here.
 
@@ -21,3 +22,4 @@ admin.site.register(tb_tipoCollaborador)
 admin.site.register(tb_status)
 admin.site.register(tb_sucursales)
 admin.site.register(tb_formasDePago)
+admin.site.register(tb_turn_sesion)

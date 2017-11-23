@@ -289,7 +289,7 @@
                                     </div>
                                     <div class="separator clear-left col-md-12">
                                         <p class="btn-add col-sm-6">
-                                            <button type="button" name="{{productos.nameProduct}}"  name="{{productos.nameProduct}}"  value="{{productos.priceList}}" class="btn btn-success btn-block" onclick="Paso2(); Desabilitar(this); ProductSeleccionado(this.name); "><i class="fa fa-shopping-cart"></i>CONTRATAR</button></p>
+                                            <button type="button" name="{{colaborador.id}}"    class="btn btn-success btn-block" onclick="Paso2(); Desabilitar(this); ColaboradorSelected(this.name); "><i class="fa fa-shopping-cart"></i>CONTRATAR</button></p>
                                         <p style=""class="btn-details col-sm-6">
                                             <button type="button" class="btn btn-info btn-block" id="InfoServicio" value={{productos.id}} onclick="queryProducto(this.value)"><i class="fa fa-list"></i>VER MAS</button></p>
                                     </div>
@@ -304,7 +304,7 @@
                 </div>
 
                  {% endfor %}
-          <input type="hidden" id="ProductosSeleccionados" name="ProductosSeleccionados" value=" ">
+          <input type="hidden" id="ColaboradorSeleccionado" name="ColaboradorSeleccionado" value="None">
             </div>
         </div>
             </div>
@@ -398,7 +398,7 @@
                                     </div>
                                     <div class="separator clear-left col-md-12">
                                         <p class="btn-add col-sm-6">
-                                            <button type="button" name="{{servicios.id}}"  id="siguientePaso2" name="{{servicios.nameService}}"  value="{{servicios.priceList}}" class="btn btn-success btn-block" onclick="Suma(this.value);  ServiceSelected(this.name);"><i class="fa fa-shopping-cart"></i>COTIZAR</button></p>
+                                            <button type="button" id="siguientePaso2" name="{{servicios.id}}"     value="{{servicios.priceList}}" class="btn btn-success btn-block" onclick="Suma(this.value);   ServiceSelected(this.name); "><i class="fa fa-shopping-cart"></i>COTIZAR</button></p>
                                         <p style=""class="btn-details col-sm-6">
                                             <button class="btn btn-info btn-block" id="InfoServicio" value={{servicios.id}} onclick="query(this.value)"><i class="fa fa-list"></i>VER MAS</button></p>
                                     </div>
@@ -761,17 +761,17 @@ function ServiceSelected(myValue) {
   }
 }
 
-function ProductSeleccionado(product) {
-      if(product){
-       
-       var  html = $('#ProductosSeleccionados').val();
-        html +=   '<li style="list-style:none;">'+ product +'</li>'  ;
-        
-        $('#ProductosSeleccionados').val(html);
-      }
-      else{
-         $('#ProductosSeleccionados').val(' ');
-      }
+function ColaboradorSelected(myValue) {
+      if(myValue){
+    
+    
+    $('#ColaboradorSeleccionado').val(myValue);
+  }
+  else{
+
+    
+     $('#ColaboradorSeleccionado').val('None');
+  }
     }
 
 
@@ -807,17 +807,13 @@ else{
 <script>
 
  function Paso2(){
+
         if($('#displayMenu').val()==0){
           $(".paso2").css("display", "block");
           $('.paso2').addClass('animated bounceInDown');
           $(".paso1").css("display", "none");
           $('#displayMenu').val(1)
 
-        }else{
-          //$('.tipo_publicacion').removeClass('animated bounceInDown');
-          //$('.tipo_publicacion').addClass('animated bounceOutRight');
-          $(".tipo_publicacion").css("display", "none");
-          $('#displayMenu').val(0)
         }
         
       }
@@ -825,7 +821,7 @@ else{
  
 
 
-  $("#siguientePaso2").click(function () {
+ $("#siguientePaso2").click(function () {
         if($('#displayMenu2').val()==0){
           $(".paso3").css("display", "block");
           $('.paso3').addClass('animated bounceInDown');

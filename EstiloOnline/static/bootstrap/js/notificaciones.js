@@ -9,11 +9,11 @@
             
            var cont = data.length;
             $("#contadorNotificaciones").html(cont);
-            $("#headerNotificaciones").html('tienes '+cont+' Solicitudes de Turnos Nuevas');
+            $("#headerNotificaciones").html('tienes '+cont+' Reservas Nuevas');
             var html = "";
             for (var i=0 ; i < cont ; i++) {
 
-            html+='<li><a class="notificacion" value="'+data[i].id+'" href="javascript:void(0);"><div class="pull-left"<i class="fa fa-shopping-cart text-green"></i></div><h4>Nuevo Turno   <small><i class="fa fa-clock-o"></i> '+ data[i].HoraTurn +' </small></h4><p>'+data[i].nombre + ' reserva para '+ data[i].dateTurn +'</p></a></li>'
+            html+='<li><a class="notificacion" value="'+data[i].id+'" href="javascript:void(0);"><div class="pull-left"<i class="fa fa-shopping-cart text-green"></i></div><h4>Nueva Reserva   <small><i class="fa fa-clock-o"></i> '+ data[i].HoraTurn +' </small></h4><p>'+data[i].nombre + ' reserva para '+ data[i].dateTurn +'</p></a></li>'
 
                 
 
@@ -56,7 +56,7 @@
                   '<h4 class="modal-title">Notificacion</h4>'+
                 '</div>'+
                 '<div class="modal-body">'+
-                  '<p>Tienes una nueva solicitud de turno   de '+ data.nombre +' para el dia '+ data.fecha +'   </p>'+
+                  '<p>Tienes una nueva notificacion de una reserva de parte de '+ data.nombre +' para el dia '+ data.fecha +'   </p>'+
                 '</div>'+
                '<div class="modal-footer">'+
                   '<button type="button" class="btn btn-outline pull-left"'+

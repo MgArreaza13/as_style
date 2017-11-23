@@ -38,3 +38,19 @@ class tb_client (models.Model):
 	#TypeClienteKf			=	models.ForeignKey(tb_type_client, on_delete=models.CASCADE, null=False, default='')
 	def __str__(self):
 		return self.user.user.username
+
+class tb_client_WEB (models.Model):	
+	mail					=  	models.EmailField(default='', null=False, max_length=300)
+	nombre					= 	models.CharField(default='', null=False, max_length=30)
+	telefono				=	models.CharField(default='', null=False, max_length=30)
+	#CollaboratorFavoriteKf	= 	models.ForeignKey(tb_collaborator, on_delete=models.CASCADE, null=False, default='')
+	#addressClientTwo		= 	models.TextField(default='', null=False)
+	#isSendPromotions		=	models.BooleanField()
+	#observaciones			=	models.TextField(default='', null=True, max_length=30000)
+	dateCreate				=	models.DateField(auto_now=True, blank=False)
+	numeroReservasWeb 		=   models.IntegerField(default=1, null=False, )
+	#isVip					= 	models.BooleanField()
+	#StatusKf				=	models.ForeignKey(tb_status_turn, on_delete=models.CASCADE, null=False, default='')
+	#TypeClienteKf			=	models.ForeignKey(tb_type_client, on_delete=models.CASCADE, null=False, default='')
+	def __str__(self):
+		return self.nombre

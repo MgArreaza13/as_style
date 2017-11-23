@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     'apps.UserProfile',
     'apps.Configuracion',
     'apps.Caja',
+    'apps.ReservasWeb',
     'social_django',
 
 ]
@@ -85,7 +86,9 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'social_django.context_processors.backends',
-                'social_django.context_processors.login_redirect',
+                'social_django.context_processors.login_redirect', 
+                'apps.ContextProcesor.server_data.server_url',
+                'apps.ContextProcesor.logo_data.render_logo',
             ],
         },
     },
