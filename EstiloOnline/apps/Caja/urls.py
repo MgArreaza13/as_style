@@ -2,22 +2,26 @@ from django.conf.urls import url
 from django.contrib import admin
 #Ingresos
 from apps.Caja.views import NuevoIngreso
-from apps.Caja.views import NuevoIngresoTurn
 from apps.Caja.views import IngresoList
-from apps.Caja.views import IngresoTurnList
 #Egresos
 from apps.Caja.views import NuevoEgreso
 from apps.Caja.views import EgresoList
+from apps.Caja.views import NuevoPagoReservaOnline
+from apps.Caja.views import NuevoPagoTurno
+
 
 urlpatterns = [
 
 	#url(r'^$', Servicios , name='Servicios'  ),
 	#url(r'^Perfil/(?P<id_Client>\d+)$', ClienteProfile , name='ClienteProfile'  ),
 	#Ingresos
+
+	url(r'^ajax/nuevo/ingreso/reserva/web/$', NuevoPagoReservaOnline , name='NuevoPagoReservaOnline'  ),
+	url(r'^ajax/nuevo/ingreso/turno/web/$', NuevoPagoTurno , name='NuevoPagoTurno'  ),
+
 	url(r'^Ingreso/list/$', IngresoList , name='IngresoList'  ),
-	url(r'^Ingreso/list/turnos$', IngresoTurnList , name='IngresoTurnList'  ),
 	url(r'^Ingreso/Nuevo/$', NuevoIngreso , name='NuevoIngreso'  ),
-	url(r'^Ingreso/Nuevo/turno/(?P<id_turn>\d+)$', NuevoIngresoTurn , name='NuevoIngresoTurn'  ),
+	
 
 	#Egresos
 	url(r'^Egreso/list/$', EgresoList , name='EgresoList'  ),

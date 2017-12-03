@@ -49,9 +49,20 @@ from apps.Configuracion.views import NuevoLogo
 from apps.Configuracion.views import EditarLogo
 from apps.Configuracion.views import BorrarLogo
 
+
+#Tipo De Turnos 
+
+from apps.Configuracion.views import NuevoTipoTurn
+from apps.Configuracion.views import EditarTipoTurn
+from apps.Configuracion.views import BorrarTipoTurn
+
+
 urlpatterns = [
 
 	url(r'^$', Configuracion , name='Configuracion'  ),
+	url(r'^TipoTurn/Nuevo/$', NuevoTipoTurn , name='NuevoTipoTurn'  ),
+	url(r'^TipoTurn/Editar/(?P<id_tipeturn>\d+)$', EditarTipoTurn, name='EditarTipoTurn'  ),
+	url(r'^TipoTurn/Borrar/(?P<id_tipeturn>\d+)$', BorrarTipoTurn, name='BorrarTipoTurn'  ),
 	url(r'^logo/Nuevo/$', NuevoLogo , name='NuevoLogo'  ),
 	url(r'^logo/Editar/(?P<id_logo>\d+)$', EditarLogo, name='EditarLogo'  ),
 	url(r'^logo/Borrar/(?P<id_logo>\d+)$', BorrarLogo, name='BorrarLogo'  ),

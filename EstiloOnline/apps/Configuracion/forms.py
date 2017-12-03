@@ -14,6 +14,25 @@ from apps.Configuracion.models import tb_status
 from apps.Configuracion.models import tb_sucursales
 from apps.Configuracion.models import tb_formasDePago
 from apps.Configuracion.models import tb_logo
+from apps.Configuracion.models import tb_turn_sesion
+
+
+
+
+class turnSesionForm(forms.ModelForm):
+	
+	class Meta:
+		model = tb_turn_sesion
+		fields = [
+		'nameturnsession',
+		]
+		exclude = ['user','dateCreate', 'HoraTurn' , 'dateCreate' ]
+		labels = {
+		'nameturnsession':'Ingrese El nombre del Turno', 		
+		}
+		widgets = {
+		}
+
 
 class tipoIngresoForm(forms.ModelForm):
 	

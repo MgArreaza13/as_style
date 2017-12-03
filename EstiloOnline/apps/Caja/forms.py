@@ -3,7 +3,6 @@ from django.forms import ModelForm, Textarea, Select
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from apps.Caja.models import tb_ingreso
-from apps.Caja.models import tb_ingresoTurn
 from apps.Caja.models import tb_egreso
 from django.forms import extras
 
@@ -44,24 +43,28 @@ class IngresoForm(forms.ModelForm):
 			'placeholder':'tipo de Pago'}),
 
 		}
-          
-class IngresoTurnForm(forms.ModelForm):
+
+
+class WebReservasIngresoForm(forms.ModelForm):
 	
 	class Meta:
-		model = tb_ingresoTurn
+		model = tb_ingreso
 		fields = [
 		'tipoPago',
 		'tipoIngreso',
-		'monto',
+		
+		
 		
 		]
-		exclude = ['user', 'dateCreate', 'descripcion', 'turn']
+		exclude = ['user', 'dateCreate', 'descripcion', 'service',  'monto',]
 
 		labels = {
-		'monto':'Ingrese el monto a pagar', 
+		
 		
 		}
 		widgets = {
+
+		
 
 		'tipoPago':Select(attrs={'class':'form-control',
 			'required':True,
@@ -75,9 +78,6 @@ class IngresoTurnForm(forms.ModelForm):
 
 		}
           
-
-
-
 
 class EgresoForm(forms.ModelForm):
 	

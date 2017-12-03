@@ -13,6 +13,7 @@ from apps.Configuracion.models import tb_sucursales
 from apps.Configuracion.models import tb_formasDePago
 from apps.UserProfile.models import tb_profile
 from apps.Configuracion.models import tb_logo
+from apps.Configuracion.models import tb_turn_sesion
 #forms
 from apps.Configuracion.forms import tipoIngresoForm
 from apps.Configuracion.forms import tipoEgresoForm
@@ -24,6 +25,7 @@ from apps.Configuracion.forms import tipoComisionForm
 from apps.Configuracion.forms import sucursalesForm
 from apps.Configuracion.forms import formasDePagoForm
 from apps.Configuracion.forms import logoForm
+from apps.Configuracion.forms import turnSesionForm
 
 # Create your views here.
 
@@ -49,6 +51,7 @@ def Configuracion(request):
 	sucursales 			=	tb_sucursales.objects.all()
 	formasdepago 		= 	tb_formasDePago.objects.all()
 	logo 				=   tb_logo.objects.all()
+	TipoTurn 			=	tb_turn_sesion.objects.all()
 
 	#queryset 
 	turnos_hoy =  tb_turn.objects.filter(dateTurn=date.today()).filter(statusTurn__nameStatus='En Espera').count()
@@ -58,6 +61,7 @@ def Configuracion(request):
 	perfil = result[0]
 
 	contexto = {
+	'TipoTurn':TipoTurn,
 	'logo':logo,
 	'perfil':perfil,
 	'TipoDeIngreso':tipoDeIngreso,
@@ -74,6 +78,60 @@ def Configuracion(request):
 	'egresos_hoy':egresos_hoy,
 	}
 	return render(request, 'Configuracion/configuracion.html', contexto)
+
+
+
+####################Turn Sesion##################################
+
+@login_required(login_url = 'Demo:login' )
+def NuevoTipoTurn(request):
+	result = validatePerfil(tb_profile.objects.filter(user=request.user))
+	perfil = result[0]
+	Form = turnSesionForm
+	if request.method == 'POST':
+		Form = turnSesionForm(request.POST or None)
+		if Form.is_valid():
+			tipoTurn = Form.save(commit=False)
+			tipoTurn.user = request.user
+			tipoTurn.HoraTurn= request.POST['TimeTurnStart']
+			tipoTurn.HoraTurnEnd = request.POST['TimeTurnEnd']
+			tipoTurn.save()
+			return redirect('Configuracion:Configuracion')
+		else:
+			Form = turnSesionForm()
+	return render(request, 'Configuracion/NuevoTipoTurno.html' , {'Form':Form, 'perfil':perfil})
+
+
+
+@login_required(login_url = 'Demo:login' )
+def EditarTipoTurn(request, id_tipeturn):
+	tipeturnEditar= tb_turn_sesion.objects.get(id=id_tipeturn)
+	result = validatePerfil(tb_profile.objects.filter(user=request.user))
+	perfil = result[0]
+	if request.method == 'GET':
+		Form= turnSesionForm(instance = tipeturnEditar)
+	else:
+		Form = turnSesionForm(request.POST, instance = tipeturnEditar)
+		if Form.is_valid():
+			tipoTurn = Form.save(commit=False)
+			tipoTurn.user = request.user
+			tipoTurn.HoraTurn= request.POST['TimeTurnStart']
+			tipoTurn.HoraTurnEnd = request.POST['TimeTurnEnd']
+			tipoTurn.save()
+			return redirect ('Configuracion:Configuracion')
+	return render (request, 'Configuracion/NuevoTipoTurno.html' , {'Form':Form, 'perfil':perfil})
+
+
+
+@login_required(login_url = 'Demo:login' )
+def BorrarTipoTurn(request, id_tipeturn):
+	tipeturnEditar= tb_turn_sesion.objects.get(id=id_tipeturn)
+	result = validatePerfil(tb_profile.objects.filter(user=request.user))
+	perfil = result[0]
+	if request.method == 'POST':
+		tipeturnEditar.delete()
+		return redirect ('Configuracion:Configuracion')
+	return render (request, 'Configuracion/deleteTipoTurno.html', {'tipeturnEditar':tipeturnEditar, 'perfil':perfil})
 
 
 

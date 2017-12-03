@@ -33,6 +33,47 @@
   <!-- bootstrap wysihtml5 - text editor -->
   <link rel="stylesheet" href="{% static 'plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css'%}">
   <script src="{% static 'plugins/jQuery/jquery-2.2.3.min.js'%}"></script>
+  <link rel="stylesheet" href="{% static 'plugins/morris/morris.css'%}">
+  <!-- jvectormap -->
+  <link rel="stylesheet" href="{% static 'plugins/jvectormap/jquery-jvectormap-1.2.2.css'%}">
+  <!-- Date Picker -->
+  <link rel="stylesheet" href="{% static 'plugins/datepicker/datepicker3.css'%}">
+  <!-- Daterange picker -->
+  <link rel="stylesheet" href="{% static 'plugins/daterangepicker/daterangepicker.css'%}">
+  <!-- bootstrap wysihtml5 - text editor -->
+  <link rel="stylesheet" href="{% static 'plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css'%}">
+  <script src="{% static 'plugins/jQuery/jquery-2.2.3.min.js'%}"></script>
+  <link rel="stylesheet" href="{% static 'plugins/jvectormap/jquery-jvectormap-1.2.2.css'%}">
+  <!-- Date Picker -->
+  <link rel="stylesheet" href="{% static 'plugins/datepicker/datepicker3.css'%}">
+  <!-- Daterange picker -->
+  <link rel="stylesheet" href="{% static 'plugins/daterangepicker/daterangepicker.css'%}">
+  <!-- bootstrap wysihtml5 - text editor -->
+  <link rel="stylesheet" href="{% static 'plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css'%}">
+   <link rel="stylesheet" href="{% static "plugins/fullcalendar/fullcalendar.min.css" %}">
+  <link rel="stylesheet" href="{% static "plugins/fullcalendar/fullcalendar.print.css" %}" media="print">
+
+
+
+
+  <script type="text/javascript" src="{% static "bootstrap/js/jquery-1.8.0.min.js" %}"></script>
+
+
+
+<link rel="stylesheet" type="text/css" href="{% static "bootstrap/css/bootstrap-clockpicker.min.css" %}">
+  <link rel="stylesheet" type="text/css" href="{% static "bootstrap/css/github.min.css" %}">
+  <link rel="stylesheet" type="text/css" href="{% static "bootstrap/css/bootstrap-datepicker.adminlte.min.css" %}">
+  <link rel="stylesheet" href="{% static "bootstrap/css/miguel.css" %}">
+
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.11.0/sweetalert2.all.min.js'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.11.0/sweetalert2.common.min.js'></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.11.0/sweetalert2.min.css">
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.11.0/sweetalert2.min.js'></script>
+
+
+
+<link rel='stylesheet prefetch' href='https://fonts.googleapis.com/css?family=Roboto:400,100,400italic,700italic,700'>
+<link rel='stylesheet prefetch' href='https://daneden.github.io/animate.css/animate.min.css'>
    {% block styles %}
   {% endblock styles %}
   
@@ -328,23 +369,17 @@
           </a>
           <ul class="treeview-menu" style="display: none;">
             <li><a href="{% url "Turnos:index" %}"><i class="fa fa-calendar"></i> Resumen </a></li>
-            <li><a href="{% url "Turnos:listTurnos" %}"><i class="fa fa-calendar"></i> Listado Turnos </a></li>
            
-            <li><a href="{% url "Turnos:NuevoTurn" %}"><i class="fa fa-plus"></i> Nuevo turno </a></li>
+            <li><a href="{% url "Turnos:listTurnos" %}"><i class="fa fa-calendar"></i> Listado Turnos </a></li>
+            <li><a href="{% url "Reservas:listReservas" %}"><i class="fa fa-calendar"></i> Reservas Online </a></li>
+            <li><a href="{% url "Demo:calendario" %}"><i class="fa fa-calendar"></i> CALENDARIO DE TURNOS </a></li>
             
-            
+            <li><a href="{% url "Reservas:web" %}"><i class="fa fa-plus"></i> Nuevo turno </a></li>
           </ul>
         </li>
         
        
-        <li class="treeview">
-          <a href="{% url "Demo:calendario" %}">
-            <i class="fa fa-calendar"></i>
-            <span>CALENDARIO</span>
-            <span class="pull-right-container">
-            </span>
-          </a>
-        </li>
+        
     
         
             <li class="treeview">
@@ -877,8 +912,36 @@
 <!-- AdminLTE for demo purposes -->
 <script src="{% static 'dist/js/demo.js'%}"></script>
 <script src="{% static 'bootstrap/js/notificaciones.js'%}"></script>
+<script type="text/javascript" src="{% static "bootstrap/js/bootstrap-clockpicker.min.js" %}"></script>
+<script type="text/javascript" src="{% static "bootstrap/js/bootstrap-datepicker.adminlte.min.js" %}"></script>
+fullcalendar.min.js" %}"></script>
+<script type="text/javascript" src="{% static "bootstrap/js/bootstrap-clockpicker.min.js" %}"></script>
+  <script type="text/javascript" src="{% static "bootstrap/js/highlight.min.js" %}"></script>
+<!-- Page specific script -->
+<script type="text/javascript" src="{% static "bootstrap/js/bootstrap-clockpicker.min.js" %}"></script>
+<script type="text/javascript" src="{% static "bootstrap/js/bootstrap-datepicker.adminlte.min.js" %}"></script>
+
+<script>
+
+$('.clockpicker').clockpicker({
+  placement: 'top',
+  donetext: 'GUARDAR'
+});
+
+</script>
+
+<script>
+  $("#TimeTurnStart").datepicker({
+    format: 'yyyy-mm-dd',
+     autoclose: true
+  });
+  $("#TimeTurnEnd").datepicker({
+    format: 'yyyy-mm-dd',
+     autoclose: true
+  });
+</script>
+
 
 {% endblock scripts %}
-
 </body>
 </html>

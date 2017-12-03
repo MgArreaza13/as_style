@@ -94,7 +94,7 @@ urlpatterns = [
     url(r'^turnos/', include('apps.Turn.urls', namespace='Turnos')),
     url(r'^Configuracion/', include('apps.Configuracion.urls', namespace='Configuracion')),
     url(r'^Caja/', include('apps.Caja.urls', namespace='Caja')),
-    url(r'^reservas/', include('apps.ReservasWeb.urls', namespace='ReservasWeb')),
+    url(r'^reservas/', include('apps.ReservasWeb.urls', namespace='Reservas')),
     url(r'^admin/', admin.site.urls),
     #url(r'^static/(?P<path>.*)$', 'django.views.static.serve' , settings.STATIC_ROOT),
     #url(r'^media/(?P<path>.*)$', 'django.views.static.serve', settings.MEDIA_ROOT), 
