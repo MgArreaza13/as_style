@@ -11,7 +11,7 @@ from apps.Configuracion.models import tb_tipoCollaborador
 from apps.Configuracion.models import tb_status
 from apps.Configuracion.models import tb_sucursales
 from apps.Configuracion.models import tb_formasDePago
-
+from apps.Configuracion.models import tb_turn_sesion
 
 class TipoIngresoSerializer(serializers.HyperlinkedModelSerializer):
 	class Meta:
@@ -58,3 +58,9 @@ class FormasDePagoSerializer(serializers.HyperlinkedModelSerializer):
 	class Meta:
 		model = tb_formasDePago
 		fields = ('user', 'nameFormasDePago', 'dateCreate')
+
+
+class TurnSesionSerializer(serializers.HyperlinkedModelSerializer):
+	class Meta:
+		model = tb_turn_sesion
+		fields = ('user', 'nameturnsession', 'HoraTurn','HoraTurnEnd',)

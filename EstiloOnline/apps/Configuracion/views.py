@@ -622,7 +622,7 @@ from apps.Configuracion.serializers import TipoColaboradorSerializer
 from apps.Configuracion.serializers import StatusSerializer
 from apps.Configuracion.serializers import SucursalesSerializer
 from apps.Configuracion.serializers import FormasDePagoSerializer
-
+from apps.Configuracion.serializers import TurnSesionSerializer
 
 class TipoIngresoViewset(viewsets.ModelViewSet):
 	queryset = tb_ingreso.objects.all()
@@ -659,3 +659,8 @@ class SucursalesViewset(viewsets.ModelViewSet):
 class FormasDePagoViewset(viewsets.ModelViewSet):
 	queryset = tb_formasDePago.objects.all()
 	serializer_class = FormasDePagoSerializer
+
+
+class TurnSesionViewset(viewsets.ModelViewSet):
+	queryset = tb_turn_sesion.objects.all()
+	serializer_class = TurnSesionSerializer

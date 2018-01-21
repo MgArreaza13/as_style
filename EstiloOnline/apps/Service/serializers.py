@@ -6,7 +6,7 @@ class ServiceSerializers (serializers.HyperlinkedModelSerializer):
 		model = tb_service
 		fields = (
 			'id',
-			'urls',
+			'url',
 			'user',
 			'nameService',
 			'descriptionService',

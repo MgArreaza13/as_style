@@ -41,6 +41,7 @@ from apps.Configuracion.models import tb_logo
 from apps.Configuracion.models import tb_turn_sesion
 from django.core import serializers
 from apps.Configuracion.models import tb_turn_sesion
+from apps.ReservasWeb.serializers import ReservasWebSerializer
 
 
 

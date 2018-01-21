@@ -40,7 +40,8 @@ from apps.Configuracion.views import TipoColaboradorViewset
 from apps.Configuracion.views import StatusViewset
 from apps.Configuracion.views import SucursalesViewset
 from apps.Configuracion.views import FormasDePagoViewset
-
+from apps.ReservasWeb.views import ReservasWebViewsets
+from apps.Configuracion.views import TurnSesionViewset
 router.register(r'api/tipoingreso', TipoIngresoViewset)
 router.register(r'api/tipoegreso', TipoEgresoViewset)
 router.register(r'api/tiposervicio', TipoServicioViewset)
@@ -50,7 +51,8 @@ router.register(r'api/tipocolaborador', TipoColaboradorViewset)
 router.register(r'api/status', StatusViewset)
 router.register(r'api/sucursales', SucursalesViewset)
 router.register(r'api/fromasdepago', FormasDePagoViewset)
-
+router.register(r'api/reservas/web', ReservasWebViewsets)
+router.register(r'api/sesiones', TurnSesionViewset)
 ################PRODUCTOS############################
 from apps.Product.views import ProductViewset
 router.register(r'api/productos', ProductViewset)

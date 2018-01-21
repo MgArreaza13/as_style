@@ -6,10 +6,20 @@ class ReservasWebSerializer(serializers.HyperlinkedModelSerializer):
 	class Meta:
 		model = tb_reservasWeb
 		fields = (
+			'id',
+			'url',
+			'servicioPrestar',
+			'collaborator',
 			'dateTurn',
-			'HoraTurn',
+			'turn',
 			'mail',
 			'nombre',
 			'telefono',
 			'statusTurn',
+			'montoAPagar',
+			'montoPagado',
+			'isPay',
+			'description',
+			'ingenico_id',
+			'PagoOnline',
 			)
