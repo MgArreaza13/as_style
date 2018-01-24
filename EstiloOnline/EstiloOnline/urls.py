@@ -18,6 +18,7 @@ from django.conf import settings
 from django.contrib import admin
 from django.conf import settings
 from django.conf.urls.static import static
+from rest_framework_jwt.views import refresh_jwt_token
 #rest framework
 from rest_framework import routers
 router =  routers.DefaultRouter()
@@ -102,6 +103,9 @@ urlpatterns = [
     #url(r'^media/(?P<path>.*)$', 'django.views.static.serve', settings.MEDIA_ROOT), 
     url(r'^notificaciones/', include('apps.Notificaciones.urls', namespace='Notificaciones')),
     url('', include('social.apps.django_app.urls', namespace='social')),
+    url(r'^rest-auth/', include('rest_auth.urls')),
+    url(r'^rest-auth/registration/', include('rest_auth.registration.urls')),
+    url(r'^refresh-token/', refresh_jwt_token),
 ]
 urlpatterns += router.urls
 if settings.DEBUG:
