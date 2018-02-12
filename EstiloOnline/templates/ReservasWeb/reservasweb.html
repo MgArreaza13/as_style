@@ -797,6 +797,7 @@
 <!-- Page specific script -->
 <script type="text/javascript" src="{% static "bootstrap/js/bootstrap-clockpicker.min.js" %}"></script>
 <script type="text/javascript" src="{% static "bootstrap/js/bootstrap-datepicker.adminlte.min.js" %}"></script>
+<script src="{% static "plugins/fullcalendar/locale/es.js" %}"></script>
 <!--<script src="{% static 'bootstrap/js/notificaciones.js'%}"></script>-->
 
 <script>
@@ -1278,7 +1279,7 @@ $('.clockpicker').clockpicker({
       {% endfor %}
       {% for ReservasWeb in ReservasWeb %}
         {
-          title: 'RESERVADO',
+          title: 'RESERVADO \n {{ReservasWeb.turn.HoraTurn}} a {{ReservasWeb.turn.HoraTurnEnd}} hs',
           start: '{{ ReservasWeb.dateTurn|date:"Y-m-d" }} {{ReservasWeb.turn.HoraTurn}}',
           end:'{{ ReservasWeb.dateTurn|date:"Y-m-d" }} {{ReservasWeb.turn.HoraTurnEnd}}',
           backgroundColor: "#f56954", //red
@@ -1527,7 +1528,7 @@ $('.clockpicker').clockpicker({
 
         // creo el modal  
 
-        var modal = '<div class="col-lg-12">'+
+       // var modal = '<div class="col-lg-12">'+
           '<div  class="modal" id="myModal" role="dialog">'+
             '<div class="modal-dialog">'+
               '<div style="margin-left: 7em;" class="modal-content">'+
@@ -1553,8 +1554,8 @@ $('.clockpicker').clockpicker({
            
          '</div>';
 
-         $('#miguel').html(modal);
-          $("#myModal").modal("show");
+         //$('#miguel').html(modal);
+          //$("#myModal").modal("show");
 
     },
       editable: false,

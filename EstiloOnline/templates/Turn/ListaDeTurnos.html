@@ -9,7 +9,8 @@
 
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
-    <section class="content-header">
+    
+<section class="content-header">
       <h1>
         Listado de Turnos
         <small>Detalles </small>
@@ -105,32 +106,18 @@
             <div class="box-header">
               <h3 class="box-title">Lista de Clientes </h3>
             </div>
-            <div style="background-color: rgba(154, 153, 158, 0.09);" class="box-body">
-            <h5 class="box-title">Filtrar por Fecha </h5>
-              <div class="form-group col-md-5">
-                    <label for="exampleInputEmail1">DESDE</label>
-                    <input type="text" id="datepicker_from" class="form-control"  placeholder="SELECCIONE LA FECHA DE INICIO ">
-                </div>
-                <div class="form-group col-md-5">
-                    <label for="exampleInputEmail1">HASTA</label>
-                    <input type="text" id="datepicker_to" class="form-control"  placeholder="SELECCIONE LA FECHA FINAL">
-                </div>
-                <div style="margin-top:1.8em;" class="form-group col-md-2">
-                    <button class="btn btn-block btn-primary" id="btn-reload"> FILTRAR </button>
-                </div>
-              
-            </div>            <!-- /.box-header -->
+            <!-- /.box-header -->
             <div class="box-body">
               <table id="example1" class="table table-bordered table-striped">
                 <thead>
                 <tr>
                   <th>COD</th>
-                  <th>CLIENTE</th>
-                  <th>COLABORADOR</th>
-                  <th>FORMA DE PAGO</th>
-                  <th>HORA</th>
                   <th>FECHA</th>
-                  <th class="hidden">fechaNumero</th>
+                  <th>CLIENTE</th>
+                  <th>SERVICIO A PRESTAR </th>
+                  <th>HORA</th>
+                  <th>MONTO A PAGAR</th>
+                  <th>MONTO PAGADO</th>
                   <th>INFO</th>
                   <th>STATUS</th>
                   <th>ACCIONES</th>
@@ -144,24 +131,20 @@
                     {% if TurnEditar.id == turno.id  %}
                     <!--form-->
                     <tr>
-                    <td><a href="#">{{turno.id}}</a></td>
+                    <td><a href="#">T-{{turno.id}}</a></td>
+                    <td>{{turno.dateTurn}}</td>
                     <td>
                           <a href="{% url "Clientes:ClienteProfile" turno.client.id %}" class="product-title">{{turno.client}}</a>
                     </td>
                     <td>
-                          <a href="{% url "Colaboradores:ColaboradorProfile" turno.collaborator.id %}" class="product-title">{{turno.collaborator}}</a>
+                          {{turno}}
                     </td>
-                     {% if reserva.PagoOnline == 'True' %}
-                            <td> Pagado Online </td>
-                            {% else %}
-                            <td>Paga Por Sucursal</td>
-                          {% endif %}
                    
-                         <td>{{turno.HoraTurn}}</td>
+                         <td>{{turno.turn}}</td>
+                         <td>${{turno.montoAPagar}}</td>
+                         <td>${{turno.montoPagado}}</td>
                     
-                    <td>{{turno.dateTurn}}</td>
-                    <td class="hidden">{{ turno.dateTurn|date:"m-d-Y" }}</td>
-                    <td>{{turno.extraInfoTurn}}</td>  
+                    <td>APLICACION</td>  
 
                     {% if turno.statusTurn.nameStatus == 'En Espera' %}
                       
@@ -180,12 +163,12 @@
                                 </div>
                                 <td>
                                   <button type="submit" class="label btn btn-primary">GUARDAR</button>
-                                  <a href="{% url "Turnos:listTurnos" %}" class="label btn btn-danger">CANCELAR</a>
+                                  <a href="{% url "Colaboradores:turnos" request.user.id %}" class="label btn btn-danger">CANCELAR</a>
                                  </td>
                           </form>
                     </td>
 
-                   {% elif turno.statusTurn.nameStatus == 'Atendido' %}
+                   {% elif turno.statusTurn.nameStatus == 'Finalizada' %}
                        <td>
                             
                             <form action="" method="post">
@@ -202,7 +185,7 @@
                                 </div>
                                 <td>
                                   <button type="submit" class="label btn btn-primary">GUARDAR</button>
-                                  <a href="{% url "Turnos:listTurnos" %}" class="label btn btn-danger">CANCELAR</a>
+                                  <a href="{% url "Colaboradores:turnos" request.user.id %}" class="label btn btn-danger">CANCELAR</a>
                                  </td>
                           </form>
                       </td>
@@ -224,7 +207,7 @@
                                 </div>
                                 <td>
                                   <button type="submit" class="label btn btn-primary">GUARDAR</button>
-                                  <a href="{% url "Turnos:listTurnos" %}" class="label btn btn-danger">CANCELAR</a>
+                                  <a href="{% url "Colaboradores:turnos" request.user.id %}" class="label btn btn-danger">CANCELAR</a>
                                 </td>
                           </form>
                       </td>
@@ -246,7 +229,7 @@
                                 </div>
                                 <td>
                                   <button type="submit" class="label btn btn-primary">GUARDAR</button>
-                                  <a href="{% url "Turnos:listTurnos" %}" class="label btn btn-danger">CANCELAR</a>
+                                  <a href="{% url "Colaboradores:turnos" request.user.id %}" class="label btn btn-danger">CANCELAR</a>
                                  </td>
                           </form>
                       </td>
@@ -256,48 +239,221 @@
                   </tr>
                       {% elif TurnEditar.id != turno.id   %}
                         <tr>
-                          <td><a href="#">{{turno.id}}</a></td>
+                          <td><a href="#">T-{{turno.id}}</a></td>
+                          <td>{{turno.dateTurn}}</td>
                           <td>
                                 <a href="{% url "Clientes:ClienteProfile" turno.client.id %}" class="product-title">{{turno.client}}</a>
                           </td>
                           <td>
-                                <a href="{% url "Colaboradores:ColaboradorProfile" turno.collaborator.id %}" class="product-title">{{turno.collaborator}}</a>
+                                {{turno}}
                           </td>
-                          {% if reserva.PagoOnline == 'True' %}
-                            <td> Pagado Online </td>
-                            {% else %}
-                            <td>Paga Por Sucursal</td>
-                          {% endif %}
                          
-                               <td>{{turno.HoraTurn}}</td>
-                          <td>{{turno.dateTurn}}</td>
-                          <td class="hidden">{{ turno.dateTurn|date:"m-d-Y" }}</td>
-                          <td>{{turno.extraInfoTurn}}</td>
+                               <td>{{turno.turn}}</td>
+                               <td>${{turno.montoAPagar}}</td>
+                               <td>${{turno.montoPagado}}</td>
+
+                          
+                          <td>APLICACION</td>
                           
                           {% if turno.statusTurn.nameStatus == 'En Espera' %}
                             
-                            <td>
+                            <td id="T-{{turno.id}}">
                                   <span class="label label-warning">{{turno.statusTurn}}</span>
                             </td>
 
-                         {% elif turno.statusTurn.nameStatus == 'Atendido' %}
-                             <td>
+                         {% elif turno.statusTurn.nameStatus == 'Finalizada' %}
+                             <td id="T-{{turno.id}}">
                                   <span class="label label-success">{{turno.statusTurn}}</span>
                             </td>
 
                           {% elif turno.statusTurn.nameStatus == 'Cancelado' %}
-                             <td>
+                             <td id="T-{{turno.id}}">
                                   <span class="label label-danger">{{turno.statusTurn}}</span>
                             </td>
                           {% elif turno.statusTurn.nameStatus == 'En Proceso' %}
-                             <td>
+                             <td id="T-{{turno.id}}">
                                   <span style="background-color:#00c0ef;" class="label">{{turno.statusTurn}}</span>
+                            </td>
+                          {% elif turno.statusTurn.nameStatus == 'Sin Aprobar' %}
+                             <td id="T-{{turno.id}}">
+                                  <span style="background-color:deeppink;" class="label">{{turno.statusTurn}}</span>
+                            </td>
+                          {% elif turno.statusTurn.nameStatus == 'Confirmada' %}
+                             <td id="T-{{turno.id}}">
+                                  <span style="background-color:darkslategray" class="label">{{turno.statusTurn}}</span>
+                            </td>  
+                          {% endif %}
+
+                          <td>
+                              <button  type="button" value='{{turno.id}}' href="javascript:void(0);" onclick="PagarOnlineTurno(this.value);" style="" class="label btn btn-info">PAGAR</button>
+                              <button class="label btn" type="button" value="{{turno.id}}" onclick="status_turno(this.value);" style="background-color:#39CCCC;" class="label">STATUS</button>
+                              
+                              <a href="{% url "Turnos:DeleteTurn" turno.id %}" style="background-color:#D81B60;" class="label">ELIMINAR</a>
+                            </td>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+                {% for turno in reservas  %}
+                    {% if TurnEditar.id == turno.id  %}
+                    <!--form-->
+                    <tr>
+                    <td><a href="#">R-{{turno.id}}</a></td>
+                    <td>{{turno.dateTurn}}</td>
+                    <td>
+                          {{turno.nombre}}
+                    </td>
+                    <td>
+                          {{turno}}
+                    </td>
+                   
+                         <td>{{turno.turn}}</td>
+                         <td>${{turno.montoAPagar}}</td>
+                         <td>${{turno.montoPagado}}</td>
+                    
+                    <td>Reserva Web</td>  
+
+                    {% if turno.statusTurn.nameStatus == 'En Espera' %}
+                      
+                      <td> 
+                          <form action="" method="post">
+                             {% csrf_token %}
+                               <div class="box-body">
+                                  {% for field in Form %}
+                                    {% if field.name == 'statusTurn' %}
+                                      <div class="form-group ">
+                                      <span class="label label-warning">{{turno.statusTurn}}</span>
+                                          {{ field }}   
+                                       </div>
+                                    {%endif%}
+                                  {% endfor %}
+                                </div>
+                                <td>
+                                  <button type="submit" class="label btn btn-primary">GUARDAR</button>
+                                  <a href="{% url "Colaboradores:turnos" request.user.id %}" class="label btn btn-danger">CANCELAR</a>
+                                 </td>
+                          </form>
+                    </td>
+
+                   {% elif turno.statusTurn.nameStatus == 'Finalizada' %}
+                       <td>
+                            
+                            <form action="" method="post">
+                             {% csrf_token %}
+                               <div class="box-body">
+                                  {% for field in Form %}
+                                    {% if field.name == 'statusTurn' %}
+                                      <div class="form-group ">
+                                        <span class="label label-success">{{turno.statusTurn}}</span>
+                                          {{ field }}   
+                                       </div>
+                                    {%endif%}
+                                  {% endfor %}
+                                </div>
+                                <td>
+                                  <button type="submit" class="label btn btn-primary">GUARDAR</button>
+                                  <a href="{% url "Colaboradores:turnos" request.user.id %}" class="label btn btn-danger">CANCELAR</a>
+                                 </td>
+                          </form>
+                      </td>
+
+                    {% elif turno.statusTurn.nameStatus == 'Cancelado' %}
+                       <td>
+                            
+                            <form action="" method="post">
+                             {% csrf_token %}
+                               <div class="box-body">
+                                  {% for field in Form %}
+                                    {% if field.name == 'statusTurn' %}
+                                      <div class="form-group ">
+                                      <span class="label label-danger">{{turno.statusTurn}}</span>
+                                          {{ field }}   
+                                       </div>
+                                    {%endif%}
+                                  {% endfor %}
+                                </div>
+                                <td>
+                                  <button type="submit" class="label btn btn-primary">GUARDAR</button>
+                                  <a href="{% url "Colaboradores:turnos" request.user.id %}" class="label btn btn-danger">CANCELAR</a>
+                                </td>
+                          </form>
+                      </td>
+                    {% elif turno.statusTurn.nameStatus == 'En Proceso' %}
+                    <!--No form-->
+                       <td>
+                            <form action="" method="post">
+                            
+                             {% csrf_token %}
+                               <div class="box-body">
+                                  {% for field in Form %}
+                                    {% if field.name == 'statusTurn' %}
+                                      <div class="form-group ">
+                                          <span style="background-color:#00c0ef;" class="label">{{turno.statusTurn}}</span>
+                                          {{ field }}   
+                                       </div>
+                                    {%endif%}
+                                  {% endfor %}
+                                </div>
+                                <td>
+                                  <button type="submit" class="label btn btn-primary">GUARDAR</button>
+                                  <a href="{% url "Colaboradores:turnos" request.user.id %}" class="label btn btn-danger">CANCELAR</a>
+                                 </td>
+                          </form>
+                      </td>
+                    {% endif %}
+                  
+                    
+                  </tr>
+                      {% elif TurnEditar.id != turno.id   %}
+                        <tr>
+                          <td><a href="#">R-{{turno.id}}</a></td>
+                          <td>{{turno.dateTurn}}</td>
+                          <td>
+                                {{turno.nombre}}
+                          </td>
+                          <td>
+                                {{turno.servicioPrestar}}
+                          </td>
+                         
+                               <td>{{turno.turn}}</td>
+                               <td>${{turno.montoAPagar}}</td>
+                               <td>${{turno.montoPagado}}</td>
+                          
+                          <td>Reserva Web</td>
+                          
+                          {% if turno.statusTurn.nameStatus == 'En Espera' %}
+                            
+                            <td id="R-{{turno.id}}">
+                                  <span class="label label-warning">{{turno.statusTurn}}</span>
+                            </td>
+
+                         {% elif turno.statusTurn.nameStatus == 'Finalizada' %}
+                             <td id="R-{{turno.id}}">
+                                  <span class="label label-success">{{turno.statusTurn}}</span>
+                            </td>
+
+                          {% elif turno.statusTurn.nameStatus == 'Cancelado' %}
+                             <td id="R-{{turno.id}}">
+                                  <span class="label label-danger">{{turno.statusTurn}}</span>
+                            </td>
+                          {% elif turno.statusTurn.nameStatus == 'En Proceso' %}
+                             <td id="R-{{turno.id}}">
+                                  <span style="background-color:#00c0ef;" class="label">{{turno.statusTurn}}</span>
+                            </td>
+                            {% elif turno.statusTurn.nameStatus == 'Sin Aprobar' %}
+                             <td id="R-{{turno.id}}">
+                                  <span style="background-color:deeppink;" class="label">{{turno.statusTurn}}</span>
+                            </td>
+
+                            {% elif turno.statusTurn.nameStatus == 'Confirmada' %}
+                             <td id="R-{{turno.id}}">
+                                  <span style="background-color:darkslategray" class="label">{{turno.statusTurn}}</span>
                             </td>
                           {% endif %}
 
                           <td>
-                              <a href="{% url "Turnos:EditTurnList" turno.id %}" style="background-color:#39CCCC;" class="label">STATUS</a>
-                              <a href="{% url "Turnos:EditTurn" turno.id %}" style="background-color:#001F3F;" class="label">EDITAR</a>
+                              <button  type="button" value='{{turno.id}}' href="javascript:void(0);" onclick="PagarOnlineReservaWeb(this.value);" style="" class="label btn btn-info">PAGAR</button>
+                              <button class="label btn" type="button" value="{{turno.id}}" onclick="status(this.value);" style="background-color:#39CCCC;" class="label">STATUS</button>
+                              
                               <a href="{% url "Turnos:DeleteTurn" turno.id %}" style="background-color:#D81B60;" class="label">ELIMINAR</a>
                             </td>
                         </tr>
@@ -312,15 +468,15 @@
                 <tfoot>
                 <tr>
                   <th>COD</th>
-                  <th>CLIENTE</th>
-                  <th>COLABORADOR</th>
-                  <th>FORMA DE PAGO</th>
-                  <th>HORA</th>
                   <th>FECHA</th>
+                  <th>CLIENTE</th>
+                  <th>SERVICIO A PRESTAR </th>
+                  <th>HORA</th>
+                  <th>MONTO A PAGAR</th>
+                  <th>MONTO PAGADO</th>
                   <th>INFO</th>
                   <th>STATUS</th>
                   <th>ACCIONES</th>
-
                 </tr>
                 </tfoot>
               </table>
@@ -384,5 +540,276 @@
 <script src="{% static "bootstrap/js/filtrado.js" %}"></script>
 
 <!-- page script -->
+
+<script> 
+
+function status_turno(id) {
+  var myArrayOfThings = [];
+  function cargarOpciones() {
+    {% for Tturno in status %}      
+        myArrayOfThings.push( { id: '{{Tturno.nameStatus}}', name: '{{Tturno.nameStatus}}' });
+    {% endfor %}
+  }
+  cargarOpciones()
+  var options = {};
+  $.map(myArrayOfThings,function(o) { options[o.id] = o.name;}); 
+  //console.log(options) 
+  swal({
+     title: '<h3 style="color:#3b60be;">Seleccione al Status que Desea Actualizar</h3>',
+     input: 'select',
+     inputOptions: options,
+     inputPlaceholder: 'Seleccione El turno que desea cotizar',
+     showCancelButton: true,
+    inputValidator: function (value ) {
+
+
+
+
+
+
+                    return new Promise(function (resolve, reject) {
+                        resolve('Has Seleccionado El turno Valido')
+                       
+                     
+                    })
+                  }
+                }).then(function (result) {
+                  $.ajax({
+                    url: '/turnos/actualizacion/de/status',
+                    data: {
+                      'id_turno':id,
+                      'status':result,
+                      
+                  },
+                  dataType: 'json',
+                  success: function (status) {
+                    if(status == 200){
+                      swal({
+                    type: 'success',
+                    html: 'Hemos Actualizado el status correctamente a : ' + result
+                  })
+                      if(result == 'Confirmada' ){
+                        $("#T-"+id).html('<span style="background-color:darkslategray" class="label">'+result+'</span>')
+                      }
+                      if(result == 'En Espera' ){
+                        $("#T-"+id).html('<span class="label label-warning">'+result+'</span>')
+                      }
+                      if(result == 'Finalizada' ){
+                        $("#T-"+id).html('<span class="label label-success">'+result+'</span>')
+                      }
+                      if(result == 'No Aprobada' ){
+                        $("#T-"+id).html('<span class="label label-danger">'+result+'</span>')
+                      }
+                    if(result == 'En Proceso' ){
+                        $("#T-"+id).html('<span style="background-color:#00c0ef;" class="label">'+result+'</span>')
+                      }
+                    if(result == 'Sin Aprobar' ){
+                        $("#T-"+id).html('<span style="background-color:deeppink" class="label">'+result+'</span>')
+                      }
+
+
+                    }
+                    else{
+                      console.log('error')
+                    }
+
+
+                     
+                }
+            });
+                  
+                  
+              });
+
+}
+function status(id) {
+  var myArrayOfThings = [];
+  function cargarOpciones() {
+    {% for Tturno in status %}      
+        myArrayOfThings.push( { id: '{{Tturno.nameStatus}}', name: '{{Tturno.nameStatus}}' });
+    {% endfor %}
+  }
+  cargarOpciones()
+  var options = {};
+  $.map(myArrayOfThings,function(o) { options[o.id] = o.name;}); 
+  //console.log(options) 
+  swal({
+     title: '<h3 style="color:#3b60be;">Seleccione al Status que Desea Actualizar</h3>',
+     input: 'select',
+     inputOptions: options,
+     inputPlaceholder: 'Seleccione El turno que desea cotizar',
+     showCancelButton: true,
+    inputValidator: function (value ) {
+
+
+
+
+
+
+                    return new Promise(function (resolve, reject) {
+                        resolve('Has Seleccionado El turno Valido')
+                       
+                     
+                    })
+                  }
+                }).then(function (result) {
+                  $.ajax({
+                    url: '/reservas/actualizacion/de/status',
+                    data: {
+                      'id_reserva':id,
+                      'status':result,
+                      
+                  },
+                  dataType: 'json',
+                  success: function (status) {
+                    if(status == 200){
+                      swal({
+                    type: 'success',
+                    html: 'Hemos Actualizado el status correctamente a : ' + result
+                  })
+                      if(result == 'Confirmada' ){
+                        $("#R-"+id).html('<span style="background-color:darkslategray" class="label">'+result+'</span>')
+                      }
+                      if(result == 'En Espera' ){
+                        $("#R-"+id).html('<span class="label label-warning">'+result+'</span>')
+                      }
+                      if(result == 'Finalizada' ){
+                        $("#R-"+id).html('<span class="label label-success">'+result+'</span>')
+                      }
+                      if(result == 'No Aprobada' ){
+                        $("#R-"+id).html('<span class="label label-danger">'+result+'</span>')
+                      }
+                    if(result == 'En Proceso' ){
+                        $("#R-"+id).html('<span style="background-color:#00c0ef;" class="label">'+result+'</span>')
+                      }
+                    if(result == 'Sin Aprobar' ){
+                        $("#R-"+id).html('<span style="background-color:deeppink" class="label">'+result+'</span>')
+                      }
+
+
+                    }
+                    else{
+                      console.log('error')
+                    }
+
+
+                     
+                }
+            });
+                  
+                  
+              });
+
+}
+
+
+ function PagarOnlineReservaWeb(id_reserva) {
+    var myArrayOfThings = [];
+    {% for turnos in formas_de_pago  %}
+       myArrayOfThings.push( { id: {{turnos.id}}, name: '{{turnos.nameFormasDePago}}' });
+    {% endfor %}
+    var options = {};
+    $.map(myArrayOfThings,function(o,query) {options[o.id] = o.name;});
+      swal.setDefaults({
+          input: 'text',
+          confirmButtonText: 'Siguiente &rarr;',
+          showCancelButton: true,
+          progressSteps: ['1', '2',]
+        })
+        var steps = [
+        {
+            title: 'Seleccione un metodo de pago',
+            input: 'select',
+            inputOptions: options,
+            inputPlaceholder: 'metodos de pago',
+          },
+          {
+            title: 'Ingrese el Monto a Cargar',
+            text: 'Monto'
+          },
+
+          
+        ]
+
+        swal.queue(steps).then(function (result) {
+          id_metodo_pago = parseFloat(result[0]);
+          id_monto       = parseFloat(result[1]);
+               swal.resetDefaults()
+                $.ajax({
+                    url: '/Caja/ajax/nuevo/ingreso/reserva/web',
+                    data: {
+                      'id_reserva':id_reserva,
+                      'id_metodo_pago': id_metodo_pago,
+                      'id_monto':id_monto,
+                  },
+                  dataType: 'json',
+                  success: function (status) {
+                     swal({
+                        title: 'Hemos Cargado de manera exitosa su pago !',
+                        confirmButtonText: 'Aceptar!'
+                      })
+                     location.reload(); 
+                }
+            });
+
+        }, function () {
+          swal.resetDefaults()
+        })
+  }
+
+  function PagarOnlineTurno(id_reserva) {
+    var myArrayOfThings = [];
+    {% for turnos in formas_de_pago  %}
+       myArrayOfThings.push( { id: {{turnos.id}}, name: '{{turnos.nameFormasDePago}}' });
+    {% endfor %}
+    var options = {};
+    $.map(myArrayOfThings,function(o,query) {options[o.id] = o.name;});
+      swal.setDefaults({
+          input: 'text',
+          confirmButtonText: 'Siguiente &rarr;',
+          showCancelButton: true,
+          progressSteps: ['1', '2',]
+        })
+        var steps = [
+        {
+            title: 'Seleccione un metodo de pago',
+            input: 'select',
+            inputOptions: options,
+            inputPlaceholder: 'metodos de pago',
+          },
+          {
+            title: 'Ingrese el Monto a Cargar',
+            text: 'Monto'
+          },
+
+          
+        ]
+
+        swal.queue(steps).then(function (result) {
+          id_metodo_pago = parseFloat(result[0]);
+          id_monto       = parseFloat(result[1]);
+               swal.resetDefaults()
+                $.ajax({
+                    url: '/Caja/ajax/nuevo/ingreso/turno/web',
+                    data: {
+                      'id_reserva':id_reserva,
+                      'id_metodo_pago': id_metodo_pago,
+                      'id_monto':id_monto,
+                  },
+                  dataType: 'json',
+                  success: function (status) {
+                     swal({
+                        title: 'Hemos Cargado de manera exitosa su pago !',
+                        confirmButtonText: 'Aceptar!'
+                      })
+                     location.reload(); 
+                }
+            });
+
+        }, function () {
+          swal.resetDefaults()
+        })
+  }
+ </script>
 
 {% endblock scripts %}

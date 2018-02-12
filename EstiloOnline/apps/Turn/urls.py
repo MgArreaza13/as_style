@@ -9,6 +9,7 @@ from apps.Turn.views import DeleteTurn
 from apps.Turn.views import index
 from apps.Turn.views import EditTurnList
 from apps.Turn.views import NuevoTurnClient
+from apps.Turn.views import turno_update
 
 urlpatterns = [
 
@@ -22,5 +23,5 @@ urlpatterns = [
 	url(r'^Actualizar/Status/(?P<id_turn>\d+)$', EditTurnStatus, name='EditTurnStatus'  ),
 	url(r'^Editar/(?P<id_turn>\d+)$', EditTurn, name='EditTurn'  ),
 	url(r'^Borrar/(?P<id_turn>\d+)$', DeleteTurn, name='DeleteTurn'  ),
-  
+  	url(r'^actualizacion/de/status$', turno_update , name='turno_update'  ),
 ]

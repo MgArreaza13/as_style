@@ -19,9 +19,60 @@ from apps.scripts.validatePerfil import validatePerfil
 # enviar correos
 from django.core.mail import send_mail
 from django.core.mail import send_mass_mail
-
-
+from apps.Client.models import tb_client_WEB
+from apps.ReservasWeb.models import tb_reservasWeb
+from django.http import JsonResponse
+from django.http import HttpResponse
 # Create your views here.
+
+
+def newclientewebform(request):
+	data = 200
+	correo = request.GET.get('correo', None)
+	query = tb_client_WEB.objects.filter(mail=correo)
+	if len(query) == 0:
+		nuevo_cliente = tb_client_WEB()
+		nuevo_cliente.nombre = request.GET.get('nombre', None)
+		nuevo_cliente.mail = request.GET.get('correo', None)
+		nuevo_cliente.telefono =  request.GET.get('telefono', None)
+		nuevo_cliente.numeroReservasWeb = 0
+		nuevo_cliente.FormaDeRegistro = 'Registro por Sistema'
+		nuevo_cliente.save()
+	else:
+		data = 400
+	return HttpResponse(data)
+
+
+def ClienteWebForm(request):
+	return render (request , 'Client/ClienteWebForm.html')
+
+
+
+@login_required(login_url = 'Demo:login' )
+def ClientesWeb(request):
+	result = validatePerfil(tb_profile.objects.filter(user=request.user))
+	perfil = result[0]
+	servicios = tb_service.objects.all()[:10]
+	clientes = tb_client_WEB.objects.all() 
+	#queryset 
+	reservas_hoy = tb_reservasWeb.objects.filter(dateTurn=date.today()).filter(statusTurn__nameStatus='Confirmada').count()
+	turnos__hoy =  tb_turn.objects.filter(dateTurn=date.today()).filter(statusTurn__nameStatus='Confirmada').count()
+	turnos_hoy = reservas_hoy + turnos__hoy
+	ingresos_hoy = tb_ingreso.objects.filter(dateCreate=date.today()).aggregate(total=Sum('monto'))
+	egresos_hoy  = tb_egreso.objects.filter(dateCreate=date.today()).aggregate(total=Sum('monto'))
+	context ={
+	'perfil':perfil,
+	'clientes':clientes,
+	'servicios':servicios,
+	'turnos_hoy':turnos_hoy,
+	'ingresos_hoy':ingresos_hoy,
+	'egresos_hoy':egresos_hoy,
+
+
+	}
+	return render(request ,'Client/ListadoDeClientesWeb.html', context )
+
+
 
 #nuevo perfil de cliente
 @login_required(login_url = 'Demo:login' )

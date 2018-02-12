@@ -7,8 +7,8 @@ from django.conf import settings
 
 class tb_profile (models.Model):
 	user			=	models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=False, default='')
-	nameUser		=	models.CharField(default='', null=False, max_length=30)
-	mailUser		=	models.EmailField(default='', null=False, max_length=30)
+	nameUser		=	models.CharField(default='Sin Datos', null=False, max_length=30)
+	mailUser		=	models.EmailField(default='sindatos@gmail.com', null=False, max_length=30)
 	birthdayDate	=	models.DateField(auto_now=False, auto_now_add=False, blank=False )
 	#image 			= 	models.ImageField(upload_to='users/avatar/', default='', null=False, )
 	tipoUser		=   models.CharField(default='', null=False, max_length=30) # Esto se utilizara para saber si es admin, colaborador o client

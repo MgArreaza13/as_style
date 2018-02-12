@@ -45,6 +45,14 @@ from apps.ReservasWeb.serializers import ReservasWebSerializer
 
 
 
+def reserva_update(request):
+	id_reserva = request.GET.get('id_reserva', None)
+	status_name = request.GET.get('status', None)
+	reserva = tb_reservasWeb.objects.get(id = id_reserva)
+	reserva.statusTurn = tb_status.objects.get(nameStatus = status_name)
+	reserva.save()
+	return HttpResponse(200)
+
 
 def ReservaWebQueryset(request):
 	print('funciono entro')
@@ -222,6 +230,7 @@ def listReservas(request):
 	formas_de_pago = tb_formasDePago.objects.all()
 	perfil = result[0]
 	formulario = False
+	status = tb_status.objects.all()
 	#queryset 
 	reservas_hoy = tb_reservasWeb.objects.filter(dateTurn=date.today()).filter(statusTurn__nameStatus='Confirmada').count()
 	turnos__hoy =  tb_turn.objects.filter(dateTurn=date.today()).filter(statusTurn__nameStatus='Confirmada').count()
@@ -229,6 +238,7 @@ def listReservas(request):
 	ingresos_hoy = tb_ingreso.objects.filter(dateCreate=date.today()).aggregate(total=Sum('monto'))
 	egresos_hoy  = tb_egreso.objects.filter(dateCreate=date.today()).aggregate(total=Sum('monto'))
 	context = {
+	'status':status,
 	'formas_de_pago':formas_de_pago,
 	'perfil':perfil,
 	'reservas':reservas,

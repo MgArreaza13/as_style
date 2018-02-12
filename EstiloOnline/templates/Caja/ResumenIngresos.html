@@ -6,7 +6,7 @@
 
 
 {% block content %}
-{% if user.is_authenticated and user.is_staff == True and user.is_superuser == True%}
+{% if perfil.tipoUser == "Administrador"  %}
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
@@ -34,7 +34,7 @@
                   <div class="info-box bg-green">
                     <span class="info-box-icon"><i class="fa fa-bank  "></i></span>
 
-                   <div class="info-box-content">
+                    <div class="info-box-content">
                          <span class="info-box-text">Total <br> Ingresos</span>
                        {% if total_ingresos.total == None %}
                             0$
@@ -126,16 +126,13 @@
             </div>
             <div style="background-color: rgba(154, 153, 158, 0.09);" class="box-body">
             <h5 class="box-title">Filtrar por Fecha </h5>
-              <div class="form-group col-md-5">
+              <div class="form-group col-md-6">
                     <label for="exampleInputEmail1">DESDE</label>
-                    <input type="text" id="datepicker_from" class="form-control"  placeholder="SELECCIONE LA FECHA DE INICIO ">
+                    <input type="text" id="datepicker_from" class="form-control" id="exampleInputEmail1" placeholder="SELECCIONE LA FECHA DE INICIO ">
                 </div>
-                <div class="form-group col-md-5">
+                <div class="form-group col-md-6">
                     <label for="exampleInputEmail1">HASTA</label>
-                    <input type="text" id="datepicker_to" class="form-control"  placeholder="SELECCIONE LA FECHA FINAL">
-                </div>
-                <div style="margin-top:1.8em;" class="form-group col-md-2">
-                    <button class="btn btn-block btn-primary" id="btn-reload"> FILTRAR </button>
+                    <input type="text" id="datepicker_to" class="form-control" id="exampleInputEmail1" placeholder="SELECCIONE LA FECHA FINAL">
                 </div>
               
             </div>
@@ -147,9 +144,10 @@
                   <th>COD</th>
                   <th>USER</th>
                   <th>SERVICIO</th>
+                  <th>TIPO DE INGRESO</th>
                   <th>FORMA DE PAGO</th>
+                  <th>CLIENTE</th>
                   <th>FECHA</th>
-                  <th class="hidden">fechaNumero</th>
                   <th>MONTO</th>
                   <th>COMENTARIO <br> ADICIONALES</th>
                   <th>TIPO</th>
@@ -162,9 +160,16 @@
                       <td>{{ingreso.id}}</td>
                       <td>{{ingreso.user.username}}</td>
                       <td>{{ingreso.service}}</td>
+                      <td>{{ingreso.tipoIngreso}}</td>
                       <td>{{ingreso.tipoPago}}</td>
+                      {% if ingreso.reserva != None %}
+                          <td>{{ingreso.reserva.nombre}}</td>
+                      {% else %}
+                          <td>{{ingreso.turno.client}}</td>
+                      
+                      {% endif %}
+                      
                       <td>{{ingreso.dateCreate}}</td>
-                      <td class="hidden">{{ ingreso.dateCreate|date:"m-d-Y" }}</td>
                       <td>{{ingreso.monto}}<strong>$</strong></td>
                       <td>{{ingreso.descripcion}}</td>
                       <td><span class="badge bg-green">Ingreso</span></td>
@@ -172,7 +177,27 @@
                     </tr>
                       
                 {% endfor %}
-
+                {% for ingreso in ingresos_manual  %}
+                    <tr>
+                      <td>{{ingreso.id}}</td>
+                      <td>{{ingreso.user.username}}</td>
+                      <td>Otro Ingreso</td>
+                      <td>{{ingreso.tipoIngreso}}</td>
+                      <td>{{ingreso.tipoPago}}</td>
+                      <td>{{ingreso.cliente}}</td>
+                      <td>{{ingreso.dateCreate}}</td>
+                      <td>{{ingreso.monto}}<strong>$</strong></td>
+                      {% if ingreso.descripcion != "" %}
+                        <td>{{ingreso.descripcion}}</td>
+                      {% else %}
+                        <td>Sin Descripcion</td>  
+                      
+                      {% endif %}
+                      <td><span class="badge bg-green">Ingreso</span></td>
+                      
+                    </tr>
+                      
+                {% endfor %}
   
                 
 
@@ -182,14 +207,7 @@
                 </tbody>
                 <tfoot>
                 <tr>
-                   <th>COD</th>
-                  <th>USER</th>
-                  <th>SERVICIO</th>
-                  <th>FORMA DE PAGO</th>
-                  <th>FECHA</th>
-                  <th>MONTO</th>
-                  <th>COMENTARIO <br> ADICIONALES</th>
-                  <th>TIPO</th>
+                   
                 </tr>
                 </tfoot>
               </table>
@@ -208,7 +226,7 @@
     <div class="box-body" >
           
             <div class="col-sm-12">
-              <a href="{% url "Caja:NuevoIngreso" %}" type="button" class="btn btn-block btn-info">Nuevo Ingreso</a>
+             
             </div>
             
            
@@ -255,6 +273,7 @@
 <script type="text/javascript" src="{% static "bootstrap/js/bootstrap-datepicker.adminlte.min.js" %}"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/datatables/1.9.4/jquery.dataTables.js" data-semver="1.9.4" data-require="datatables@*"></script>
 <script src="{% static "bootstrap/js/filtrado.js" %}"></script>
+<script src="{% static 'bootstrap/js/notificaciones.js'%}"></script>
 
 <!-- page script -->
 

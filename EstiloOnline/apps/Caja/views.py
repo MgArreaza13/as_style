@@ -3,18 +3,48 @@ from django.contrib.auth.decorators import login_required
 from apps.Caja.models import tb_ingreso
 from apps.Caja.models import tb_egreso
 from django.db.models import Count, Min, Sum, Avg
+from apps.Caja.models import tb_ingreso_manual
 from apps.Caja.forms import IngresoForm
 from apps.Caja.forms import EgresoForm
+from apps.Caja.forms import IngresoManualForm
 from django.http import HttpResponse
 from apps.ReservasWeb.models import tb_reservasWeb
 from apps.Configuracion.models import tb_formasDePago
 from apps.Configuracion.models import tb_tipoIngreso
 from apps.Turn.models import tb_turn
+from apps.Collaborator.models import tb_collaborator
 # Create your views here.
 from apps.scripts.validatePerfil import validatePerfil
-
+from apps.Client.models import tb_client_WEB
 from apps.UserProfile.models import tb_profile
 
+
+
+@login_required(login_url = 'Demo:login' )
+def NuevoIngresoManual(request):
+	Form = IngresoManualForm
+	result = validatePerfil(tb_profile.objects.filter(user=request.user))
+	perfil = result[0]
+	fallido = None
+	clientes = tb_client_WEB.objects.all()
+
+	if request.method == 'POST':
+		Form = IngresoManualForm(request.POST or None)
+		if Form.is_valid():
+			ingreso = Form.save(commit=False)
+			ingreso.user = request.user
+			ingreso.cliente = request.POST['Clientes']
+			if request.POST['descripcion'] == "":
+				ingreso.descripcion = 'Sin Comentarios'
+			else:
+				ingreso.descripcion = request.POST['descripcion']
+			ingreso.save()
+			mensaje = 'Hemos Cargado Su ingreso de manera exitosa'
+			return render(request, 'Caja/NuevoIngreso.html' , {'Form':Form, 'perfil':perfil, 'clientes':clientes ,'mensaje':mensaje})
+		else:
+			Form = IngresoManualForm()
+			fallido = "Hemos tenido algun problema con sus datos, por eso no hemos procesado su ingreso, verifiquelo e intentelo de nuevo"
+	return render(request, 'Caja/NuevoIngresoManual.html' , {'Form':Form, 'perfil':perfil, 'clientes':clientes ,'fallido':fallido})
 
 
 def NuevoPagoReservaOnline(request):
@@ -37,6 +67,19 @@ def NuevoPagoReservaOnline(request):
 	ingreso.monto = float(id_monto)
 	ingreso.descripcion = 'Pago de Reserva Web'
 	ingreso.save()
+	colaborador_id = reserva.collaborator.id
+	collaborator = tb_collaborator.objects.get(id = colaborador_id)
+	if collaborator.Typecomision == 'Porcentaje':
+		a = float(collaborator.comision)
+		
+		b = float(id_monto)
+		collaborator.MontoAcumulado += int(b*(a/100))
+	elif collaborator.Typecomision == 'Monto':
+		collaborator.MontoAcumulado += collaborator.comision
+	collaborator.save()
+
+
+
 	return HttpResponse(status)
 
 
@@ -62,6 +105,16 @@ def NuevoPagoTurno(request):
 	ingreso.monto = float(id_monto)
 	ingreso.descripcion = 'Pago de Turno Web'
 	ingreso.save()
+	colaborador_id = turno.collaborator.id
+	collaborator = tb_collaborator.objects.get(id = colaborador_id)
+	if collaborator.Typecomision == 'Porcentaje':
+		a = float(collaborator.comision)
+		
+		b = float(id_monto)
+		collaborator.MontoAcumulado += int(b*(a/100))
+	elif collaborator.Typecomision == 'Monto':
+		collaborator.MontoAcumulado += collaborator.comision
+	collaborator.save()
 	return HttpResponse(status)
 
 
@@ -83,6 +136,7 @@ def NuevoPagoTurno(request):
 @login_required(login_url = 'Demo:login' )
 def IngresoList(request):
 	ingresos = tb_ingreso.objects.all().order_by('id') # query para todo los ingresos
+	ingresos_manual = tb_ingreso_manual.objects.all().order_by('id')
 	total_ingresos = tb_ingreso.objects.all().aggregate(total=Sum('monto'))
 	total_egresos  = tb_egreso.objects.all().aggregate(total=Sum('monto'))
 	total_efectivo_caja = []
@@ -99,6 +153,7 @@ def IngresoList(request):
 	perfil = result[0]
 	context = {
 	'perfil':perfil,
+	'ingresos_manual':ingresos_manual,
 	'ingresos':ingresos,
 	'total_efectivo_caja':total_efectivo_caja,
 	'total_ingresos':total_ingresos,
@@ -107,6 +162,7 @@ def IngresoList(request):
 	'total_pago_tarjetas':total_pago_tarjetas ,
 	}
 	return render(request, 'Caja/ResumenIngresos.html', context)
+
 
 
 @login_required(login_url = 'Demo:login' )

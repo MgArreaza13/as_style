@@ -53,7 +53,13 @@
    <link rel="stylesheet" href="{% static "plugins/fullcalendar/fullcalendar.min.css" %}">
   <link rel="stylesheet" href="{% static "plugins/fullcalendar/fullcalendar.print.css" %}" media="print">
 
+  <script type="text/javascript" src="{% static "bootstrap/js/jquery-1.8.0.min.js" %}"></script>
 
+<link rel="stylesheet" href="{% static "dist/js/css/alertify.min.css" %}">
+<link rel="stylesheet" href="{% static "dist/js/css/alertify.rtl.min.css" %}">
+<link rel="stylesheet" href="{% static "dist/js/css/themes/semantic.min.css" %}">
+<link rel="stylesheet" href="{% static "dist/js/css/themes/default.min.css" %}">
+<link rel="stylesheet" href="{% static "dist/js/css/themes/bootstrap.min.css" %}">
 
 
   <script type="text/javascript" src="{% static "bootstrap/js/jquery-1.8.0.min.js" %}"></script>
@@ -65,7 +71,7 @@
   <link rel="stylesheet" type="text/css" href="{% static "bootstrap/css/bootstrap-datepicker.adminlte.min.css" %}">
   <link rel="stylesheet" href="{% static "bootstrap/css/miguel.css" %}">
 
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.11.0/sweetalert2.all.min.js'></script>
+     <script src='https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.11.0/sweetalert2.all.min.js'></script>
     <script src='https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.11.0/sweetalert2.common.min.js'></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.11.0/sweetalert2.min.css">
     <script src='https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.11.0/sweetalert2.min.js'></script>
@@ -238,6 +244,20 @@
         </li>
       </ul>
 
+      {% elif perfil.nameUser == 'Sin Datos' and perfil.tipoUser == 'Colaborador' %}
+        <ul class="sidebar-menu">
+        <li class="header">Complete su perfil</li>
+        
+        <li class="treeview">
+          <a href="{% url "Colaboradores:CompletarPerfilColaborador" %}">
+            <i class="fa fa-home"></i>
+            <span>COMPLETE SU PERFIL <br> DE COLABORADOR</span>
+            <span class="pull-right-container">
+            </span>
+          </a>
+        </li>
+      </ul>
+
       <!-- PERFIL DE CLIENTE-->
       {% elif perfil.tipoUser == "Sin Definir"  %}
         <ul class="sidebar-menu">
@@ -253,7 +273,7 @@
         </li>
       </ul>
       <!-- ..................... MENU PARA ADMINISTRADORES.............................. -->
-       {% elif user.is_authenticated and user.is_staff == True and user.is_superuser == True%}
+       {% elif user.is_authenticated and user.is_staff == True and user.is_superuser == True %}
           <ul class="sidebar-menu">
         <li class="header">Menu-Administrador</li>
         
@@ -276,6 +296,7 @@
           <ul class="treeview-menu" style="display: none;">
           <li><a href="{% url "Clientes:ClientesHome" %}"><i class="fa  fa-users"></i> RESUMEN</a></li>
             <li><a href="{% url "Clientes:list" %}"><i class="fa  fa-users"></i> LISTADO DE CLIENTES </a></li>
+            <li><a href="{% url "Clientes:ClientesWeb" %}"><i class="fa  fa-users"></i>CLIENTES WEB</a></li>
           
             <li><a href="{% url "Clientes:NuevoCliente" %}"><i class="fa fa-plus"></i> NUEVO CLIENTE  </a></li>
          
@@ -291,7 +312,7 @@
           <ul class="treeview-menu" style="display: none;">
             <li><a href="{% url "Colaboradores:ListColaboradores" %}"><i class="fa  fa-odnoklassniki-square"></i> LISTADO DE COLABORADORES </a></li>
             
-            <li><a href="{% url "Colaboradores:NuevoColaborador" %}"><i class="fa fa-plus"></i> Nuevo  </a></li>
+            <li><a href="{% url "Colaboradores:SimpleRegister" %}"><i class="fa fa-plus"></i> Nuevo  </a></li>
              
           </ul>
         </li>
@@ -307,7 +328,7 @@
             <!--<li><a href="{% url "Demo:ingresoegresos" %}"><i class="fa fa-balance-scale"></i> RESUMEN </a></li>-->
             <li><a href="{% url "Caja:IngresoList" %}"><i class="fa fa-balance-scale"></i> Resumen Ingreso </a></li>
             <li><a href="{% url "Caja:EgresoList" %}"><i class="fa fa-balance-scale"></i> Resumen Egreso </a></li>
-            <li><a href="{% url "Caja:NuevoIngreso" %}"><i class="fa fa-plus"></i> Nuevo Ingreso </a></li>
+            <li><a href="{% url "Caja:NuevoIngresoManual" %}"><i class="fa fa-plus"></i> Nuevo Ingreso </a></li>
             <li><a href="{% url "Caja:NuevoEgreso" %}"><i class="fa fa-plus"></i> Nuevo Egreso </a></li>
     
           </ul>
@@ -368,14 +389,22 @@
             </span>
           </a>
           <ul class="treeview-menu" style="display: none;">
-            <li><a href="{% url "Turnos:index" %}"><i class="fa fa-calendar"></i> Resumen </a></li>
+            <!--<li><a href="{% url "Turnos:index" %}"><i class="fa fa-calendar"></i> Resumen </a></li>-->
            
             <li><a href="{% url "Turnos:listTurnos" %}"><i class="fa fa-calendar"></i> Listado Turnos </a></li>
-            <li><a href="{% url "Reservas:listReservas" %}"><i class="fa fa-calendar"></i> Reservas Online </a></li>
-            <li><a href="{% url "Demo:calendario" %}"><i class="fa fa-calendar"></i> CALENDARIO DE TURNOS </a></li>
+            <!--<li><a href="{% url "Reservas:listReservas" %}"><i class="fa fa-calendar"></i> Reservas Online </a></li>-->
+            <!--<li><a href="{% url "Demo:calendario" %}"><i class="fa fa-calendar"></i> CALENDARIO DE TURNOS </a></li>-->
             
             <li><a href="{% url "Reservas:web" %}"><i class="fa fa-plus"></i> Nuevo turno </a></li>
           </ul>
+        </li>
+        <li class="treeview">
+          <a href="{% url "Demo:calendario" %}">
+            <i class="fa fa-calendar"></i>
+            <span> CALENDARIO DE TURNOS</span>
+            <span >
+            </span>
+          </a>
         </li>
         
        
@@ -530,7 +559,7 @@
         
       </ul>
        <!-- ..................... MENU PARA COLABORADORES.............................. -->
-          {% elif  perfil.tipoUser == "Colaborador"  %}
+          {% elif perfil.nameUser != 'Sin Datos' and perfil.tipoUser == 'Colaborador'  %}
         <ul class="sidebar-menu">
         <li class="header">Menu-Colaborador</li>
         
@@ -665,7 +694,7 @@
     <div class="pull-right hidden-xs">
       <b>Version</b> 0.0.2
     </div>
-    <strong>Copyright &copy; 2017  Desarrollado Por <a href="#">Miguel Arreaza </a>. <b>para</b> <a href="#">ApreciaSoft</a></strong> All rights
+    <strong>Copyright &copy; 2017  Desarrollado Por <a href="#"> DESIDIUM SOFTWARE </a>. </strong> All rights
     reserved.
   </footer>
 
@@ -883,6 +912,17 @@
 <script>
   $.widget.bridge('uibutton', $.ui.button);
 </script>
+
+<script src="//cdn.jsdelivr.net/npm/alertifyjs@1.11.0/build/alertify.min.js"></script>
+
+<!-- CSS -->
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.11.0/build/css/alertify.min.css"/>
+<!-- Default theme -->
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.11.0/build/css/themes/default.min.css"/>
+<!-- Semantic UI theme -->
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.11.0/build/css/themes/semantic.min.css"/>
+<!-- Bootstrap theme -->
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.11.0/build/css/themes/bootstrap.min.css"/>
 <!-- Bootstrap 3.3.6 -->
 <script src="{% static 'bootstrap/js/bootstrap.min.js'%}"></script>
 <!-- Morris.js charts -->
@@ -920,6 +960,13 @@ fullcalendar.min.js" %}"></script>
 <!-- Page specific script -->
 <script type="text/javascript" src="{% static "bootstrap/js/bootstrap-clockpicker.min.js" %}"></script>
 <script type="text/javascript" src="{% static "bootstrap/js/bootstrap-datepicker.adminlte.min.js" %}"></script>
+<script type="text/javascript" src="{% static "dist/js/nuevocliente.js" %}"></script>
+<script type="text/javascript" src="{% static "dist/js/notify.js" %}"></script>
+<script src="{% static 'bootstrap/js/notificaciones.js'%}"></script>
+<script src="{% static 'bootstrap/js/reajuste.js'%}"></script>
+<script src="{% static 'bootstrap/js/proveedor.js'%}"></script>
+<script src="{% static 'bootstrap/js/nuevoUsuario.js'%}"></script>
+<script src="{% static 'bootstrap/js/changestatus.js'%}"></script>
 
 <script>
 

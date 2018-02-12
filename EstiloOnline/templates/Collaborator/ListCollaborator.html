@@ -5,7 +5,31 @@
   listado de Collaborator
 {% endblock title %}
 
-
+<script type="text/javascript">
+       $(document).ready(function () {
+          $('.modal').on({ 
+              'show.bs.modal': function() {
+                  var idx = $('.modal:visible').length;
+                  $(this).css('z-index', 1040 + (10 * idx));
+              },
+              'shown.bs.modal': function() {
+                  var idx = ($('.modal:visible').length) - 1; // raise backdrop after animation.
+                  $('.modal-backdrop').not('.stacked')
+                  .css('z-index', 1039 + (10 * idx))
+                  .addClass('stacked');
+              },
+              'hidden.bs.modal': function() {
+                  if ($('.modal:visible').length > 0) {
+                      // restore the modal-open class to the body element, so that scrolling works
+                      // properly after de-stacking a modal.
+                      setTimeout(function() {
+                          $(document.body).addClass('modal-open');
+                      }, 0);
+                  }
+              }
+          });
+        });
+    </script>
 {% block content %}
 
 <div class="content-wrapper">
@@ -184,6 +208,7 @@
                      
                       <td>
                           <a href="{% url "Colaboradores:EditarColaborador" colaborador.id %}" class="label label-success">EDITAR</a>
+                          <button class="label btn" type="button" value="{{colaborador.id }}" onclick="EstadoDeCuenta(this.value);" style="background-color:#39CCCC;" class="label"  data-toggle="modal" data-target="#mvContacto">CUENTA</button>
                           <a href="{% url "Colaboradores:EliminarColaborador" colaborador.id %}" class="label label-danger">ELIMINAR</a>
                         </td>
                     
@@ -224,6 +249,76 @@
       </div>
       <!-- /.row -->
     </section>
+
+
+    <div class="container">
+                <div class="modal fade" id="mvContacto" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-lg">
+                        <!-- Modal Content -->
+                        <div class="modal-content">
+                            <!-- Modal Header -->
+                            <div class="modal-header">
+                                <button type="button" class="close btn-lg" data-dismiss="modal" style="background-color:red; color:white; margin:15px; padding:2px 8px 6px 8px;">
+                                    <span aria-hidden="true">&times;</span>
+                                    <span class="sr-only">Cerrar</span>
+                                </button>
+                                <h3 class="text-info" id="User"></h3>
+                                <h2 class="pull-right" style="color:#176ee8;">Monto Acumulado: <strong id="MontoAcumulado"></strong></h2>
+                            </div>
+                            <!-- END Modal Header -->
+                            
+                            <!-- Modal Body -->
+                            <div class="modal-body">
+                                <!-- Breadcrumb -->
+                                
+                                <!-- END Breadcrumb -->
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="col-md-8">
+                                             <div class="row">
+                                        <div class="panel panel-info">
+                                            <div class="panel-heading">SERVICIOS REALIZADOS</div>
+                                            <div class="panel-body">
+                                                <div class="col-md-12">
+                                                    <div class="table-responsive">
+                                                        <table class="table table-hover">
+                                                            <tbody style="cursor:pointer;" id="tabladatos">
+                                                                
+                                                            </tbody>
+                                                            <thead class="text-primary">
+                                                                <th style="text-align: center;">Fecha</th>
+                                                                <th style="text-align: center;">Cliente</th>
+                                                                <th style="text-align: center;">Monto Cobrado</th>
+                                                                
+                                                            </thead>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <br ><br >
+                                            <div class="panel panel-primary">
+                                                <div class="panel-heading"> Avatar </div>
+                                                <div class="panel-body" id="AvatarUSuario">
+                                                    
+                                                </div>
+                                            </div>    
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-offset-10">
+                                    <button type="button" data-dismiss="modal" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span> Cerrar Contacto</button>
+                                </div>
+                            </div>
+                            
+                           
+                        </div>    
+                    </div>                        
+                </div>
+            </div>
 
 
 
@@ -275,5 +370,55 @@
 <script src="{% static "bootstrap/js/filtrado.js" %}"></script>
 
 <!-- page script -->
+<script>
+  
+  function EstadoDeCuenta(id) {
 
+
+
+      $.ajax({
+        url: '/colaboradores/Consulta/colaborador/detalles/de/monto',
+        data: {
+          'id': id,
+          
+      },
+      dataType: 'json',
+      success: function (data) {
+          if (data) {
+            var miguel = JSON.parse(data.reservas)
+          console.log(miguel)
+
+
+          var cuerpoHtml = "";
+
+          for (var i = 0 ; i < miguel.length ; i++) {
+             cuerpoHtml += '<tr style="text-align: center;">'+
+            '<td value="'+miguel[i].fields.dateTurn+'">'+miguel[i].fields.dateTurn+'</td>'+
+            '<td value="'+miguel[i].fields.nombre+'">'+miguel[i].fields.nombre+'</td>'+
+            '<td value="'+miguel[i].fields.montoAPagar+'">$'+miguel[i].fields.montoAPagar+'</td>'+
+            '</tr>';
+    }
+
+
+    var monto = '$'+data.monto+'';
+    var usuario = data.nombre;
+    var imagen = '<img style="width: 100%;height: auto;"'+
+      'src="http://localhost:8000/media/'+data.imagen+'" alt="">';
+    $('#User').html(usuario);
+    $('#MontoAcumulado').html(monto)
+    $('#AvatarUSuario').html(imagen);
+    $('#tabladatos').html(cuerpoHtml);
+    
+        }
+        else{
+         console.log('nada mal');
+        }
+
+    }
+});
+
+
+    
+  }
+</script>
 {% endblock scripts %}

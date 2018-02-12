@@ -294,25 +294,29 @@
                           
                           {% if reserva.statusTurn.nameStatus == 'Confirmada' %}
                             
-                            <td>
+                             <td id="{{reserva.id}}">
                                   <span class="label label-warning">{{reserva.statusTurn}}</span>
                             </td>
 
                          {% elif reserva.statusTurn.nameStatus == 'Finalizada' %}
-                             <td>
+                              <td id="{{reserva.id}}">
                                   <span class="label label-success">{{reserva.statusTurn}}</span>
+                            </td>
+                          {% elif reserva.statusTurn.nameStatus == 'En Espera' %}
+                              <td id="{{reserva.id}}">
+                                  <span class="label label-warning">{{reserva.statusTurn}}</span>
                             </td>
 
                           {% elif reserva.statusTurn.nameStatus == 'No Aprobada' %}
-                             <td>
+                              <td id="{{reserva.id}}">
                                   <span class="label label-danger">{{reserva.statusTurn}}</span>
                             </td>
                           {% elif reserva.statusTurn.nameStatus == 'En Proceso' %}
-                             <td>
+                              <td id="{{reserva.id}}">
                                   <span style="background-color:#00c0ef;" class="label">{{reserva.statusTurn}}</span>
                             </td>
                             {% elif reserva.statusTurn.nameStatus == 'Sin Aprobar' %}
-                             <td>
+                              <td id="{{reserva.id}}">
                                   <span style="background-color:#2aa297" class="label">{{reserva.statusTurn}}</span>
                             </td>
                           {% endif %}
@@ -321,7 +325,7 @@
                               {% if reserva.montoAPagar != reserva.montoPagado %}
                                    <button  type="button" value='{{reserva.id}}' href="javascript:void(0);" onclick="PagarOnlineReservaWeb(this.value);" style="" class="label btn btn-info">PAGAR</button>
                               {% endif %}
-                              <a href="{% url "Reservas:EditReservaList" reserva.id %}" style="background-color:#39CCCC;" class="label">STATUS</a>
+                               <button class="label btn" type="button" value="{{reserva.id}}" onclick="status(this.value);" style="background-color:#39CCCC;" class="label">STATUS</button>
                               <a href="{% url "Reservas:DeleteReservas" reserva.id %}" style="background-color:#D81B60;" class="label">ELIMINAR</a>
                             </td>
                         </tr>
@@ -451,6 +455,91 @@
 
 
 <script>
+
+function status(id) {
+  var myArrayOfThings = [];
+  function cargarOpciones() {
+    {% for Tturno in status %}      
+        myArrayOfThings.push( { id: '{{Tturno.nameStatus}}', name: '{{Tturno.nameStatus}}' });
+    {% endfor %}
+  }
+  cargarOpciones()
+  var options = {};
+  $.map(myArrayOfThings,function(o) { options[o.id] = o.name;}); 
+  //console.log(options) 
+  swal({
+     title: '<h3 style="color:#3b60be;">Seleccione al Status que Desea Actualizar</h3>',
+     input: 'select',
+     inputOptions: options,
+     inputPlaceholder: 'Seleccione El turno que desea cotizar',
+     showCancelButton: true,
+    inputValidator: function (value ) {
+
+
+
+
+
+
+                    return new Promise(function (resolve, reject) {
+                        resolve('Has Seleccionado El turno Valido')
+                       
+                     
+                    })
+                  }
+                }).then(function (result) {
+                  $.ajax({
+                    url: '/reservas/actualizacion/de/status',
+                    data: {
+                      'id_reserva':id,
+                      'status':result,
+                      
+                  },
+                  dataType: 'json',
+                  success: function (status) {
+                    if(status == 200){
+                      swal({
+                    type: 'success',
+                    html: 'Hemos Actualizado el status correctamente a : ' + result
+                  })
+                      if(result == 'Confirmada' ){
+                        $("#"+id).html('<span class="label label-warning">'+result+'</span>')
+                      }
+                      if(result == 'En Espera' ){
+                        $("#"+id).html('<span class="label label-warning">'+result+'</span>')
+                      }
+                      if(result == 'Finalizada' ){
+                        $("#"+id).html('<span class="label label-success">'+result+'</span>')
+                      }
+                      if(result == 'No Aprobada' ){
+                        $("#"+id).html('<span class="label label-danger">'+result+'</span>')
+                      }
+                    if(result == 'En Proceso' ){
+                        $("#"+id).html('<span style="background-color:#00c0ef;" class="label">'+result+'</span>')
+                      }
+                    if(result == 'Sin Aprobar' ){
+                        $("#"+id).html('<span style="background-color:#2aa297" class="label">'+result+'</span>')
+                      }
+
+
+                    }
+                    else{
+                      console.log('error')
+                    }
+
+
+                     
+                }
+            });
+                  
+                  
+              });
+
+}
+
+
+
+
+
   function PagarOnlineReservaWeb(id_reserva) {
     var myArrayOfThings = [];
     {% for turnos in formas_de_pago  %}

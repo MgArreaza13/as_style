@@ -6,7 +6,7 @@
 {% endblock title %}
 
 {% block content %}
-{% if user.is_authenticated and user.is_staff == True and user.is_superuser == True%}
+
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
@@ -268,10 +268,8 @@
     </section>
     <!-- /.content -->
 </div>
-{% else %}
 
-{% include "Base/404.html" %}
   
-{% endif %}
+
 {% endblock content %}
 

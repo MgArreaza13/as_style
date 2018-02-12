@@ -161,6 +161,7 @@
 <!-- fullCalendar 2.2.5 -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
 <script src="{% static "plugins/fullcalendar/fullcalendar.min.js" %}"></script>
+<script src="{% static "plugins/fullcalendar/locale/es.js" %}"></script>
 <!-- Page specific script -->
 <script>
   $(function () {
@@ -219,30 +220,71 @@
       {% for turno in turnos %}
         {
           title: 'RESERVADO',
-          start: '{{ turno.dateTurn|date:"Y-m-d" }} {{turno.HoraTurn}}',
-          end:'{{ turno.dateTurn|date:"Y-m-d" }} {{turno.HoraTurnEnd}}',
+          start: '{{ turno.dateTurn|date:"Y-m-d" }} {{turno.turn.HoraTurn}}',
+          end:'{{ turno.dateTurn|date:"Y-m-d" }} {{turno.turn.HoraTurnEnd}}',
           backgroundColor: "#f56954", //red
           borderColor: "#f56954",//red
           titulo:'{{turno.servicioPrestar}}',
           cliente:'{{turno.client}}',
           fecha_de_inicio:'{{ turno.dateTurn|date:"d-m-Y" }}',
-          hora_de_inicio:'{{ turno.HoraTurn }}',
+          hora_de_inicio:'{{ turno.turn.HoraTurn }}',
           
         },
       {% endfor %}
-      
+      {% for ReservasWeb in ReservasWeb %}
+        {
+          title: 'RESERVADO \n {{ReservasWeb.turn.HoraTurn}} a {{ReservasWeb.turn.HoraTurnEnd}} hs',
+          start: '{{ ReservasWeb.dateTurn|date:"Y-m-d" }} {{ReservasWeb.turn.HoraTurn}}',
+          end:'{{ ReservasWeb.dateTurn|date:"Y-m-d" }} {{ReservasWeb.turn.HoraTurnEnd}}',
+          backgroundColor: "#f56954", //red
+          borderColor: "#f56954", // red 
+          titulo:'{{ReservasWeb.servicioPrestar}}',
+          cliente:'{{ReservasWeb.nombre}}',
+          fecha_de_inicio:'{{ ReservasWeb.dateTurn|date:"d-m-Y" }}',
+          hora_de_inicio:'{{ ReservasWeb.turn.HoraTurn }}',
+        },
+      {% endfor %}
       
       ],
-      eventClick: function(calEvent) {
+     
+       eventClick: function(calEvent) {
 
         
        
 
         // creo el modal  
 
-       
+        var modal = '<div class="col-lg-12">'+
+          '<div  class="modal" id="myModal" role="dialog">'+
+            '<div class="modal-dialog">'+
+              '<div style="margin-left: 7em;" class="modal-content">'+
+                '<div class="modal-header">'+
+                  '<button type="button" class="close" data-dismiss="modal" aria-label="'+
+                  'Close">'+
+                    '<span aria-hidden="true">×</span></button>'+
+                  '<h4 class="modal-title">Reserva</h4>'+
+                '</div>'+
+                '<div class="modal-body">'+
+                  '<p>Reserva de '+ calEvent.titulo +' para la fecha '+calEvent.fecha_de_inicio +' solicitado por el cliente '+calEvent.cliente +' para la hora '+calEvent.hora_de_inicio +'</p>'+
+                '</div>'+
+               '<div class="modal-footer">'+
+                '<button type="button" class="btn btn-primary"'+
+                  'data-dismiss="'+
+                  'modal">Cerrar</button>'+
+                '</div>'+
+              '</div>'+
+              
+            '</div>'+
+            
+          '</div>'+
+           
+         '</div>';
+
+         $('#miguel').html(modal);
+          $("#myModal").modal("show");
 
     },
+      editable: false,
       
       droppable: true, // this allows things to be dropped onto the calendar !!!
       drop: function (date, allDay) { // this function is called when something is dropped

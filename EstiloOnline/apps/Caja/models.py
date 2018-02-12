@@ -10,6 +10,26 @@ from apps.Turn.models import tb_turn
 # Create your models here.
 
 
+class tb_ingreso_manual (models.Model):
+	user 					=	models.ForeignKey(settings.AUTH_USER_MODEL)
+	#reserva					=	models.ForeignKey(tb_reservasWeb, on_delete=models.CASCADE, null=True,)
+	#turno					=   models.ForeignKey(tb_turn, on_delete=models.CASCADE, null=True,)
+	cliente 				=   models.CharField(default='', null=True, max_length=30)
+	tipoPago				=	models.ForeignKey(tb_formasDePago, on_delete=models.CASCADE, null=True, default='')
+	tipoIngreso				=	models.ForeignKey(tb_tipoIngreso, on_delete=models.CASCADE, null=True, default='')
+	#service					=	models.ForeignKey(tb_service, on_delete=models.CASCADE, null=True, default='')
+	monto					=	models.IntegerField(default='', null=True,)
+	descripcion	 			=	models.TextField(default='', null=True, max_length=3000)
+	#phoneNumberClientTwo	=	models.CharField(default='', null=False, max_length=30)
+	#CollaboratorFavoriteKf	= 	models.ForeignKey(tb_collaborator, on_delete=models.CASCADE, null=False, default='')
+	#addressClientTwo		= 	models.TextField(default='', null=False)
+	#isSendPromotions		=	models.BooleanField()
+	dateCreate				=	models.DateField(auto_now=True, blank=False)
+	#isVip					= 	models.BooleanField()
+	#StatusKf				=	models.ForeignKey(tb_status_turn, on_delete=models.CASCADE, null=False, default='')
+	#TypeClienteKf			=	models.ForeignKey(tb_type_client, on_delete=models.CASCADE, null=False, default='')
+	def __str__(self):
+		return self.user.username 
 
 class tb_ingreso (models.Model):
 	user 					=	models.ForeignKey(settings.AUTH_USER_MODEL)

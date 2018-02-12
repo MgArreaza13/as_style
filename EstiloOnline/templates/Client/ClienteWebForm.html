@@ -1,0 +1,103 @@
+{% extends "../Base/BasePanel.html" %}
+
+{% block title %}
+  Nuevo Cliente
+{% endblock title %}
+
+{% block content %}
+
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <h1>
+        Nuevo Cliente
+        <small>detalles</small>
+      </h1>
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i>Inicio</a></li>
+        <li><a href="#">Clientes </a></li>
+        <li class="active">Nuevo Cliente</li>
+      </ol>
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="row">
+        <!-- left column -->
+        <div class="col-lg-2 col-sm-0"></div>
+        <div class="col-lg-8 col-sm-12">
+          <!-- general form elements -->
+          <div class="box box-info">
+            <div class="box-header with-border">
+              <h3 class="box-title">Nuevo Cliente</h3>
+            </div>
+            <!-- /.box-header -->
+            <!-- form start -->
+              <form action="" method="post" enctype="multipart/form-data">
+              
+              <div class="box-body">
+              
+                      
+                    
+                      
+                    <div class="alert alert-danger alert-dismissible hidden">
+                          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                          <h4><i class="icon fa fa-ban"></i> Alert!</h4>
+                          Correo ya existe
+                          
+                        </div>
+                    
+
+    
+
+          
+              
+                  <div class="form-group">
+                    <label>Nombre </label>
+                    <input class="form-control" placeholder="Ingrese el nombre" autocomplete="off" 
+                      required autofocus maxlength="" name="nombre" id="nombre">    
+                  </div>
+                  <div class="form-group">
+                    <label>Correo </label>
+                    <input type="email" class="form-control" placeholder="Ingrese el correo" autocomplete="off" 
+                      required autofocus maxlength="" name="correo" id="correo">    
+                  </div>
+                   <div class="form-group">
+                    <label>Telefono </label>
+                    <input type="" class="form-control" placeholder="Ingrese el numero telefonico" autocomplete="off" 
+                      required autofocus maxlength="" name="telefono" id="telefono">    
+                  </div>
+                
+                    
+        
+
+             
+              
+              </div>
+              <!-- /.box-body -->
+
+              <div class="box-footer">
+                <button id="guardar" type="button" onclick="NuevoCliente();" class="btn btn-primary">GUARDAR</button>
+                <a href="{% url "Clientes:list" %}" class="btn btn-danger">REGRESAR</a>
+              </div> 
+            </form>
+          </div>
+          <!-- /.box -->
+        </div>
+        <div class="col-lg-2 col-sm-0"></div>
+        <!--/.col (left) -->
+        <!-- right column -->
+        
+        <!--/.col (right) -->
+      </div>
+      <!-- /.row -->
+    </section>
+    <!-- /.content -->
+</div>
+
+
+
+
+
+{% endblock content %}
+

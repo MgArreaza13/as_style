@@ -16,7 +16,7 @@ from datetime import date
 from apps.Turn.models import tb_turn
 from apps.Caja.models import tb_ingreso
 from apps.Caja.models import tb_egreso
-
+from apps.ReservasWeb.models import tb_reservasWeb
 #script de validar el perfil
 
 from apps.scripts.validatePerfil import validatePerfil
@@ -107,16 +107,20 @@ def logout(request):
 
 @login_required(login_url = 'Demo:login' )
 def calendario(request):
-	turnos = tb_turn.objects.filter(statusTurn__nameStatus="En Espera")
+	turnos = tb_turn.objects.filter(statusTurn__nameStatus="Confirmada")
+	ReservasWeb = tb_reservasWeb.objects.filter(statusTurn__nameStatus="Confirmada")
 	result = validatePerfil(tb_profile.objects.filter(user=request.user))
 	fecha = date.today()
 	perfil = result[0]
 	servicios = tb_service.objects.all()[:10]
-	turnos_hoy =  tb_turn.objects.filter(dateTurn=date.today()).filter(statusTurn__nameStatus='En Espera').count()
+	reservas_hoy = tb_reservasWeb.objects.filter(dateTurn=date.today()).filter(statusTurn__nameStatus='Confirmada').count()
+	turnos__hoy =  tb_turn.objects.filter(dateTurn=date.today()).filter(statusTurn__nameStatus='Confirmada').count()
+	turnos_hoy = reservas_hoy + turnos__hoy
 	ingresos_hoy = tb_ingreso.objects.filter(dateCreate=date.today()).aggregate(total=Sum('monto'))
 	egresos_hoy  = tb_egreso.objects.filter(dateCreate=date.today()).aggregate(total=Sum('monto'))
 
 	context = {
+	'ReservasWeb':ReservasWeb,
 	'servicios':servicios , 
 	'fecha':fecha ,
 	'turnos':turnos,

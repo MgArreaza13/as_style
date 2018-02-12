@@ -1,0 +1,228 @@
+{% extends "../Base/BasePanel.html" %}
+{% load staticfiles %}
+{% block title %}
+  listado de Clientes
+{% endblock title %}
+
+
+{% block content %}
+
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <h1>
+        Listado De Clientes
+        <small>Detalles </small>
+      </h1>
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i>Inicio</a></li>
+        <li><a href="#">Listado De Clientes  </a></li>
+        <li class="active">Detalles </li>
+      </ol>
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="row">
+        <div class="col-xs-12">
+           <div class="box">
+            
+            <!-- /.box-header -->
+            <div class="box-body" >
+            <div class="col-md-4 col-sm-6 col-xs-12">
+            <!-- box info -->
+                  <div class="info-box bg-green">
+                    <span class="info-box-icon"><i class="fa fa-bank  "></i></span>
+
+                    <div class="info-box-content">
+                         <span class="info-box-text">INGRESOS HOY</span>
+                       {% if ingresos_hoy.total == None %}
+                            0$
+                            {% else %}
+                        
+                             <span class="info-box-number">{{ingresos_hoy.total}}<strong>$</strong></span>
+                            
+                          {% endif %}
+                     </div>
+              <!-- /.info-box-content -->
+                </div>
+            <!-- /.info-box -->
+              </div>
+              <div class="col-md-4 col-sm-6 col-xs-12">
+            <!-- box info -->
+                  <div class="info-box bg-yellow">
+                    <span class="info-box-icon"><i class="fa fa-users"></i></span>
+
+                    <div class="info-box-content">
+                         <span class="info-box-text">CITAS HOY </span>
+                       {% if turnos_hoy == None %}
+                            0
+                            {% else %}
+                        
+                             <span class="info-box-number">{{turnos_hoy}}</span>
+                            
+                          {% endif %}
+                     </div>
+              <!-- /.info-box-content -->
+                </div>
+          <!-- /.info-box -->
+            </div>
+              <div class="col-md-4 col-sm-6 col-xs-12">
+            <!-- box info -->
+                  <div class="info-box bg-red">
+                    <span class="info-box-icon"><i class="fa  fa-minus"></i></span>
+
+                    <div class="info-box-content">
+                         <span class="info-box-text">EGRESOS HOY </span>
+                       {% if egresos_hoy.total == None %}
+                            0$
+                            {% else %}
+                        
+                             <span class="info-box-number">{{egresos_hoy.total}}<strong>$</strong></span>
+                            
+                          {% endif %}
+                     </div>
+              <!-- /.info-box-content -->
+                </div>
+            <!-- /.info-box -->
+              </div>
+              
+
+
+            </div>
+            <!-- /.box-body -->
+          </div>
+          <!-- /.box -->
+      
+
+
+
+
+
+
+
+          <div class="box">
+            <div class="box-header">
+              <h3 class="box-title">Lista de Clientes </h3>
+            </div>
+            <div style="background-color: rgba(154, 153, 158, 0.09);" class="box-body">
+            <h5 class="box-title">Filtrar por Fecha </h5>
+              <div class="form-group col-md-6">
+                    <label for="exampleInputEmail1">DESDE</label>
+                    <input type="text" id="datepicker_from" class="form-control" id="exampleInputEmail1" placeholder="SELECCIONE LA FECHA DE INICIO ">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="exampleInputEmail1">HASTA</label>
+                    <input type="text" id="datepicker_to" class="form-control" id="exampleInputEmail1" placeholder="SELECCIONE LA FECHA FINAL">
+                </div>
+              
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+              <table id="example1" class="table table-bordered table-striped">
+                <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>NOMBRE</th>
+                  <th>CORREO</th>
+                  <th>TELEFONO</th>
+                  <th>NUMERO DE RESERVAS PEDIDAS</th>
+                  <th>FORMA DE REGISTRO</th>
+                  <th>FECHA DE REGISTRO</th>
+                </tr>
+                </thead>
+                <tbody>
+                
+               
+                  
+                {% for cliente in clientes  %}
+                    <tr>
+                    <td>{{cliente.id}}</td>
+                    <td>{{cliente.nombre}}</td>
+                    <td>{{cliente.mail}}</td>
+                    <td>{{cliente.telefono}}</td>
+                    <td>El cliente ha Solicitado {{cliente.numeroReservasWeb}} Reservas</td>
+                    <td>{{cliente.FormaDeRegistro}}</td>
+                    <td>{{cliente.dateCreate}}</td>
+
+                    
+                  
+                  </tr>
+                {% endfor %}
+                
+
+
+
+                
+                </tbody>
+                <tfoot>
+                <tr>
+                  
+
+                </tr>
+                </tfoot>
+              </table>
+            </div>
+            <!-- /.box-body -->
+          </div>
+          <!-- /.box -->
+        </div>
+        <!-- /.col -->
+      </div>
+      <!-- /.row -->
+    </section>
+
+    <div class="box-body" >
+          {% if perfil.tipoUser == "Administrador"  %}
+            <div class="col-sm-12">
+              <a href="{% url "Clientes:ClienteWebForm" %}" type="button" class="btn btn-block btn-info">Nuevo Cliente</a>
+            </div>
+
+           {%endif%}
+           
+    </div>
+
+    
+    <!-- /.content -->
+  </div>
+
+  
+{% endblock content %}
+
+
+{% block scripts %}
+  <!-- jQuery 2.2.3 -->
+<script src="{% static "plugins/jQuery/jquery-2.2.3.min.js" %}"></script>
+<!-- Bootstrap 3.3.6 -->
+<script src="{% static "bootstrap/js/bootstrap.min.js" %}"></script>
+
+<!-- DataTables -->
+<script src="{% static 'plugins/datatables/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'plugins/datatables/dataTables.bootstrap.min.js' %}"></script>
+<!-- SlimScroll -->
+<!-- jQuery 2.2.3 -->
+<!-- jQuery UI 1.11.4 -->
+<script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
+<!-- Slimscroll -->
+<script src="{% static "plugins/slimScroll/jquery.slimscroll.min.js" %}"></script>
+<!-- FastClick -->
+<script src="{% static "plugins/fastclick/fastclick.js" %}"></script>
+<!-- AdminLTE App -->
+<script src="{% static "dist/js/app.min.js" %}"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="{% static "dist/js/demo.js" %}"></script>
+<!-- fullCalendar 2.2.5 -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
+<script src="{% static "plugins/fullcalendar/fullcalendar.min.js" %}"></script>
+<script type="text/javascript" src="{% static "bootstrap/js/bootstrap-clockpicker.min.js" %}"></script>
+  <script type="text/javascript" src="{% static "bootstrap/js/highlight.min.js" %}"></script>
+<!-- Page specific script -->
+<script type="text/javascript" src="{% static "bootstrap/js/bootstrap-clockpicker.min.js" %}"></script>
+<script type="text/javascript" src="{% static "bootstrap/js/bootstrap-datepicker.adminlte.min.js" %}"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/datatables/1.9.4/jquery.dataTables.js" data-semver="1.9.4" data-require="datatables@*"></script>
+<script src="{% static "bootstrap/js/filtrado.js" %}"></script>
+<script src="{% static 'bootstrap/js/notificaciones.js'%}"></script>
+
+<!-- page script -->
+
+{% endblock scripts %}

@@ -13,7 +13,10 @@
             var html = "";
             for (var i=0 ; i < cont ; i++) {
 
-            html+='<li><a class="notificacion" value="'+data[i].id+'" href="javascript:void(0);"><div class="pull-left"<i class="fa fa-shopping-cart text-green"></i></div><h4>Nueva Reserva   <small><i class="fa fa-clock-o"></i> '+ data[i].HoraTurn +' </small></h4><p>'+data[i].nombre + ' reserva para '+ data[i].dateTurn +'</p></a></li>'
+
+              
+
+              html+='<li><a class="notificacion" value="'+data[i].id+'" href="javascript:void(0);"><div class="pull-left"<i class="fa fa-shopping-cart text-green"></i></div><h4>Nueva Reserva   <small><i class="fa fa-clock-o"></i> '+ data[i].HoraTurn +' </small></h4><p>'+data[i].nombre + ' reserva para '+ data[i].dateTurn +'</p></a></li>'
 
                 
 
@@ -26,6 +29,50 @@
         }
       });
       }, 300);
+
+
+
+//cambia el status de los turnos ya pasados 
+ setInterval(function (){
+    $.ajax({
+        url: '/reservas/finalizacion/turnos',
+        dataType: 'json',
+        success: function (data) {
+          
+        }
+      });
+},36000)
+
+
+
+
+setInterval(function () {
+         $.ajax({
+        url: '/api/notificaciones/',
+        dataType: 'json',
+        success: function (data) {
+          if (data) {
+            
+           var cont = data.length;
+            if (cont > 0) {
+
+
+               alertify.set('notifier','position', 'top-left');
+               
+
+
+               var canDismiss = false;
+               var notification = alertify.success('Tienes solicitudes de turnos pedientes por revisar, verifica las notificaciones');
+               notification.ondismiss = function(){ return canDismiss; };
+               setTimeout(function(){ canDismiss = true;}, 4000);
+            }
+            
+            
+          }
+        }
+      });
+      }, 10000);
+
 
 
 

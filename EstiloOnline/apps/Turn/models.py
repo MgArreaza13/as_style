@@ -5,6 +5,7 @@ from apps.Collaborator.models import tb_collaborator
 from apps.Product.models import tb_product
 from apps.Service.models import tb_service
 from apps.Configuracion.models import tb_status
+from apps.Configuracion.models import tb_turn_sesion
 # Create your models here.
 
 """
@@ -39,21 +40,24 @@ TURNO_CHOICES = (
     ('Tarde', 'Desea Un Turno En la Tarde'),
 )
 class tb_turn (models.Model):
-	user 					=	models.ForeignKey(settings.AUTH_USER_MODEL)
+	#user 					=	models.ForeignKey(settings.AUTH_USER_MODEL)
 	#codTurn					=	models.IntegerField(default='', null=False)
 	dateTurn				=	models.DateField(auto_now=False, auto_now_add=False, blank=False, null=False, default='')
 	#TypeHora				=	models.CharField(max_length=30,null=False,choices=TURNO_CHOICES,default='Mañana',)
-	HoraTurn				=	models.TimeField(auto_now=False, auto_now_add=False, blank=False, null=False, default='')
-	HoraTurnEnd				=	models.TimeField(auto_now=False, auto_now_add=False, blank=False, null=False, default='')
+	turn 					=   models.ForeignKey(tb_turn_sesion, on_delete=models.CASCADE, default='', blank=True)
 	client					=  	models.ForeignKey(tb_client, on_delete=models.CASCADE, null=False, default='')
 	collaborator			=	models.ForeignKey(tb_collaborator, on_delete=models.CASCADE, null=False, default='')
 	extraInfoTurn			=	models.TextField(default='', null=False, max_length=300)
 	servicioPrestar			= 	models.ForeignKey(tb_service,on_delete=models.CASCADE, null=False, default='')
+	montoAPagar				=   models.IntegerField(default=0, null=False, blank=True)
+	montoPagado				=   models.IntegerField(default=0, null=True, blank=True)
 	isPay			 		=	models.BooleanField(null=False, blank=True , default=False)
 	#isProcessCollaborator 	=	models.BooleanField()
 	#montoAPagar				=   models.IntegerField(default=0, null=False, blank=True)
 	#ingenico_id             =  	models.TextField(default='None', null=False, max_length=3000)
 	#
+	ingenico_id             =  	models.TextField(default='None', null=False, max_length=3000)
+	PagoOnline			 	=	models.BooleanField(null=False, blank=True , default=False)
 	statusTurn 				=	models.ForeignKey(tb_status, on_delete=models.CASCADE, null=False, default='')
 	PagoOnline			 	=	models.BooleanField(null=False, blank=True , default=False)
 	def __str__(self):

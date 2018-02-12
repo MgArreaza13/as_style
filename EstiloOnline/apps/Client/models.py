@@ -49,6 +49,7 @@ class tb_client_WEB (models.Model):
 	#observaciones			=	models.TextField(default='', null=True, max_length=30000)
 	dateCreate				=	models.DateField(auto_now=True, blank=False)
 	numeroReservasWeb 		=   models.IntegerField(default=1, null=False, )
+	FormaDeRegistro			=	models.CharField(default='Registro Web', null=True, max_length=30)
 	#isVip					= 	models.BooleanField()
 	#StatusKf				=	models.ForeignKey(tb_status_turn, on_delete=models.CASCADE, null=False, default='')
 	#TypeClienteKf			=	models.ForeignKey(tb_type_client, on_delete=models.CASCADE, null=False, default='')

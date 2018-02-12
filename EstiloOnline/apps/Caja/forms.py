@@ -3,11 +3,42 @@ from django.forms import ModelForm, Textarea, Select
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from apps.Caja.models import tb_ingreso
+from apps.Caja.models import tb_ingreso_manual
 from apps.Caja.models import tb_egreso
 from django.forms import extras
 
+class IngresoManualForm(forms.ModelForm):
+	
+	class Meta:
+		model = tb_ingreso_manual
+		fields = [
+		'tipoPago',
+		'tipoIngreso',
+		'monto',
+		
+		'descripcion',
 
+		
+		]
+		exclude = ['user', 'dateCreate', 'cliente',]
 
+		labels = {
+		'monto':'Ingrese el monto a pagar', 
+		
+		}
+		widgets = {
+
+		'tipoPago':Select(attrs={'class':'form-control',
+			'required':True,
+			'autofocus':True,
+			'placeholder':'tipo de Pago'}),
+
+		'tipoIngreso':Select(attrs={'class':'form-control',
+			'required':True,
+			'autofocus':True,
+			'placeholder':'tipo de Pago'}),
+
+		}
 class IngresoForm(forms.ModelForm):
 	
 	class Meta:

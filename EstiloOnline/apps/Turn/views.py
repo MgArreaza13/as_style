@@ -25,6 +25,24 @@ from django.core.mail import send_mail
 from django.core.mail import send_mass_mail
 from apps.Notificaciones.models import Notificacion
 from apps.scripts.SumarHora import sumar_hora
+from apps.Configuracion.models import tb_status
+from django.http import HttpResponse
+from apps.ReservasWeb.models import tb_reservasWeb
+from apps.Configuracion.models import tb_formasDePago
+
+
+
+
+def turno_update(request):
+	id_turno = request.GET.get('id_turno', None)
+	status_name = request.GET.get('status', None)
+	turno = tb_turn.objects.get(id = id_turno)
+	turno.statusTurn = tb_status.objects.get(nameStatus = status_name)
+	turno.save()
+	return HttpResponse(200)
+
+
+
 
 #Resumen de todos los turnos, parte principal
 @login_required(login_url = 'Demo:login' )
@@ -149,11 +167,17 @@ def listTurnos(request):
 	result = validatePerfil(tb_profile.objects.filter(user=request.user))
 	perfil = result[0]
 	formulario = False
+	reservas = tb_reservasWeb.objects.all().order_by('dateTurn')
+	status = tb_status.objects.all()
+	formas_de_pago = tb_formasDePago.objects.all()
 	#queryset 
 	turnos_hoy =  tb_turn.objects.filter(dateTurn=date.today()).filter(statusTurn__nameStatus='En Espera').count()
 	ingresos_hoy = tb_ingreso.objects.filter(dateCreate=date.today()).aggregate(total=Sum('monto'))
 	egresos_hoy  = tb_egreso.objects.filter(dateCreate=date.today()).aggregate(total=Sum('monto'))
 	context = {
+	'formas_de_pago':formas_de_pago,
+	'status':status,
+	'reservas':reservas,
 	'perfil':perfil,
 	'turnos':turnos,
 	'turnos_hoy':turnos_hoy,
@@ -168,7 +192,8 @@ def listTurnos(request):
 @login_required(login_url = 'Demo:login' )
 def NuevoTurn(request):
 	result = validatePerfil(tb_profile.objects.filter(user=request.user))
-	turnos = tb_turn.objects.filter(statusTurn__nameStatus="En Espera")
+	turnos = tb_turn.objects.filter(statusTurn__nameStatus="Confirmada")
+	ReservasWeb = tb_reservasWeb.objects.filter(statusTurn__nameStatus="Confirmada")
 	colaboradores = tb_collaborator.objects.all()
 	servicios = tb_service.objects.all()
 	perfil = result[0]
