@@ -23,20 +23,24 @@ from django.core.mail import send_mail
 from django.core.mail import send_mass_mail
 from django.http import JsonResponse
 from django.core import serializers
+from apps.Caja.models import tb_egreso_colaborador
+from apps.Configuracion.models import tb_formasDePago
 
 
 def ColaboradorDetail(request):
 	id_colaborador = request.GET.get('id', None)
 	colaborador_data = tb_collaborator.objects.get(id = id_colaborador)
 	imagen = str(colaborador_data.user.image)
-	
+	pagos_realizados = serializers.serialize('json', tb_egreso_colaborador.objects.filter(colaborador = id_colaborador), fields=('descripcion','monto','dateCreate'))
 	reservas = serializers.serialize('json', tb_reservasWeb.objects.filter(collaborator__id = id_colaborador), fields=('montoAPagar','nombre','dateTurn'))
 	
 	data = {
+		'id':colaborador_data.id,
 		'nombre':colaborador_data.user.nameUser,
 		'monto':colaborador_data.MontoAcumulado,
 		'imagen':imagen,
 		'reservas':reservas,
+		'pagos_realizados':pagos_realizados,
 		
 	}
 	return JsonResponse(data)
@@ -206,7 +210,7 @@ def EditarColaborador(request, id_colaborador):
 #listado de los colaboradores
 @login_required(login_url = 'Demo:login' )
 def ListColaboradores(request):
-	
+	formas_de_pago = tb_formasDePago.objects.all()
 	colaboradores = tb_collaborator.objects.all()
 	result = validatePerfil(tb_profile.objects.filter(user=request.user))
 	perfil = result[0]
@@ -215,7 +219,7 @@ def ListColaboradores(request):
 	ingresos_hoy = tb_ingreso.objects.filter(dateCreate=date.today()).aggregate(total=Sum('monto'))
 	egresos_hoy  = tb_egreso.objects.filter(dateCreate=date.today()).aggregate(total=Sum('monto'))
 	context = {
-	
+	'formas_de_pago':formas_de_pago,
 	'perfil':perfil,
 	'colaboradores':colaboradores,
 	'turnos_hoy':turnos_hoy,

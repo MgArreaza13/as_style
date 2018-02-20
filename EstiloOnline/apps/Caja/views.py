@@ -11,13 +11,34 @@ from django.http import HttpResponse
 from apps.ReservasWeb.models import tb_reservasWeb
 from apps.Configuracion.models import tb_formasDePago
 from apps.Configuracion.models import tb_tipoIngreso
+from apps.Configuracion.models import tb_tipoEgreso
 from apps.Turn.models import tb_turn
 from apps.Collaborator.models import tb_collaborator
 # Create your views here.
 from apps.scripts.validatePerfil import validatePerfil
 from apps.Client.models import tb_client_WEB
 from apps.UserProfile.models import tb_profile
+from apps.Caja.models import tb_egreso_colaborador
 
+
+
+def PagoColaborador(request):
+	status = 200
+	id_colaborador = request.GET.get('id_colaborador', None)
+	id_metodo_pago = request.GET.get('id_metodo_pago', None)
+	id_monto = request.GET.get('id_monto', None)
+	pago = tb_egreso_colaborador()
+	pago.user = request.user
+	pago.tipoPago =  tb_formasDePago.objects.get(id = id_metodo_pago )
+	pago.colaborador = tb_collaborator.objects.get(id = id_colaborador )
+	pago.tipoEgreso = tb_tipoEgreso.objects.get(nameTipoEgreso = "Pago a Colaboradores")
+	pago.monto = int(id_monto)
+	pago.descripcion = "Pago A Colaborador"
+	pago.save()
+	colaborador = tb_collaborator.objects.get(id=id_colaborador)
+	colaborador.MontoAcumulado -=  int(id_monto)
+	colaborador.save()
+	return HttpResponse(status)
 
 
 @login_required(login_url = 'Demo:login' )
@@ -201,6 +222,7 @@ def NuevoIngreso(request):
 def EgresoList(request):
 	result = validatePerfil(tb_profile.objects.filter(user=request.user))
 	perfil = result[0]
+	egresos_colaboradores = tb_egreso_colaborador.objects.all()
 	egresos = tb_egreso.objects.all().order_by('id')
 	total_ingresos = tb_ingreso.objects.all().aggregate(total=Sum('monto'))
 	total_egresos  = tb_egreso.objects.all().aggregate(total=Sum('monto'))
@@ -215,6 +237,7 @@ def EgresoList(request):
 	else:
 		total_efectivo_caja = None
 	context = {
+	'egresos_colaboradores':egresos_colaboradores,
 	'perfil':perfil,
 	'egresos':egresos,
 	'total_efectivo_caja':total_efectivo_caja,

@@ -9,6 +9,7 @@ from apps.Caja.views import EgresoList
 from apps.Caja.views import NuevoPagoReservaOnline
 from apps.Caja.views import NuevoPagoTurno
 from apps.Caja.views import NuevoIngresoManual
+from apps.Caja.views import PagoColaborador
 
 
 urlpatterns = [
@@ -23,7 +24,7 @@ urlpatterns = [
 	url(r'^Ingreso/list/$', IngresoList , name='IngresoList'  ),
 	url(r'^Ingreso/Nuevo/$', NuevoIngreso , name='NuevoIngreso'  ),
 	url(r'^Ingreso/Otro/Nuevo/$', NuevoIngresoManual , name='NuevoIngresoManual'  ),
-
+	url(r'^Egreso/Otro/Nuevo/Pago/Colaborador$', PagoColaborador , name='PagoColaborador'  ),
 
 	#Egresos
 	url(r'^Egreso/list/$', EgresoList , name='EgresoList'  ),

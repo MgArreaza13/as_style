@@ -297,6 +297,28 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="row">
+                                        <div class="panel panel-info">
+                                            <div class="panel-heading">PAGOS REALIZADOS</div>
+                                            <div class="panel-body">
+                                                <div class="col-md-12">
+                                                    <div class="table-responsive">
+                                                        <table class="table table-hover">
+                                                            <tbody style="cursor:pointer;" id="tablapagos">
+                                                                
+                                                            </tbody>
+                                                            <thead class="text-primary">
+                                                                <th style="text-align: center;">Fecha</th>
+                                                                <th style="text-align: center;">MONTO</th>
+                                                                <th style="text-align: center;">TIPO DE PAGO</th>
+                                                                
+                                                            </thead>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                         </div>
                                         <div class="col-md-4">
                                             <br ><br >
@@ -325,7 +347,7 @@
     <div class="box-body" >
           {% if user.is_authenticated and user.is_staff == True and user.is_superuser == True%}
             <div class="col-sm-12">
-              <a href="{% url "Colaboradores:NuevoColaborador" %}" type="button" class="btn btn-block btn-info">Nuevo Collaborator</a>
+              <a href="{% url "Colaboradores:SimpleRegister" %}" type="button" class="btn btn-block btn-info">Nuevo Collaborator</a>
             </div>
            {% endif %}
            
@@ -386,10 +408,12 @@
       success: function (data) {
           if (data) {
             var miguel = JSON.parse(data.reservas)
-          console.log(miguel)
+            var pagos = JSON.parse(data.pagos_realizados)
+          
 
 
           var cuerpoHtml = "";
+          var HtmlPago = "";
 
           for (var i = 0 ; i < miguel.length ; i++) {
              cuerpoHtml += '<tr style="text-align: center;">'+
@@ -399,8 +423,23 @@
             '</tr>';
     }
 
+    for (var i = 0 ; i < pagos.length ; i++) {
+             HtmlPago += '<tr style="text-align: center;">'+
+            '<td value="'+pagos[i].fields.dateCreate+'">'+pagos[i].fields.dateCreate+'</td>'+
+            '<td value="'+pagos[i].fields.monto+'">$'+pagos[i].fields.monto+'</td>'+
+            '<td value="'+pagos[i].fields.descripcion+'">'+pagos[i].fields.descripcion+'</td>'+
+            '</tr>';
+    }
 
-    var monto = '$'+data.monto+'';
+
+    var monto = '$'+data.monto+''+'<br>'+'<button class="label btn"'+
+                  'type="button"'+ 
+                  'value="'+data.id+'" onclick="PagoDeColaboradores('+
+                  'this.value);" style="background-color:#39CCCC;'+
+                  'float:right; margin-top:0.5em;"'+
+                  'class="'+
+                  'label"  data-toggle="modal" data-target="#mvContacto">'+
+                  'PAGAR CUENTA</button>';
     var usuario = data.nombre;
     var imagen = '<img style="width: 100%;height: auto;"'+
       'src="http://localhost:8000/media/'+data.imagen+'" alt="">';
@@ -408,6 +447,7 @@
     $('#MontoAcumulado').html(monto)
     $('#AvatarUSuario').html(imagen);
     $('#tabladatos').html(cuerpoHtml);
+    $('#tablapagos').html(HtmlPago);
     
         }
         else{
@@ -419,6 +459,66 @@
 
 
     
+  }
+
+
+
+
+
+
+
+   function PagoDeColaboradores(id_colaborador) {
+    var myArrayOfThings = [];
+    {% for turnos in formas_de_pago  %}
+       myArrayOfThings.push( { id: {{turnos.id}}, name: '{{turnos.nameFormasDePago}}' });
+    {% endfor %}
+    var options = {};
+    $.map(myArrayOfThings,function(o,query) {options[o.id] = o.name;});
+      swal.setDefaults({
+          input: 'text',
+          confirmButtonText: 'Siguiente &rarr;',
+          showCancelButton: true,
+          progressSteps: ['1', '2',]
+        })
+        var steps = [
+        {
+            title: 'Seleccione un metodo de pago',
+            input: 'select',
+            inputOptions: options,
+            inputPlaceholder: 'metodos de pago',
+          },
+          {
+            title: 'Ingrese el Monto a Cargar',
+            text: 'Monto'
+          },
+
+          
+        ]
+
+        swal.queue(steps).then(function (result) {
+          id_metodo_pago = parseFloat(result[0]);
+          id_monto       = parseFloat(result[1]);
+               swal.resetDefaults()
+                $.ajax({
+                    url: '/Caja/Egreso/Otro/Nuevo/Pago/Colaborador',
+                    data: {
+                      'id_colaborador':id_colaborador,
+                      'id_metodo_pago': id_metodo_pago,
+                      'id_monto':id_monto,
+                  },
+                  dataType: 'json',
+                  success: function (status) {
+                     swal({
+                        title: 'Hemos Cargado de manera exitosa su pago !',
+                        confirmButtonText: 'Aceptar!'
+                      })
+                     location.reload(); 
+                }
+            });
+
+        }, function () {
+          swal.resetDefaults()
+        })
   }
 </script>
 {% endblock scripts %}
