@@ -5,6 +5,7 @@ cymysql==0.8.9
 defusedxml==0.5.0
 Django==1.11.1
 django-allauth==0.34.0
+django-cors-headers==2.1.0
 django-cymysql==0.5.1
 django-rest-auth==0.9.3
 djangorestframework==3.6.4

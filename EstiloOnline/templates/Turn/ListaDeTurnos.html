@@ -3,7 +3,128 @@
 {% block title %}
   Listado de Turnos
 {% endblock title %}
+<style>
+    
+    .hide-bullets {
+    list-style:none;
+    margin-left: -40px;
+    margin-top:20px;
+}
 
+.thumbnail {
+    padding: 0;
+}
+
+.carousel-inner>.item>img, .carousel-inner>.item>a>img {
+    width: 100%;
+
+}
+@import url(http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css);
+.col-item
+{
+    border: 1px solid #E1E1E1;
+    border-radius: 5px;
+    background: #FFF;
+}
+.col-item .photo img
+{
+    margin: 0 auto;
+    width: 100%;
+}
+
+.col-item .info
+{
+    padding: 10px;
+    border-radius: 0 0 5px 5px;
+    margin-top: 1px;
+}
+
+.col-item:hover .info {
+    background-color: #F5F5DC;
+}
+.col-item .price
+{
+    /*width: 50%;*/
+    float: left;
+    margin-top: 5px;
+}
+
+.col-item .price h5
+{
+    line-height: 20px;
+    margin: 0;
+}
+
+.price-text-color
+{
+    color: #219FD1;
+}
+
+.col-item .info .rating
+{
+    color: #777;
+}
+
+.col-item .rating
+{
+    /*width: 50%;*/
+    float: left;
+    font-size: 17px;
+    text-align: right;
+    line-height: 52px;
+    margin-bottom: 10px;
+    height: 52px;
+}
+
+.col-item .separator
+{
+    border-top: 1px solid #E1E1E1;
+}
+
+.clear-left
+{
+    clear: left;
+}
+
+.col-item .separator p
+{
+    line-height: 20px;
+    margin-bottom: 0;
+    margin-top: 10px;
+    text-align: center;
+}
+
+.col-item .separator p i
+{
+    margin-right: 5px;
+}
+.col-item .btn-add
+{
+    width: 50%;
+    float: left;
+}
+
+.col-item .btn-add
+{
+    border-right: 1px solid #E1E1E1;
+}
+
+.col-item .btn-details
+{
+    width: 50%;
+    float: left;
+    padding-left: 10px;
+}
+.controls
+{
+    margin-top: 20px;
+}
+[data-slide="prev"]
+{
+    margin-right: 10px;
+}
+
+  </style>
 
 {% block content %}
 
@@ -287,7 +408,7 @@
                           <td>
                               <button  type="button" value='{{turno.id}}' href="javascript:void(0);" onclick="PagarOnlineTurno(this.value);" style="" class="label btn btn-info">PAGAR</button>
                               <button class="label btn" type="button" value="{{turno.id}}" onclick="status_turno(this.value);" style="background-color:#39CCCC;" class="label">STATUS</button>
-                              
+                              <button  type="button" value='{{turno.id}}' onclick="ModificarTurno(this.value);" style="background-color:#00c0ef;" class="label btn ">MODIFICAR</button>
                               <a href="{% url "Turnos:DeleteTurn" turno.id %}" style="background-color:#D81B60;" class="label">ELIMINAR</a>
                             </td>
                         </tr>
@@ -452,6 +573,8 @@
 
                           <td>
                               <button  type="button" value='{{turno.id}}' href="javascript:void(0);" onclick="PagarOnlineReservaWeb(this.value);" style="" class="label btn btn-info">PAGAR</button>
+
+                              <button  type="button" value='{{turno.id}}' onclick="Modificarreserva(this.value);" style="background-color:#00c0ef;" class="label btn ">MODIFICAR</button>
                               <button class="label btn" type="button" value="{{turno.id}}" onclick="status(this.value);" style="background-color:#39CCCC;" class="label">STATUS</button>
                               
                               <a href="{% url "Turnos:DeleteTurn" turno.id %}" style="background-color:#D81B60;" class="label">ELIMINAR</a>
@@ -503,6 +626,141 @@
     <!-- /.content -->
   </div>
 
+
+
+
+
+
+
+         <div class="container">
+                <div class="modal fade" id="mvUsuarios" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-lg">
+                        <!-- Modal Content -->
+                        <div class="modal-content">
+                            <!-- Modal Header -->
+                            <div class="modal-header">
+                                <button type="button" class="close btn-lg" data-dismiss="modal" style="background-color:red; color:white; margin:15px; padding:2px 8px 6px 8px;">
+                                    <span aria-hidden="true">&times;</span>
+                                    <span class="sr-only">Cerrar</span>
+                                </button>
+                                <h3 class="text-info">Modificar Reserva</h3>
+                            </div>
+                           
+                            <div class="modal-body">
+                               
+                                
+                                
+                                <div class="col-md-12">
+                                     <div class="row">
+                  <div class="col-md-5">
+                     <div class="box box-solid">
+                    
+                    <!-- /.box-header -->
+                    <div class="box-body" style="margin:-1em;">
+                      <div class="row">
+
+
+                      <div class='pricing animated swing'>
+                            <div class='thumbnail animated pulse infinite'>
+                              <div class='fa fa-paper-plane'></div>
+                            </div>
+                            <div class='title'>
+                              TOTAL DETALLES RESERVAS
+                            </div>
+                            <div class='content'>
+                              <div class='sub-title'>
+                              <h3>PRECIO TOTAL EVENTO</h3>
+                                <p style="font-size: 4em;">$<estrong id="Monto">0</estrong></p>
+                                
+                              </div>
+                              <ul>
+                              <li>
+                              <li>
+                                  <div id="INOCOFECHA" class='fa fa-check'></div>
+                                  COLABORADOR: <p class="pull-right" id="COLABORADORINFFO"></p>
+                                </li>
+                                
+                                
+                                <li>
+                                  <div id="INOCOFECHA" class='fa fa-check'></div>
+                                  FECHA ANTIGUA: <p class="pull-right" id="FECHATARJETAVIEJA"></p>
+                                </li>
+                                <li>
+                                  <div id="ICONOTARJETA" class='fa fa-check'></div>
+                                  TURNO VIEJO: <p class="pull-right" id="TURNOTARJETAVIEJA"></p>
+                                </li>
+
+                                <li>
+                                  <div id="" class=''></div>
+                                  FECHA NUEVA: <p class="pull-right" id="FECHATARJETA"></p>
+                                </li>
+                                <li>
+                                  <div id="" class=''></div>
+                                  TURNO NUEVO: <p class="pull-right" id="TURNOTARJETA"></p>
+                                </li>
+                                <!--
+                                <li>
+                                  <div class='fa fa-check'></div>
+                                  Premium Technical Support
+                                </li>
+                                <li>
+                                  <div class='fa fa-close'></div>
+                                  Complete Access To All Plugins
+                                </li>
+                                <li>
+                                  <div class='fa fa-close'></div>
+                                  Layered Photoshop Files
+                                </li>
+                                <li>
+                                  <div class='fa fa-close'></div>
+                                  No Yearly Fees
+                                </li>
+                              </ul>
+                              <a href='https://www.elegantthemes.com/cgi-bin/members/register.cgi?sub=16'>
+                                Sign Up
+                              </a> -->
+                            </div>
+                             <div style="text-align:center;"  class="box-footer col-md-12">
+                        <button type="submit" class="btn btn-primary">GUARDAR</button>
+                        <a onclick="REGRESARPASO3();"  href="javascript:void(0)" class="btn btn-danger">REGRESAR</a>
+                      </div>
+          
+                    
+                  </div>
+            
+            
+        </div>
+        
+            </div>
+            <!-- /.box-body -->
+          </div>
+                                        </div>
+
+
+
+
+                                        <div class="col-md-7">
+                                           <div class="box box-primary">
+                                            <div class="box-body no-padding">
+                                              <!-- THE CALENDAR -->
+                                              <div id="calendar"></div>
+                                            </div>
+                                            <!-- /.box-body -->
+                                          </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- END Table -->
+                                <div class="col-md-offset-10">
+                                    <button type="button" data-dismiss="modal" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span> Cerrar Usuarios</button>
+                                </div>
+                                       
+                            </div>
+                        </div>
+                    </div>    
+                </div>
+            </div>
+
   
 {% endblock content %}
 
@@ -537,6 +795,7 @@
 <script type="text/javascript" src="{% static "bootstrap/js/bootstrap-clockpicker.min.js" %}"></script>
 <script type="text/javascript" src="{% static "bootstrap/js/bootstrap-datepicker.adminlte.min.js" %}"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/datatables/1.9.4/jquery.dataTables.js" data-semver="1.9.4" data-require="datatables@*"></script>
+<script src="{% static "plugins/fullcalendar/locale/es.js" %}"></script>
 <script src="{% static "bootstrap/js/filtrado.js" %}"></script>
 
 <!-- page script -->
@@ -561,16 +820,8 @@ function status_turno(id) {
      inputPlaceholder: 'Seleccione El turno que desea cotizar',
      showCancelButton: true,
     inputValidator: function (value ) {
-
-
-
-
-
-
-                    return new Promise(function (resolve, reject) {
-                        resolve('Has Seleccionado El turno Valido')
-                       
-                     
+         return new Promise(function (resolve, reject) {
+                        resolve('Has Seleccionado El turno Valido')              
                     })
                   }
                 }).then(function (result) {
@@ -640,16 +891,8 @@ function status(id) {
      inputPlaceholder: 'Seleccione El turno que desea cotizar',
      showCancelButton: true,
     inputValidator: function (value ) {
-
-
-
-
-
-
                     return new Promise(function (resolve, reject) {
-                        resolve('Has Seleccionado El turno Valido')
-                       
-                     
+                        resolve('Has Seleccionado El turno Valido')                
                     })
                   }
                 }).then(function (result) {
@@ -810,6 +1053,499 @@ function status(id) {
           swal.resetDefaults()
         })
   }
+
+
+  function Modificarreserva(id_reserva) {
+            $.ajax({
+                    url: '/turnos/info/de/reservas',
+                    data: {
+                      'id_reserva':id_reserva,
+                
+                  },
+                  dataType: 'json',
+                  success: function (data) {
+                     if(data){
+                        $('#FECHATARJETAVIEJA').html(data.fecha_vieja);
+                        $('#TURNOTARJETAVIEJA').html(data.turno_viejo);
+                        $('#COLABORADORINFFO').html(data.nombre_colaborador);
+                        $('#Monto').html(data.monto);
+                        $("#mvUsuarios").modal("show");
+
+                     }
+                }
+            })
+  }
+
+
+
+function ModificarTurno(id_turno) {
+            $.ajax({
+                    url: '/turnos/info/de/turno',
+                    data: {
+                      'id_reserva':id_turno,
+                
+                  },
+                  dataType: 'json',
+                  success: function (data) {
+                     if(data){
+                        $('#FECHATARJETAVIEJA').html(data.fecha_vieja);
+                        $('#TURNOTARJETAVIEJA').html(data.turno_viejo);
+                        $('#COLABORADORINFFO').html(data.nombre_colaborador);
+                        $('#Monto').html(data.monto);
+                        $("#mvUsuarios").modal("show");
+
+                     }
+                }
+            })
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   $(function () {
+
+    /* initialize the external events
+     -----------------------------------------------------------------*/
+    function ini_events(ele) {
+      ele.each(function () {
+
+        // create an Event Object (http://arshaw.com/fullcalendar/docs/event_data/Event_Object/)
+        // it doesn't need to have a start or end
+        var eventObject = {
+          title: $.trim($(this).text()) // use the element's text as the event title
+        };
+
+        // store the Event Object in the DOM element so we can get to it later
+        $(this).data('eventObject', eventObject);
+
+        // make the event draggable using jQuery UI
+        $(this).draggable({
+          zIndex: 1070,
+          revert: true, // will cause the event to go back to its
+          revertDuration: 0  //  original position after the drag
+        });
+
+      });
+    }
+ 
+    ini_events($('#external-events div.external-event'));
+
+    /* initialize the calendar
+     -----------------------------------------------------------------*/
+    //Date for the calendar events (dummy data)
+    var date = new Date();
+    var d = date.getDate(),
+        m = date.getMonth(),
+        y = date.getFullYear();
+
+    var selectableoption = false;
+    
+    $('#calendar').fullCalendar({
+      header: {
+        left: 'prev,next today',
+        center: 'title',
+        right: 'month,agendaWeek,agendaDay'
+      },
+      buttonText: {
+        today: 'Hoy',
+        month: 'Mes',
+        week: 'Semana',
+        day: 'Dia'
+      },
+
+
+      //Random default events
+      events: [
+
+      {% for turno in turnos_confirmados %}
+        {
+          title: 'RESERVADO',
+          start: '{{ turno.dateTurn|date:"Y-m-d" }} {{turno.turn.HoraTurn}}',
+          end:'{{ turno.dateTurn|date:"Y-m-d" }} {{turno.turn.HoraTurnEnd}}',
+          backgroundColor: "#f56954", //red
+          borderColor: "#f56954",//red
+          titulo:'{{turno.servicioPrestar}}',
+          cliente:'{{turno.client}}',
+          fecha_de_inicio:'{{ turno.dateTurn|date:"d-m-Y" }}',
+          hora_de_inicio:'{{ turno.HoraTurn }}',
+          
+        },
+      {% endfor %}
+      {% for ReservasWeb in ReservasWeb_confirmadas %}
+        {
+          title: 'RESERVADO \n {{ReservasWeb.turn.HoraTurn}} a {{ReservasWeb.turn.HoraTurnEnd}} hs',
+          start: '{{ ReservasWeb.dateTurn|date:"Y-m-d" }} {{ReservasWeb.turn.HoraTurn}}',
+          end:'{{ ReservasWeb.dateTurn|date:"Y-m-d" }} {{ReservasWeb.turn.HoraTurnEnd}}',
+          backgroundColor: "#f56954", //red
+          borderColor: "#f56954", // red 
+          titulo:'{{ReservasWeb.servicioPrestar}}',
+          cliente:'{{ReservasWeb.nombre}}',
+          fecha_de_inicio:'{{ ReservasWeb.dateTurn|date:"d-m-Y" }}',
+          hora_de_inicio:'{{ ReservasWeb.HoraTurn }}',
+        },
+      {% endfor %}
+      
+      ],
+      selectable: true,
+      selectHelper: true,
+      select: function(start, end) {
+        /*
+        var title = prompt('Event Title:');
+        var eventData;
+        if (title) {
+          eventData = {
+            title: title,
+            start: start,
+            end: end
+          };
+          $('#calendar').fullCalendar('renderEvent', eventData, true); // stick? = true
+        }
+        $('#calendar').fullCalendar('unselect');
+      */
+$('#mvUsuarios').addClass('hidden');
+      date = new Date(start);
+      year = date.getFullYear();
+      month = date.getMonth()+1;
+      dt = date.getDate()+1;
+
+      if (dt < 10) {
+        dt = '0' + dt;
+      }
+      if (month < 10) {
+        month = '0' + month;
+      }
+
+      var fecha = year+'-' + month + '-'+dt;
+
+      $('#FechaSeleccionada').val(fecha);
+      
+
+
+      $.ajax({
+        url: '/reservas/web/consulta/',
+        data: {
+          'date': fecha
+      },
+      dataType: 'json',
+      success: function (query) {
+        $('#INOCOFECHA').removeClass('fa-close');
+        $('#INOCOFECHA').addClass('fa-check');
+        $('#FECHATARJETA').html(fecha)
+          if(query.length != 0)
+          {
+            console.log('longitud del arreglo ' + query.length);
+           var myArrayOfThings = [];
+           var cont = 0;
+           var arreglo_dos = [];
+           var band = 1;
+            function cargarOpciones(query) {
+              //esta  funcion lo que esta hacioendo es validando 
+              //lo que traigo del query que en este momentos son todos los turnos que estan
+              //ocupados ese dia, y esta llenando las opciones 
+              //del select unica y exclusivamente con la informacion 
+              // de los turnos que se permiten en ese dia
+              //console.log(query);
+              {% for Tturno in tipe_turnos %}
+                 //console.log('##########################################################id  del turno a validar'+ {{Tturno.id}} + '######################################################');
+                      for(var i = 0; i<query.length; i++){
+                         //console.log('--------------------------valor de i ' + i + '---------------------------');
+                        // este for lo que hace es validar si existe alguna coincidencia 
+                        // dentro del query del turno 
+                        // si es asi sale 0 que es false 
+                        // de lo contrario ban es igual a 1 
+                        //y se cargara el turno
+                        if({{Tturno.id}} != query[i].fields.turn ){
+                          //console.log('valor del id es ' + {{Tturno.id}} + ' valor del turno desocupado ' +query[i].fields.turn )
+                          //console.log('Cargare');
+                          band = 1;
+                        }
+                        else{
+                          //console.log('No voy a cargar nada me estoy volviendo loco');
+                          band = 0;
+                          i = query.length;
+                        }
+                        //console.log('la bandera sale ' +band);
+                      }
+                      if(band == 1){
+                        // aqui cargo la opcion para el select
+                       myArrayOfThings.push( { id: {{Tturno.id}}, name: '{{Tturno.nameturnsession}} . {{Tturno.HoraTurn}} - {{Tturno.HoraTurnEnd}}' });
+                        //console.log(' voy a cargarrrrrrrrrrrrrrrrrrrrrrrrrr cargare');
+                      }
+                      //console.log(myArrayOfThings);
+                  
+                {% endfor %}
+
+             //console.log(myArrayOfThings);
+            }
+              cargarOpciones(query);
+
+
+                var options = {};
+                $.map(myArrayOfThings,
+                    function(o,query) {
+                      
+                        options[o.id] = o.name;
+                      
+                        
+                    });  
+              swal({
+                  title: 'Seleccione el turno para cargar su cotizacion',
+                  input: 'select',
+                  inputOptions: options,
+                  inputPlaceholder: 'Seleccione El turno que desea cotizar',
+                  showCancelButton: true,
+                  inputValidator: function (value ) {
+                    return new Promise(function (resolve, reject) {
+                      console.log(query[0].fields.turn);
+                      for (var i = 0; i < query.length; i++) {
+                        if (value != query[i].fields.turn) {
+                          console.log(value);
+                        resolve('Has Seleccionado El turno Valido')
+                        $('#mvUsuarios').removeClass('hidden');
+                      } else {
+                        reject('Turno Ocupado')
+                      }
+                      }
+                    })
+                  }
+                }).then(function (result) {
+                  
+                   if(result == "" ){
+                    swal({
+                    type: 'error',
+                    html: '<h1>Oops...</h1><h3>Hemos tenido un problema al procesar tu solicitud</h3>'+
+                          '<p>Te invitamos a seleccionar otro dia.</p>'
+                  })
+                    $('#mvUsuarios').removeClass('hidden');
+
+                   }
+                   else{
+                  $('#TURNOTARJETA').html(result);
+                  $('#ICONOTARJETA').removeClass('fa-close');
+                  $('#ICONOTARJETA').addClass('fa-check');
+
+                   $('#mvUsuarios').removeClass('hidden');
+                    swal({
+                    type: 'success',
+                    html: 'Has seleccionado el turno: ' + result
+                  })
+                }
+                  
+              });
+
+          }
+          else{
+            var myArrayOfThings = [
+            {% for Tturno in tipe_turnos %}
+
+            { id: {{Tturno.id}}, name: '{{Tturno.nameturnsession}} . {{Tturno.HoraTurn}} - {{Tturno.HoraTurnEnd}}' },
+
+            {% endfor %}
+
+            ];
+
+                var options = {};
+                $.map(myArrayOfThings,
+                    function(o,query) {
+                        options[o.id] = o.name;  
+                    });
+                
+            
+           
+              swal({
+                  title: 'Seleccione el turno para cargar su cotizacion',
+                  input: 'select',
+                  inputOptions: options,
+                  inputPlaceholder: 'Seleccione El turno que desea cotizar',
+                  showCancelButton: false,
+                  inputValidator: function (value ) {
+                    return new Promise(function (resolve, reject) {
+                          
+                        if (value) {
+                          $('#ICONOTARJETA').removeClass('fa-close');
+                           $('#ICONOTARJETA').addClass('fa-check');
+                          $('#TurnSeleccionado').val(value);
+                        resolve('Has Seleccionado El turno Valido')
+                         $('#mvUsuarios').removeClass('hidden');
+                                     
+                      }
+                      else{
+                         $('#mvUsuarios').removeClass('hidden');
+                        reject('ha ocurrido un error')
+                      }
+                    })
+                  }
+                }).then(function (result) {
+                  $('#TURNOTARJETA').html(result);
+                  $('#ICONOTARJETA').removeClass('fa-close');
+                  $('#ICONOTARJETA').addClass('fa-check');
+                   $('#mvUsuarios').removeClass('hidden');
+                  swal({
+                    type: 'success',
+                    html: 'Hemos Cargado perfectamente tu turno '
+                  })
+              });
+          }
+        },
+      error : function() {
+         $('#mvUsuarios').removeClass('hidden');
+        swal({
+                    type: 'error',
+                    html: '<h1>Oops...</h1><h3>Hemos tenido un problema al procesar tu solicitud</h3>'+
+                          '<p>Te invitamos a seleccionar otro dia.</p>'
+                  })
+    },
+
+   
+});
+
+
+
+
+
+
+
+
+
+
+      //alerta bien bonito 
+      /*
+      swal({
+        title: 'Select Ukraine',
+        input: 'select',
+        inputOptions: {
+          'SRB': 'Serbia',
+          'UKR': 'Ukraine',
+          'HRV': 'Croatia'
+        },
+        inputPlaceholder: 'Select country',
+        showCancelButton: true,
+        inputValidator: function (value) {
+          return new Promise(function (resolve, reject) {
+            if (value === 'UKR') {
+              resolve()
+            } else {
+              reject('You need to select Ukraine :)')
+            }
+          })
+        }
+      }).then(function (result) {
+        swal({
+          type: 'success',
+          html: 'You selected: ' + result
+        })
+      });*/
+
+      },
+      eventClick: function(calEvent) {
+
+        
+       
+
+        // creo el modal  
+
+       // var modal = '<div class="col-lg-12">'+
+          '<div  class="modal" id="myModal" role="dialog">'+
+            '<div class="modal-dialog">'+
+              '<div style="margin-left: 7em;" class="modal-content">'+
+                '<div class="modal-header">'+
+                  '<button type="button" class="close" data-dismiss="modal" aria-label="'+
+                  'Close">'+
+                    '<span aria-hidden="true">×</span></button>'+
+                  '<h4 class="modal-title">Reserva</h4>'+
+                '</div>'+
+                '<div class="modal-body">'+
+                  '<p>Reserva de '+ calEvent.titulo +' para la fecha '+calEvent.fecha_de_inicio +' solicitado por el cliente '+calEvent.cliente +' para la hora '+calEvent.hora_de_inicio +'</p>'+
+                '</div>'+
+               '<div class="modal-footer">'+
+                '<button type="button" class="btn btn-primary"'+
+                  'data-dismiss="'+
+                  'modal">Cerrar</button>'+
+                '</div>'+
+              '</div>'+
+              
+            '</div>'+
+            
+          '</div>'+
+           
+         '</div>';
+
+         //$('#miguel').html(modal);
+          //$("#myModal").modal("show");
+
+    },
+      editable: false,
+      droppable: true, // this allows things to be dropped onto the calendar !!!
+      drop: function (date, allDay) { // this function is called when something is dropped
+
+        // retrieve the dropped element's stored Event Object
+        var originalEventObject = $(this).data('eventObject');
+
+        // we need to copy it, so that multiple events don't have a reference to the same object
+        var copiedEventObject = $.extend({}, originalEventObject);
+
+        // assign it the date that was reported
+        copiedEventObject.start = date;
+        copiedEventObject.allDay = allDay;
+        copiedEventObject.backgroundColor = $(this).css("background-color");
+        copiedEventObject.borderColor = $(this).css("border-color");
+
+        // render the event on the calendar
+        // the last `true` argument determines if the event "sticks" (http://arshaw.com/fullcalendar/docs/event_rendering/renderEvent/)
+        $('#calendar').fullCalendar('renderEvent', copiedEventObject, true);
+
+        // is the "remove after drop" checkbox checked?
+        if ($('#drop-remove').is(':checked')) {
+          // if so, remove the element from the "Draggable Events" list
+          $(this).remove();
+        }
+
+      }
+    });
+
+    /* ADDING EVENTS */
+    var currColor = "#3c8dbc"; //Red by default
+    //Color chooser button
+    var colorChooser = $("#color-chooser-btn");
+    $("#color-chooser > li > a").click(function (e) {
+      e.preventDefault();
+      //Save color
+      currColor = $(this).css("color");
+      //Add color effect to button
+      $('#add-new-event').css({"background-color": currColor, "border-color": currColor});
+    });
+    $("#add-new-event").click(function (e) {
+      e.preventDefault();
+      //Get value and make sure it is not null
+      var val = $("#new-event").val();
+      if (val.length == 0) {
+        return;
+      }
+
+      //Create events
+      var event = $("<div />");
+      event.css({"background-color": currColor, "border-color": currColor, "color": "#fff"}).addClass("external-event");
+      event.html(val);
+      $('#external-events').prepend(event);
+
+      //Add draggable funtionality
+      ini_events(event);
+
+      //Remove event from text input
+      $("#new-event").val("");
+    });
+  });
+
  </script>
 
 {% endblock scripts %}

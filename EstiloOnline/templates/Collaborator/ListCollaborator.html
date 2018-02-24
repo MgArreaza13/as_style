@@ -433,7 +433,7 @@
 
 
     var monto = '$'+data.monto+''+'<br>'+'<button class="label btn"'+
-                  'type="button"'+ 
+                  'type="button" id="MiBotonDePago"'+ 
                   'value="'+data.id+'" onclick="PagoDeColaboradores('+
                   'this.value);" style="background-color:#39CCCC;'+
                   'float:right; margin-top:0.5em;"'+
@@ -443,6 +443,12 @@
     var usuario = data.nombre;
     var imagen = '<img style="width: 100%;height: auto;"'+
       'src="http://localhost:8000/media/'+data.imagen+'" alt="">';
+    if(data.monto == 0 ){
+      $('#MiBotonDePago').addClass('hidden');
+    }
+    else{
+      $('#MiBotonDePago').removeClass('hidden');
+    }
     $('#User').html(usuario);
     $('#MontoAcumulado').html(monto)
     $('#AvatarUSuario').html(imagen);

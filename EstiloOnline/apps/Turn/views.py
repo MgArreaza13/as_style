@@ -29,6 +29,46 @@ from apps.Configuracion.models import tb_status
 from django.http import HttpResponse
 from apps.ReservasWeb.models import tb_reservasWeb
 from apps.Configuracion.models import tb_formasDePago
+from apps.Configuracion.models import tb_turn_sesion
+from django.http import JsonResponse
+from django.core import serializers
+
+
+
+
+def InfoReserva(request):
+	id_reserva = request.GET.get('id_reserva', None) 
+	reserva = tb_reservasWeb.objects.get(id=id_reserva)
+	data = {
+		'id':reserva.id,
+		'nombre_colaborador':reserva.collaborator.user.nameUser,
+		'monto':reserva.montoAPagar,
+		'fecha_vieja':reserva.dateTurn,
+		'turno_viejo':reserva.turn.nameturnsession
+	}
+	return JsonResponse(data)
+
+def InfoTurno(request):
+	id_reserva = request.GET.get('id_reserva', None) 
+	reserva = tb_turn.objects.get(id=id_reserva)
+	data = {
+		'id':reserva.id,
+		'nombre_colaborador':reserva.collaborator.user.nameUser,
+		'monto':reserva.montoAPagar,
+		'fecha_vieja':reserva.dateTurn,
+		'turno_viejo':reserva.turn.nameturnsession
+	}
+	return JsonResponse(data)
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -170,11 +210,17 @@ def listTurnos(request):
 	reservas = tb_reservasWeb.objects.all().order_by('dateTurn')
 	status = tb_status.objects.all()
 	formas_de_pago = tb_formasDePago.objects.all()
+	turnos_confirmados = tb_turn.objects.filter(statusTurn__nameStatus = 'Confirmada')
+	ReservasWeb_confirmadas = tb_reservasWeb.objects.filter(statusTurn__nameStatus = 'Confirmada')
+	tipe_turnos = tb_turn_sesion.objects.all()
 	#queryset 
 	turnos_hoy =  tb_turn.objects.filter(dateTurn=date.today()).filter(statusTurn__nameStatus='En Espera').count()
 	ingresos_hoy = tb_ingreso.objects.filter(dateCreate=date.today()).aggregate(total=Sum('monto'))
 	egresos_hoy  = tb_egreso.objects.filter(dateCreate=date.today()).aggregate(total=Sum('monto'))
 	context = {
+	'tipe_turnos':tipe_turnos,
+	'turnos_confirmados':turnos_confirmados,
+	'ReservasWeb_confirmadas':ReservasWeb_confirmadas,
 	'formas_de_pago':formas_de_pago,
 	'status':status,
 	'reservas':reservas,
