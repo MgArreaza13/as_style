@@ -17,7 +17,7 @@ pymysql.install_as_MySQLdb()
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-
+CORS_ORIGIN_ALLOW_ALL = True
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
 
@@ -65,6 +65,8 @@ INSTALLED_APPS = [
     'corsheaders',
 
 ]
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_CREDENTIALS = True
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -80,6 +82,11 @@ MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'corsheaders.middleware.CorsPostCsrfMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.BrokenLinkEmailsMiddleware',
+    'django.middleware.common.CommonMiddleware',
 ]
 
 ROOT_URLCONF = 'EstiloOnline.urls'
@@ -245,7 +252,14 @@ REST_USE_JWT = True
 
 SITE_ID = 1
 
-CORS_ORIGIN_WHITELIST = ('*')
+CORS_ORIGIN_WHITELIST = (
+    'localhost:8000',
+    'localhost:8002',
+    '127.0.0.1:8000',
+    '127.0.0.1:8002',
+    'http://estiloonline.pythonanywhere.com',
+
+)
 CORS_URLS_REGEX = r'^/api/.*$'
 CORS_ALLOW_METHODS = (
     'DELETE',
