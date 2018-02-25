@@ -27,10 +27,7 @@ SECRET_KEY = 'tosmg$1jyf^8m64xi%gip&8=ei0&9^x7z@d!&bk#1k50^#kl^6'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [
-    'estiloonline.pythonanywhere.com',
-    'localhost'
-    ]
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -65,8 +62,7 @@ INSTALLED_APPS = [
     'corsheaders',
 
 ]
-CORS_ORIGIN_ALLOW_ALL = True
-CORS_ALLOW_CREDENTIALS = True
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -83,10 +79,10 @@ MIDDLEWARE = [
     'django.middleware.csrf.CsrfViewMiddleware',
     'corsheaders.middleware.CorsPostCsrfMiddleware',
     'corsheaders.middleware.CorsMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.BrokenLinkEmailsMiddleware',
     'django.middleware.common.CommonMiddleware',
+    'apps.Middleware.Cors.CorsMiddleware',
+    'apps.Middleware.Cors.XsSharing',
 ]
 
 ROOT_URLCONF = 'EstiloOnline.urls'
@@ -252,15 +248,10 @@ REST_USE_JWT = True
 
 SITE_ID = 1
 
-CORS_ORIGIN_WHITELIST = (
-    'localhost:8000',
-    'localhost:8002',
-    '127.0.0.1:8000',
-    '127.0.0.1:8002',
-    'http://estiloonline.pythonanywhere.com',
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_CREDENTIALS = True
 
-)
-CORS_URLS_REGEX = r'^/api/.*$'
+
 CORS_ALLOW_METHODS = (
     'DELETE',
     'GET',
@@ -268,6 +259,9 @@ CORS_ALLOW_METHODS = (
     'PATCH',
     'POST',
     'PUT',
+)
+CORS_EXPOSE_HEADERS = (
+    'Access-Control-Allow-Origin: *',
 )
 CORS_ALLOW_HEADERS = (
     'accept',
