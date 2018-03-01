@@ -1,5 +1,5 @@
 import re
-
+from django.utils.deprecation import MiddlewareMixin
 from django.utils.text import compress_string
 from django.utils.cache import patch_vary_headers
 
@@ -14,7 +14,7 @@ except:
     XS_SHARING_ALLOWED_METHODS = ['POST','GET','OPTIONS', 'PUT', 'DELETE']
 
 
-class XsSharing(object):
+class XsSharing(MiddlewareMixin):
     """
         This middleware allows cross-domain XHR using the html5 postMessage API.
          
@@ -25,12 +25,11 @@ class XsSharing(object):
 
         if 'HTTP_ACCESS_CONTROL_REQUEST_METHOD' in request.META:
             response = http.HttpResponse()
-            response['Access-Control-Allow-Origin']  = XS_SHARING_ALLOWED_ORIGINS 
+            response['Access-Control-Allow-Origin']  = "*"
             response['Access-Control-Allow-Methods'] = ",".join( XS_SHARING_ALLOWED_METHODS ) 
             
             return response
-
-        return None
+            return None
 
     def process_response(self, request, response):
         # Avoid unnecessary work
@@ -39,13 +38,13 @@ class XsSharing(object):
 
         response['Access-Control-Allow-Origin']  = XS_SHARING_ALLOWED_ORIGINS 
         response['Access-Control-Allow-Methods'] = ",".join( XS_SHARING_ALLOWED_METHODS )
-
-return response
-
-
-
-
-class CorsMiddleware(object):
-    def process_response(self, req, resp):
-        response["Access-Control-Allow-Origin"] = "*"
         return response
+
+
+
+
+class CorsMiddleware(MiddlewareMixin):
+    def process_response(self, req, resp):
+    	response = http.HttpResponse()
+    	response["Access-Control-Allow-Origin"] = "*"
+    	return response

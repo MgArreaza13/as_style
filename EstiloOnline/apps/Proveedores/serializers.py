@@ -7,6 +7,8 @@ class ProveedorSerializer(serializers.HyperlinkedModelSerializer):
 	class Meta:
 		model = tb_proveedor
 		fields = (
+				'id',
+				'url',
 				'user',
 				'razonSocial',
 				'cuit',

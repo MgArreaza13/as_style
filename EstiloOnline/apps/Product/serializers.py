@@ -5,6 +5,8 @@ class ProductSerializer(serializers.HyperlinkedModelSerializer):
 	class Meta:
 		model = tb_product
 		fields = (
+			'id',
+			'url',
 			'user',
 			'nameProduct',
 			'descriptionProduct',

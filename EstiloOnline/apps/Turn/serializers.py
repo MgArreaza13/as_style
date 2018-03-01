@@ -6,7 +6,10 @@ from apps.Turn.models import tb_turn
 class turnSerializer(serializers.HyperlinkedModelSerializer):
 	class Meta:
 		model = tb_turn
-		fields = ('user',
+		fields = (
+		'id',
+		'url',
+		'user',
 		'dateTurn',
 		'HoraTurn',
 		'client',

@@ -43,7 +43,15 @@ from django.core import serializers
 from apps.Configuracion.models import tb_turn_sesion
 from apps.ReservasWeb.serializers import ReservasWebSerializer
 
-
+def ActualizacionManualTurno(request):
+	id_reserva = request.GET.get('id_reserva', None) 
+	new_date = request.GET.get('new_date', None) 
+	new_turn = request.GET.get('new_turn', None) 
+	turno = tb_reservasWeb.objects.get(id = id_reserva)
+	turno.dateTurn = new_date
+	turno.turn = tb_turn_sesion.objects.get(id= new_turn)
+	turno.save()
+	return HttpResponse(200)
 
 def reserva_update(request):
 	id_reserva = request.GET.get('id_reserva', None)

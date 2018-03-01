@@ -16,51 +16,61 @@ from apps.Configuracion.models import tb_turn_sesion
 class TipoIngresoSerializer(serializers.HyperlinkedModelSerializer):
 	class Meta:
 		model = tb_tipoIngreso
-		fields = ('user', 'nameTipoIngreso', 'dateCreate')
+		fields = ('id',
+			'url','user', 'nameTipoIngreso', 'dateCreate')
 
 class TipoEgresoSerializer(serializers.HyperlinkedModelSerializer):
 	class Meta:
 		model = tb_tipoEgreso
-		fields = ('user', 'nameTipoEgreso', 'dateCreate')
+		fields = ('id',
+			'url','user', 'nameTipoEgreso', 'dateCreate')
 
 class TipoServicioSerializer(serializers.HyperlinkedModelSerializer):
 	class Meta:
 		model = tb_tipoServicio
-		fields = ('user', 'nameTipoServicio', 'dateCreate')
+		fields = ('id',
+			'url','user', 'nameTipoServicio', 'dateCreate')
 
 class TipoProductoSerializer(serializers.HyperlinkedModelSerializer):
 	class Meta:
 		model = tb_tipoProducto
-		fields = ('user', 'nameTipoProducto', 'dateCreate')
+		fields = ('id',
+			'url','user', 'nameTipoProducto', 'dateCreate')
 
 class TipoComisionSerializer(serializers.HyperlinkedModelSerializer):
 	class Meta:
 		model = tb_tipoComision
-		fields = ('user', 'nameTipoComision', 'dateCreate')
+		fields = ('id',
+			'url','user', 'nameTipoComision', 'dateCreate')
 
 class TipoColaboradorSerializer(serializers.HyperlinkedModelSerializer):
 	class Meta:
 		model = tb_tipoCollaborador
-		fields = ('user', 'nameTipoCollaborador', 'dateCreate')
+		fields = ('id',
+			'url','user', 'nameTipoCollaborador', 'dateCreate')
 
 class StatusSerializer(serializers.HyperlinkedModelSerializer):
 	class Meta:
 		model = tb_status
-		fields = ('user', 'nameStatus', 'dateCreate')
+		fields = ('id',
+			'url','user', 'nameStatus', 'dateCreate')
 
 class SucursalesSerializer(serializers.HyperlinkedModelSerializer):
 	class Meta:
 		model = tb_sucursales
-		fields = ('user', 'nameSucursales', 'dateCreate')
+		fields = ('id',
+			'url','user', 'nameSucursales', 'dateCreate')
 
 
 class FormasDePagoSerializer(serializers.HyperlinkedModelSerializer):
 	class Meta:
 		model = tb_formasDePago
-		fields = ('user', 'nameFormasDePago', 'dateCreate')
+		fields = ('id',
+			'url','user', 'nameFormasDePago', 'dateCreate')
 
 
 class TurnSesionSerializer(serializers.HyperlinkedModelSerializer):
 	class Meta:
 		model = tb_turn_sesion
-		fields = ('user', 'nameturnsession', 'HoraTurn','HoraTurnEnd',)
+		fields = ('id',
+			'url','user', 'nameturnsession', 'HoraTurn','HoraTurnEnd',)

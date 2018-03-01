@@ -12,6 +12,7 @@ from apps.Turn.views import NuevoTurnClient
 from apps.Turn.views import turno_update
 from apps.Turn.views import InfoReserva
 from apps.Turn.views import InfoTurno
+from apps.Turn.views import ActualizacionManualTurno
 
 urlpatterns = [
 
@@ -28,4 +29,5 @@ urlpatterns = [
   	url(r'^actualizacion/de/status$', turno_update , name='turno_update'  ),
   	url(r'^info/de/reservas$', InfoReserva , name='InfoReserva'  ),
 	url(r'^info/de/turno$', InfoTurno , name='InfoTurno'  ),
+	url(r'^cambiar/de/turno$', ActualizacionManualTurno , name='ActualizacionManualTurno'  ),
 ]

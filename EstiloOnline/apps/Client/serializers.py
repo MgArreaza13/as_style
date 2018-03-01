@@ -7,6 +7,8 @@ class ClientSerializer(serializers.HyperlinkedModelSerializer):
 	class Meta:
 		model = tb_client
 		fields = (
+			'id',
+			'url',
 			'user',
 			'dni',
 			'phoneNumberClient',

@@ -719,10 +719,15 @@
                               <a href='https://www.elegantthemes.com/cgi-bin/members/register.cgi?sub=16'>
                                 Sign Up
                               </a> -->
+
+                              <input type="hidden" value="0" id="TirnoOReserva">
+                              <input type="hidden" value="0" id="IdReserva">
+                              <input type="hidden" value="0" id="NewDate">
+                              <input type="hidden" value="0" id="NewTurn">
                             </div>
                              <div style="text-align:center;"  class="box-footer col-md-12">
-                        <button type="submit" class="btn btn-primary">GUARDAR</button>
-                        <a onclick="REGRESARPASO3();"  href="javascript:void(0)" class="btn btn-danger">REGRESAR</a>
+                        <button type="button" id="EnviarActalizacion" onclick="EnviarActualizacionDeReserva();" class="btn btn-primary btn-block" disabled>GUARDAR</button>
+                        
                       </div>
           
                     
@@ -752,7 +757,7 @@
                                 </div>
                                 <!-- END Table -->
                                 <div class="col-md-offset-10">
-                                    <button type="button" data-dismiss="modal" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span> Cerrar Usuarios</button>
+                                    <button type="button" data-dismiss="modal" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span> Cerrar </button>
                                 </div>
                                        
                             </div>
@@ -1070,7 +1075,8 @@ function status(id) {
                         $('#COLABORADORINFFO').html(data.nombre_colaborador);
                         $('#Monto').html(data.monto);
                         $("#mvUsuarios").modal("show");
-
+                        $('#TirnoOReserva').val('Reserva');
+                        $('#IdReserva').val(id_reserva);
                      }
                 }
             })
@@ -1093,6 +1099,8 @@ function ModificarTurno(id_turno) {
                         $('#COLABORADORINFFO').html(data.nombre_colaborador);
                         $('#Monto').html(data.monto);
                         $("#mvUsuarios").modal("show");
+                        $('#TirnoOReserva').val('Turno');
+                        $('#IdReserva').val(id_turno);
 
                      }
                 }
@@ -1100,6 +1108,82 @@ function ModificarTurno(id_turno) {
   }
 
 
+
+
+function EnviarActualizacionDeReserva() {
+  var Turno_o_Reserva = $('#TirnoOReserva').val();
+  var id_reserva = $('#IdReserva').val();
+  var new_date = $('#NewDate').val();
+  var new_turn  = $('#NewTurn').val() ;
+  if($('#NewTurn').val() == null || $('#NewTurn').val() == 0 ) {
+    console.log('turno invalido');
+  }
+  else{
+    if($('#TirnoOReserva').val() == 'Turno'){
+      $.ajax({
+                    url: '/turnos/cambiar/de/turno',
+                    data: {
+                      'id_reserva':id_reserva,
+                      'new_date':new_date,
+                      'new_turn':new_turn,
+                  },
+                  dataType: 'json',
+                  success: function (data) {
+                     if(data == 200){
+                        swal({
+                          type: 'success',
+                          html: 'Hemos Cambiado el turno Perfectamente'
+                        })
+                        location.reload(); 
+
+                     }
+                     else{
+                      swal({
+                          type: 'error',
+                          html: 'Hemos Tenido un error intente nuevamente'
+                        })
+                     }
+                }
+            })
+
+
+    }
+    else{
+      $.ajax({
+                    url: '/reservas/cambiar/de/turno',
+                    data: {
+                      'id_reserva':id_reserva,
+                      'new_date':new_date,
+                      'new_turn':new_turn,
+                  },
+                  dataType: 'json',
+                  success: function (data) {
+                     if(data == 200){
+                        swal({
+                          type: 'success',
+                          html: 'Hemos Cambiado el turno Perfectamente'
+                        })
+                        location.reload(); 
+
+                     }
+                     else{
+                      swal({
+                          type: 'error',
+                          html: 'Hemos Tenido un error intente nuevamente'
+                        })
+                     }
+                }
+            })
+
+
+    }
+
+  }
+  
+
+
+
+}
 
 
 
@@ -1312,7 +1396,10 @@ $('#mvUsuarios').addClass('hidden');
                           console.log(value);
                         resolve('Has Seleccionado El turno Valido')
                         $('#mvUsuarios').removeClass('hidden');
+
                       } else {
+                        $('#NewTurn').val(null);
+                        $('#EnviarActalizacion').attr('disabled', 'disabled');
                         reject('Turno Ocupado')
                       }
                       }
@@ -1321,6 +1408,9 @@ $('#mvUsuarios').addClass('hidden');
                 }).then(function (result) {
                   
                    if(result == "" ){
+                    $('#NewTurn').val(null);
+                    $('#EnviarActalizacion').attr('disabled', 'disabled');
+
                     swal({
                     type: 'error',
                     html: '<h1>Oops...</h1><h3>Hemos tenido un problema al procesar tu solicitud</h3>'+
@@ -1333,12 +1423,16 @@ $('#mvUsuarios').addClass('hidden');
                   $('#TURNOTARJETA').html(result);
                   $('#ICONOTARJETA').removeClass('fa-close');
                   $('#ICONOTARJETA').addClass('fa-check');
+                  $('#NewDate').val(fecha);
+                  $('#NewTurn').val(result);
 
                    $('#mvUsuarios').removeClass('hidden');
                     swal({
                     type: 'success',
                     html: 'Has seleccionado el turno: ' + result
                   })
+                    $('#EnviarActalizacion').removeAttr("disabled");
+
                 }
                   
               });
@@ -1377,11 +1471,14 @@ $('#mvUsuarios').addClass('hidden');
                           $('#TurnSeleccionado').val(value);
                         resolve('Has Seleccionado El turno Valido')
                          $('#mvUsuarios').removeClass('hidden');
+                         $('#EnviarActalizacion').removeAttr("disabled");
                                      
                       }
                       else{
                          $('#mvUsuarios').removeClass('hidden');
                         reject('ha ocurrido un error')
+                        $('#NewTurn').val(null);
+                        $('#EnviarActalizacion').attr('disabled', 'disabled');
                       }
                     })
                   }
@@ -1390,15 +1487,21 @@ $('#mvUsuarios').addClass('hidden');
                   $('#ICONOTARJETA').removeClass('fa-close');
                   $('#ICONOTARJETA').addClass('fa-check');
                    $('#mvUsuarios').removeClass('hidden');
+                   $('#NewDate').val(fecha);
+                  $('#NewTurn').val(result);
+                  $('#EnviarActalizacion').removeAttr("disabled");
                   swal({
                     type: 'success',
                     html: 'Hemos Cargado perfectamente tu turno '
                   })
+                  
               });
           }
         },
       error : function() {
          $('#mvUsuarios').removeClass('hidden');
+         $('#NewTurn').val(null);
+         $('#EnviarActalizacion').attr('disabled', 'disabled');
         swal({
                     type: 'error',
                     html: '<h1>Oops...</h1><h3>Hemos tenido un problema al procesar tu solicitud</h3>'+

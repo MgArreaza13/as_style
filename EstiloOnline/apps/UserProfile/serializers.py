@@ -8,9 +8,13 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
 		fields = ('id','url','username','password')
 
 class UserProfileSerializer(serializers.HyperlinkedModelSerializer):
+	user_id = serializers.ReadOnlyField(source='user.id')
 	class Meta:
 		model = tb_profile
 		fields = (
+			'id',
+			'url',
+			'user_id',
 			'user',
 			'nameUser',
 			'mailUser',

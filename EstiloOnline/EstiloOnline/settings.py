@@ -81,7 +81,7 @@ MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.BrokenLinkEmailsMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'apps.Middleware.Cors.CorsMiddleware',
+    #'apps.Middleware.Cors.CorsMiddleware',
     'apps.Middleware.Cors.XsSharing',
 ]
 
