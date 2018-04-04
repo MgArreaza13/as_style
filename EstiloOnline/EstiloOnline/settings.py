@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 import os
 import pymysql
 pymysql.install_as_MySQLdb()
+import djcelery 
+djcelery.setup_loader()
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -39,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'djcelery',
     'rest_framework',
     'apps.Notificaciones',
     'apps.Turn',
@@ -171,7 +174,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'es-mx'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'America/Caracas'
 
 USE_I18N = True
 
@@ -223,9 +226,9 @@ SOCIAL_AUTH_FACEBOOK_KEY = '306808163103691'
 SOCIAL_AUTH_FACEBOOK_SECRET = 'eb5ee7f19bad1431f28d1684727c2cc9' 
 
 EMAIL_USE_TLS = True
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'as.estiloonline@gmail.com'
-EMAIL_HOST_PASSWORD = 'asadmin123'
+EMAIL_HOST = 'b7000615.ferozo.com'
+EMAIL_HOST_USER = 'estilo@b7000615.ferozo.com'
+EMAIL_HOST_PASSWORD = 'Miguel5454@'
 EMAIL_PORT = 587
 
 REST_FRAMEWORK = {

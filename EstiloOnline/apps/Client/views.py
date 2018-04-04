@@ -23,7 +23,15 @@ from apps.Client.models import tb_client_WEB
 from apps.ReservasWeb.models import tb_reservasWeb
 from django.http import JsonResponse
 from django.http import HttpResponse
+####################ENVIAR CORREOS##################
+from apps.Tasks.email_tasks import PerfilDeUsuarioMail
+
+
 # Create your views here.
+
+
+
+
 
 
 def newclientewebform(request):
@@ -109,18 +117,7 @@ def NuevoClient(request):
 				cliente.addressClient = request.POST['addressClient']
 				cliente.save()
 				#mandar mensaje de nuevo usuario
-				#Enviaremos los correos a el colaborador y al cliente 
-				#cliente
-				usuario = perfil.mailUser #trato de traer el colaborador del formulario
-				email_subject_usuario = 'Estilo Online Nuevo Cliente'
-				email_body_usuario = "Hola %s, gracias por crearte un nuevo perfil de cliente, ya puedes crear nuevos turnos y muchas cosas mas para mas informacion ingrese aqui http://estiloonline.pythonanywhere.com" %(perfil.nameUser)
-				message_usuario = (email_subject_usuario, email_body_usuario , 'as.estiloonline@gmail.com', [usuario])
-				#mensaje para apreciasoft
-				email_subject_Soporte = 'Nuevo cliente Registrado'
-				email_body_Soporte = "se ha registrado un nuevo perfil de cliente con nombre %s para verificar ingrese aqui http://estiloonline.pythonanywhere.com" %(perfil.nameUser)
-				message_Soporte = (email_subject_Soporte, email_body_Soporte , 'as.estiloonline@gmail.com', ['soporte@apreciasoft.com'])
-				#enviamos el correo
-				send_mass_mail((message_usuario, message_Soporte), fail_silently=False)
+				PerfilDeUsuarioMail.delay(perfil.mailUser, perfil.nameUser)
 				mensaje = "Gracias, hemos registrado de manera exitosa todos los datos, su nuevo cliente se regristro de manera exitosa"
 				return render(request, 'Client/NuevoCliente.html' , {'perfil':perfil, 'Form':Form, 'Form2':Form2, 'Form3':Form3, 'mensaje':mensaje})
 		else:
@@ -151,25 +148,13 @@ def NuevoClientProfile(request):
 			cliente.phoneNumberClientTwo = request.POST['phoneNumberClientTwo']
 			cliente.addressClient = request.POST['addressClient']
 			cliente.save()
-			#mandar mensaje de nuevo usuario
-			#Enviaremos los correos a el colaborador y al cliente 
-			#cliente
-			usuario = perfil.mailUser #trato de traer el colaborador del formulario
-			email_subject_usuario = 'Estilo Online Nuevo Cliente'
-			email_body_usuario = "Hola %s, gracias por crearte un nuevo perfil de cliente, ya puedes crear nuevos turnos y muchas cosas mas para mas informacion ingrese aqui http://estiloonline.pythonanywhere.com" %(perfil.nameUser)
-			message_usuario = (email_subject_usuario, email_body_usuario , 'as.estiloonline@gmail.com', [usuario])
-			#mensaje para apreciasoft
-			email_subject_Soporte = 'Nuevo cliente Registrado'
-			email_body_Soporte = "se ha registrado un nuevo perfil de cliente con nombre %s para verificar ingrese aqui http://estiloonline.pythonanywhere.com" %(perfil.nameUser)
-			message_Soporte = (email_subject_Soporte, email_body_Soporte , 'as.estiloonline@gmail.com', ['soporte@apreciasoft.com'])
-			#enviamos el correo
-			send_mass_mail((message_usuario, message_Soporte), fail_silently=False)
+			PerfilDeUsuarioMail.delay(perfil.mailUser, perfil.nameUser)
 			mensaje = "Gracias, hemos creado su nuevo perfil de manera exitosa"
 			return render(request, 'Client/NuevoClientProfile.html' , {'perfil':perfil,'Form3':Form3, 'mensaje':mensaje})
-	else:
-		Form2	= ProfileForm
-		Form3   = ClientForm
-		fallido = "hemos tenido un problema al procesar sus datos introducidos, verifiquelos e intentelo de nuevo"
+		else:
+			Form2	= ProfileForm
+			Form3   = ClientForm
+			fallido = "hemos tenido un problema al procesar sus datos introducidos, verifiquelos e intentelo de nuevo"
 	return render(request, 'Client/NuevoClientProfile.html' , {'perfil':perfil,'Form3':Form3, 'fallido':fallido})
 
 #editar cliente 

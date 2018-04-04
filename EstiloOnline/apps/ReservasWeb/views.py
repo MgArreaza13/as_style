@@ -43,6 +43,17 @@ from django.core import serializers
 from apps.Configuracion.models import tb_turn_sesion
 from apps.ReservasWeb.serializers import ReservasWebSerializer
 
+from apps.Tasks.email_tasks import CorreoDePagoSucursalMail
+from apps.Tasks.email_tasks import ReservaPorPagarMail
+from apps.Tasks.email_tasks import ReservaWebConfirmadaMail
+from apps.Tasks.email_tasks import StattusChangeMAil
+from apps.Tasks.email_tasks import ReservaWebMail
+
+
+
+
+
+
 def ActualizacionManualTurno(request):
 	id_reserva = request.GET.get('id_reserva', None) 
 	new_date = request.GET.get('new_date', None) 
@@ -63,11 +74,11 @@ def reserva_update(request):
 
 
 def ReservaWebQueryset(request):
-	print('funciono entro')
+	#print('funciono entro')
 	date = request.GET.get('date', None)
-	print(date)
+	#print(date)
 	query = serializers.serialize("json", tb_reservasWeb.objects.filter(dateTurn = date).filter(statusTurn__nameStatus='Confirmada'))
-	print(query)
+	#print(query)
 	return HttpResponse(query)
 
 #Edita los Status de los turnos
@@ -122,9 +133,6 @@ def DetallesWeb(request, id_reservas):
 	fecha = date.today()
 	admin = tb_profile.objects.filter(tipoUser='Administrador')
 	administrador = admin[0]
-	
-
-	
 	return render(request, 'ReservasWeb/DetallesWeb.html', {'reserva':reserva, 'administrador':administrador ,'fecha':fecha})
 
 
@@ -133,16 +141,7 @@ def CorreoDePagoSucursal(request):
 	pk = request.GET.get('pk', None)
 	reserva = tb_reservasWeb.objects.get(id= pk)
 	mensaje = "Gracias Por registrar Su Pago"
-	usuario = reserva.mail #trato de traer el colaborador del formulario
-	email_subject_usuario = 'Estilo Online - Gracias Por Registrar su Reserva'
-	email_body_usuario = "Hola %s, gracias por hacer tu reserva con nosotros te recordamos que debes concretar el pago en nuestra sucursal en las proxima 24 horas para camniar el status de tu reserva, muchas gracias " %(reserva.nombre)
-	message_usuario = (email_subject_usuario, email_body_usuario , 'as.estiloonline@gmail.com', [usuario])
-	#mensaje para apreciasoft
-	email_subject_Soporte = 'Estilo Online - Nueva Reserva WEB Completada Y Proximamente pagada en sucursal'
-	email_body_Soporte = "se ha registrado  una  nueva reserva , nombre:%s . correo:%s, numero:%s , te invitamos a contactarla y luego a cambiar el status de la reserva luego que se complete el pago en la sucursal, revisa el status  en  http://multipoint.pythonanywhere.com/reservas/list/" %(reserva.nombre, reserva.mail, reserva.telefono)
-	message_Soporte = (email_subject_Soporte, email_body_Soporte , 'as.estiloonline@gmail.com', ['soporte@apreciasoft.com', "mg.arreaza.13@gmail.com"])
-	#enviamos el correo
-	#send_mass_mail((message_usuario, message_Soporte), fail_silently=False)
+	CorreoDePagoSucursalMail.delay(reserva.mail, reserva.nombre, reserva.telefono)
 	data = {
 		'status':'ok'
 	}
@@ -167,7 +166,6 @@ def returnPago(request):
 
 def Status(request ):
 	pk = request.GET.get('pk', None)
-	
 	reserva = tb_reservasWeb.objects.get(id= pk)
 	status = (statusDePago(reserva.ingenico_id))
 	data = {
@@ -180,9 +178,7 @@ def Pago(request, id_reserva):
 	reserva = tb_reservasWeb.objects.get(id=id_reserva)
 	data = Pago_Online(reserva.montoAPagar)
 	url = "https://payment."+data._CreateHostedCheckoutResponse__partial_redirect_url
-
 	reserva.ingenico_id =data._CreateHostedCheckoutResponse__hosted_checkout_id
-	
 	reserva.save()
 	return redirect(url)
 
@@ -209,16 +205,7 @@ def ReservaWebPorPagar(request, id_reserva):
 			reserva.isPay = True
 			reserva.save()
 			mensaje = "Gracias Por registrar Su Pago"
-			usuario = reserva.mail #trato de traer el colaborador del formulario
-			email_subject_usuario = 'Multipoint - Gracias Por su Pago'
-			email_body_usuario = "Hola %s, gracias por completar su pago de manera exitosa, esperemos disfrute nuestros servicios" %(reserva.nombre)
-			message_usuario = (email_subject_usuario, email_body_usuario , 'as.estiloonline@gmail.com', [usuario])
-			#mensaje para apreciasoft
-			email_subject_Soporte = 'Multipoint - Nueva Reserva WEB PAGADA'
-			email_body_Soporte = "se ha registrado un Pago de una  reserva , nombre:%s . correo:%s, numero:%s , te invitamos a contactarla y luego a cambiar el status de la reserva en  http://multipoint.pythonanywhere.com/reservas/list/" %(reserva.nombre, reserva.mail, reserva.telefono)
-			message_Soporte = (email_subject_Soporte, email_body_Soporte , 'as.estiloonline@gmail.com', ['soporte@apreciasoft.com', "mg.arreaza.13@gmail.com"])
-			#enviamos el correo
-			#send_mass_mail((message_usuario, message_Soporte), fail_silently=False)
+			ReservaPorPagarMail.delay(reserva.mail, reserva.nombre, reserva.telefono)
 			return render(request, 'ReservasWeb/FacturaPorPagar.html' , {'Form':Form, 'perfil':perfil, 'mensaje':mensaje, 'reserva':reserva,'administrador':administrador,'fecha':fecha,})
 		else: 
 			Form = WebReservasIngresoForm()
@@ -283,19 +270,11 @@ def EditReservaList(request , id_reservas):
 			reserva.description =  ReservaWebEditar.description
 			reserva.isPay =  ReservaWebEditar.isPay
 			reserva.save()
-			print(reserva.statusTurn.nameStatus)
+			#print(reserva.statusTurn.nameStatus)
 			if reserva.statusTurn.nameStatus == 'Confirmada':
-				print('reserva confirmada email')
-				email_subject_usuario = 'Reserva confirmada, motor de pago enviado'
-				email_body_usuario = "Hola ha confirmado la reserva sera enviado el motor de pago mas informacion http://multipoint.pythonanywhere.com/" 
-				message_usuario = (email_subject_usuario, email_body_usuario , 'as.estiloonline@gmail.com', ['soporte@apreciasoft.com', "mg.arreaza.13@gmail.com"])
-				mail = reserva.mail
-				email_subject_Soporte = 'Multipoint - Reserva Confirmada'
-				email_body_Soporte = "hola %s, hemos confirmado tu reserva web te invitamos a procesar tu pago en http://multipoint.pythonanywhere.com/reservas/list/" %(reserva.nombre)
-				message_Soporte = (email_subject_Soporte, email_body_Soporte , 'as.estiloonline@gmail.com', [mail])
-				#enviamos el correo
-				#send_mass_mail((message_usuario, message_Soporte), fail_silently=False)
-			return redirect ('Reservas:listReservas')
+				#print('reserva confirmada email')
+				ReservaWebConfirmadaMail.delay(reserva.mail , reserva.nombre)
+			return redirect ('Reservas:listReservas') 
 	return render (request, 'ReservasWeb/listaDeReservas.html', {'ReservaWebEditar':ReservaWebEditar,'reservas':reservas,'Form':Form , 'perfil':perfil})
 
 
@@ -307,7 +286,7 @@ def StatusChange(request ):
 	reserva.statusTurn =  tb_status.objects.get(nameStatus= 'Confirmada') 
 	reserva.PagoOnline = True
 	reserva.save()
-	print(request.user)
+	#print(request.user)
 
 	## hay que crear este usuario en la base de Datos 'ReservasWeb'
 	user = auth.authenticate(username='ReservasWeb', password='miguel123')
@@ -321,16 +300,7 @@ def StatusChange(request ):
 	ingreso.save()
 	auth.logout(request)
 	#mandar correo cuando se paga la reserva
-	usuario = reserva.mail #trato de traer el colaborador del formulario
-	email_subject_usuario = 'Multipoint - Gracias Por su Pago'
-	email_body_usuario = "Hola %s, gracias por completar su pago de manera exitosa, hemos aprobado su solicitud ya de servicio , esperemos disfrute nuestros servicios" %(reserva.nombre)
-	message_usuario = (email_subject_usuario, email_body_usuario , 'as.estiloonline@gmail.com', [usuario])
-	#mensaje para apreciasoft
-	email_subject_Soporte = 'Multipoint - Nueva Reserva WEB PAGADA'
-	email_body_Soporte = "se ha registrado un Pago de una  reserva , nombre:%s . correo:%s, numero:%s , para un servicio %s, y un monto de $%s te invitamos a revisarla en http://multipoint.pythonanywhere.com/reservas/list/" %(reserva.nombre, reserva.mail, reserva.telefono, reserva.servicioPrestar, reserva.montoAPagar)
-	message_Soporte = (email_subject_Soporte, email_body_Soporte , 'as.estiloonline@gmail.com', ['soporte@apreciasoft.com', "mg.arreaza.13@gmail.com"])
-	#enviamos el correo
-	#send_mass_mail((message_usuario, message_Soporte), fail_silently=False)
+	StattusChangeMAil.delay(reserva.nombre, reserva.mail, reserva.telefono, reserva.servicioPrestar,  reserva.montoAPagar)
 	return HttpResponse('ok')
 
 def Factura(request, id_reservas):
@@ -369,7 +339,7 @@ def web(request):
 	if request.method == 'POST':
 		Form = ReservasWebForm(request.POST or None)
 		if Form.is_valid():
-			print(request.POST)
+			#print(request.POST)
 			turno = Form.save(commit=False)
 			turno.dateTurn = request.POST['FechaSeleccionada']
 			turno.turn = tb_turn_sesion.objects.get(id=request.POST['TurnSeleccionado'])
@@ -381,7 +351,7 @@ def web(request):
 				turno.description = request.POST['ProductosSeleccionados']
 			else:
 				turno.description = 'Sin Descripcion'
-			print(turno.description)
+			#print(turno.description)
 			turno.save()
 			notificacion.nombre = turno.nombre
 			notificacion.dateTurn = turno.dateTurn
@@ -389,7 +359,7 @@ def web(request):
 			#creo el cliente web , debo validar si ya existe y agregar un contador
 			query_set_user = tb_client_WEB.objects.filter(mail= turno.mail)
 			if (len(query_set_user) == 1):
-				print('entre en el condicional')
+				#print('entre en el condicional')
 				query_set_user[0].numeroReservasWeb += 1
 				query_set_user[0].save()
 			else:
@@ -403,16 +373,7 @@ def web(request):
 			#mandar mensaje de nuevo usuario
 			#Enviaremos los correos a el colaborador y al cliente 
 			#cliente
-			usuario = turno.mail #trato de traer el colaborador del formulario
-			email_subject_usuario = 'Multipoint - Nueva Reserva'
-			email_body_usuario = "Hola %s, gracias por solicitar una nueva reserva , para disfrutar de nuestros servicios te invitamos a resgistrarte aqui http://multipoint.pythonanywhere.com/" %(turno.nombre)
-			message_usuario = (email_subject_usuario, email_body_usuario , 'as.estiloonline@gmail.com', [usuario])
-			#mensaje para apreciasoft
-			email_subject_Soporte = 'Multipoint - Nueva Reserva'
-			email_body_Soporte = "se ha registrado una nueva reserva , nombre:%s . correo:%s, numero:%s , te invitamos a contactarla y luego a cambiar el status de la reserva en  http://multipoint.pythonanywhere.com/reservas/list/" %(turno.nombre, turno.mail, turno.telefono)
-			message_Soporte = (email_subject_Soporte, email_body_Soporte , 'as.estiloonline@gmail.com', ['soporte@apreciasoft.com', "mg.arreaza.13@gmail.com"])
-			#enviamos el correo
-			#send_mass_mail((message_usuario, message_Soporte), fail_silently=False)
+			ReservaWebMail.delay(turno.nombre, turno.mail, turno.telefono)
 			return redirect('Reservas:Factura', id_reservas=turno.id)
 		else:
 				fallido = "Errores en los datos Verifiquelos, y vuelva a intentarlo"

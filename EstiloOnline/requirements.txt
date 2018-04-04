@@ -1,3 +1,8 @@
+amqp==1.4.9
+anyjson==0.3.3
+billiard==3.3.0.23
+celery==3.1.25
+celery-with-redis==3.0
 certifi==2017.4.17
 chardet==3.0.4
 connect-sdk-python3==2.11.0
@@ -5,12 +10,14 @@ cymysql==0.8.9
 defusedxml==0.5.0
 Django==1.11.1
 django-allauth==0.34.0
+django-celery==3.2.2
 django-cors-headers==2.1.0
 django-cymysql==0.5.1
 django-rest-auth==0.9.3
 djangorestframework==3.6.4
 djangorestframework-jwt==1.11.0
 idna==2.5
+kombu==3.0.37
 mysql-connector-python==2.1.6
 oauthlib==2.0.2
 olefile==0.44
@@ -22,6 +29,7 @@ python-social-auth==0.3.6
 python3-openid==3.1.0
 pytz==2017.2
 pywin32==220
+redis==2.10.6
 requests==2.18.1
 requests-oauthlib==0.8.0
 six==1.10.0

@@ -15,12 +15,13 @@ from apps.Caja.models import tb_egreso
 from django.core.mail import send_mail
 from django.core.mail import send_mass_mail
 
+from apps.Tasks.email_tasks import ProveedorMail
+
 # Create your views here.
 @login_required(login_url = 'Demo:login' )
 def ListProveedores(request):
 	result = validatePerfil(tb_profile.objects.filter(user=request.user))
 	perfil = result[0]
-
 	proveedores = tb_proveedor.objects.all()
 	#queryset 
 	turnos_hoy =  tb_turn.objects.filter(dateTurn=date.today()).filter(statusTurn__nameStatus='En Espera').count()
@@ -34,8 +35,6 @@ def ListProveedores(request):
 	'egresos_hoy':egresos_hoy,
 
 	}
-
-
 	return render (request, 'Proveedores/ListProveedores.html', context)
 
 
@@ -51,19 +50,7 @@ def NuevoProveedor(request):
 			proveedor = Form.save(commit=False)
 			proveedor.user = request.user
 			proveedor.save()
-			#mandar mensaje de nuevo usuario
-			#Enviaremos los correos a el colaborador y al cliente 
-			#cliente
-			usuario = proveedor.email #trato de traer el colaborador del formulario
-			email_subject_usuario = 'Estilo Online Nuevo Proveedor'
-			email_body_usuario = "Hola %s, gracias por formar parte de nuestra familia como proveedor, toda tu informacion esta disponible aqui http://estiloonline.pythonanywhere.com" %(proveedor.nameProveedor)
-			message_usuario = (email_subject_usuario, email_body_usuario , 'as.estiloonline@gmail.com', [usuario])
-			#mensaje para apreciasoft
-			email_subject_Soporte = 'Nuevo Proveedor Registrado'
-			email_body_Soporte = "se ha registrado un nuevo proveedor satisfactoriamente con nombre %s para verificar ingrese aqui http://estiloonline.pythonanywhere.com" %(proveedor.nameProveedor)
-			message_Soporte = (email_subject_Soporte, email_body_Soporte , 'as.estiloonline@gmail.com', ['soporte@apreciasoft.com'])
-			#enviamos el correo
-			send_mass_mail((message_usuario, message_Soporte), fail_silently=False)
+			ProveedorMail.delay(proveedor.email, proveedor.nameProveedor)
 			mensaje = "Hemos Guardado de manera exitosa su nuevo proveedor"
 			return render(request, 'Proveedores/NuevoProveedor.html' , {'Form':Form, 'perfil':perfil, 'mensaje':mensaje})		
 		else:

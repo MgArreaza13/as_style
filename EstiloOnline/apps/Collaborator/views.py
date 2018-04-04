@@ -25,6 +25,9 @@ from django.http import JsonResponse
 from django.core import serializers
 from apps.Caja.models import tb_egreso_colaborador
 from apps.Configuracion.models import tb_formasDePago
+from apps.Tasks.email_tasks import PerfilColaboradorMail
+
+
 
 
 def ColaboradorDetail(request):
@@ -67,19 +70,7 @@ def CompletarPerfilColaborador(request):
 			colaborador = Form3.save(commit=False)
 			colaborador.user = tb_profile.objects.get(user = request.user)
 			colaborador.save()
-				#mandar mensaje de nuevo usuario
-				#Enviaremos los correos a el colaborador y al cliente 
-				#cliente
-			usuario = perfil.mailUser #trato de traer el colaborador del formulario
-			email_subject_usuario = 'Estilo Online Nuevo Colaborador'
-			email_body_usuario = "Hola %s, gracias por crearte un nuevo perfil colaborador , ya puedes crear nuevos turnos y muchas cosas mas para mas informacion ingrese aqui http://estiloonline.pythonanywhere.com" %(perfil.nameUser)
-			message_usuario = (email_subject_usuario, email_body_usuario , 'as.estiloonline@gmail.com', [usuario])
-				#mensaje para apreciasoft
-			email_subject_Soporte = 'Nuevo Colaborador Registrado'
-			email_body_Soporte = "se ha registrado un nuevo perfil de colaborador con nombre %s para verificar ingrese aqui http://estiloonline.pythonanywhere.com" %(perfil.nameUser)
-			message_Soporte = (email_subject_Soporte, email_body_Soporte , 'as.estiloonline@gmail.com', ['soporte@apreciasoft.com'])
-				#enviamos el correo
-			#send_mass_mail((message_usuario, message_Soporte), fail_silently=False)
+			PerfilColaboradorMail.delay(perfil.mailUser, perfil.nameUser)
 			mensaje = "Hemos Registrado Su nuevo colaborador de manera exitosa"
 			return redirect ('Panel:inicio')
 			#return render(request, 'Collaborator/NuevoCollaborador.html' , {'Form':Form , 'Form2':Form2, 'Form3':Form3, 'perfil':perfil, 'mensaje':mensaje})
@@ -153,19 +144,7 @@ def NuevoColaborador(request):
 				colaborador = Form3.save(commit=False)
 				colaborador.user = tb_profile.objects.get(user__id = user.id)
 				colaborador.save()
-				#mandar mensaje de nuevo usuario
-				#Enviaremos los correos a el colaborador y al cliente 
-				#cliente
-				usuario = perfil.mailUser #trato de traer el colaborador del formulario
-				email_subject_usuario = 'Estilo Online Nuevo Colaborador'
-				email_body_usuario = "Hola %s, gracias por crearte un nuevo perfil colaborador , ya puedes crear nuevos turnos y muchas cosas mas para mas informacion ingrese aqui http://estiloonline.pythonanywhere.com" %(perfil.nameUser)
-				message_usuario = (email_subject_usuario, email_body_usuario , 'as.estiloonline@gmail.com', [usuario])
-				#mensaje para apreciasoft
-				email_subject_Soporte = 'Nuevo Colaborador Registrado'
-				email_body_Soporte = "se ha registrado un nuevo perfil de colaborador con nombre %s para verificar ingrese aqui http://estiloonline.pythonanywhere.com" %(perfil.nameUser)
-				message_Soporte = (email_subject_Soporte, email_body_Soporte , 'as.estiloonline@gmail.com', ['soporte@apreciasoft.com'])
-				#enviamos el correo
-				send_mass_mail((message_usuario, message_Soporte), fail_silently=False)
+				PerfilColaboradorMail.delay(perfil.mailUser, perfil.nameUser)
 				mensaje = "Hemos Registrado Su nuevo colaborador de manera exitosa"
 				return redirect ('Colaboradores:ListColaboradores')
 				return render(request, 'Collaborator/NuevoCollaborador.html' , {'Form':Form , 'Form2':Form2, 'Form3':Form3, 'perfil':perfil, 'mensaje':mensaje})

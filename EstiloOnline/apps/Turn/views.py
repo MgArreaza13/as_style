@@ -35,6 +35,10 @@ from django.core import serializers
 
 
 
+from apps.Tasks.email_tasks import NuevoTurnoParaHoyMAil
+
+
+
 
 
 def ActualizacionManualTurno(request):
@@ -153,24 +157,10 @@ def NuevoTurnParaHoy(request):
 					turno.extraInfoTurn = request.POST['extraInfoTurn']
 				#Envio de mensajes 
 				turno.HoraTurnEnd = sumar_hora(request.POST['TimeTurn'], "3:00")
-				colaborador = tb_profile.objects.get(nameUser=turno.collaborator) #trato de traer el colaborador del formulario
-				email_subject_Colaborador = 'Nuevo Turno Solicitado Por Cliente'
-				email_body_Colaborador = "Hola %s, El presente mensaje es para informarle que ha recibido una nueva solicitud para un turno si desea revisarla y confirmarla ingrese aqui http://estiloonline.pythonanywhere.com" %(colaborador)
-				email_colaborador = colaborador.mailUser
-				message_colaborador = (email_subject_Colaborador, email_body_Colaborador , 'as.estiloonline@gmail.com', [email_colaborador])
-				#cliente
-				client = tb_profile.objects.get(user__username=turno.client) #trato de traer el colaborador del formulario
-				email_subject_client = 'Nuevo Turno Solicitado'
-				email_body_Client = "Hola %s, El presente mensaje es para informarle que se ha enviado una nueva solicitud para un turno si desea revisarla y confirmarla ingrese aqui http://estiloonline.pythonanywhere.com" %(client)
-				email_client = client.mailUser
-				message_client = (email_subject_client, email_body_Client, 'as.estiloonline@gmail.com', [email_client])
-				#mensaje para apreciasoft
-				email_subject_Soporte = 'Nuevo Turno Solicitado en Estilo Online'
-				email_body_Soporte = "Hola, soporte Apreciasoft, El presente mensaje es para informarle que el cliente  %s ha enviado una nueva solicitud para de turno para el colaborador %s , si desea revisarla ingrese aqui http://estiloonline.pythonanywhere.com" %(client,colaborador)
-				message_Soporte = (email_subject_Soporte, email_body_Soporte , 'as.estiloonline@gmail.com', ['soporte@apreciasoft.com'])
-				#enviamos el correo
-				send_mass_mail((message_colaborador, message_client, message_Soporte), fail_silently=False)
 				turno.save()
+				colaborador = tb_profile.objects.get(nameUser=turno.collaborator) #trato de traer el colaborador del formulario
+				client = tb_profile.objects.get(user__username=turno.client) #trato de traer el colaborador del formulario
+				NuevoTurnoParaHoyMAil.delay(colaborador, colaborador.mailUser , client , client.mailUser)
 				mensaje = 'Felicidades Hemos podido guardar su turno de manera exitosa'
 				return render(request, 'Turn/NuevoTurnoHoy.html' , {'Form':Form,'turnos':turnos ,'fecha':fecha , 'mensaje1':mensaje1, 'perfil':perfil, 'mensaje':mensaje})
 			elif data == 1: # collaborador ocupado para esa hora y fecha
@@ -182,8 +172,6 @@ def NuevoTurnParaHoy(request):
 			fecha =  date.today()
 			Form = TurnForm()
 			fallido = "No hemos podido cargar sus datos correctamente, verifique e intente nuevamente"
-
-	
 	return render(request, 'Turn/NuevoTurnoHoy.html' , {'Form':Form,'turnos':turnos ,'fecha':fecha , 'mensaje1':mensaje1, 'perfil':perfil, 'fallido':fallido})
 
 
@@ -287,22 +275,8 @@ def NuevoTurn(request):
 				#Enviaremos los correos a el colaborador y al cliente 
 				#colaborador
 				colaborador = tb_profile.objects.get(nameUser=turno.collaborator) #trato de traer el colaborador del formulario
-				email_subject_Colaborador = 'Nuevo Turno Solicitado Por Cliente'
-				email_body_Colaborador = "Hola %s, El presente mensaje es para informarle que ha recibido una nueva solicitud para un turno si desea revisarla y confirmarla ingrese aqui http://estiloonline.pythonanywhere.com" %(colaborador)
-				email_colaborador = colaborador.mailUser
-				message_colaborador = (email_subject_Colaborador, email_body_Colaborador , 'as.estiloonline@gmail.com', [email_colaborador])
-				#cliente
 				client = tb_profile.objects.get(user__username=turno.client) #trato de traer el colaborador del formulario
-				email_subject_client = 'Nuevo Turno Solicitado'
-				email_body_Client = "Hola %s, El presente mensaje es para informarle que se ha enviado una nueva solicitud para un turno si desea revisarla y confirmarla ingrese aqui http://estiloonline.pythonanywhere.com" %(client)
-				email_client = client.mailUser
-				message_client = (email_subject_client, email_body_Client, 'as.estiloonline@gmail.com', [email_client])
-				#mensaje para apreciasoft
-				email_subject_Soporte = 'Nuevo Turno Solicitado en Estilo Online'
-				email_body_Soporte = "Hola, soporte Apreciasoft, El presente mensaje es para informarle que el cliente  %s ha enviado una nueva solicitud para de turno para el colaborador %s , si desea revisarla ingrese aqui http://estiloonline.pythonanywhere.com" %(client,colaborador)
-				message_Soporte = (email_subject_Soporte, email_body_Soporte , 'as.estiloonline@gmail.com', ['soporte@apreciasoft.com'])
-				#enviamos el correo
-				send_mass_mail((message_colaborador, message_client, message_Soporte), fail_silently=False)
+				NuevoTurnoParaHoyMAil.delay(colaborador, colaborador.mailUser , client , client.mailUser)
 				mensaje = "Hemos Guardado sus datos de manera correcta"
 				return render(request, 'Turn/NuevoTurno.html' , {'Form':Form ,'turnos':turnos ,'mensaje1':mensaje1, 'perfil':perfil, 'mensaje':mensaje})
 			elif data == 1: # collaborador ocupado para esa hora y fecha
@@ -345,22 +319,8 @@ def NuevoTurnClient(request, id_client):
 				#Enviaremos los correos a el colaborador y al cliente 
 				#colaborador
 				colaborador = tb_profile.objects.get(nameUser=turno.collaborator) #trato de traer el colaborador del formulario
-				email_subject_Colaborador = 'Nuevo Turno Solicitado Por Cliente'
-				email_body_Colaborador = "Hola %s, El presente mensaje es para informarle que ha recibido una nueva solicitud para un turno si desea revisarla y confirmarla ingrese aqui http://estiloonline.pythonanywhere.com" %(colaborador)
-				email_colaborador = colaborador.mailUser
-				message_colaborador = (email_subject_Colaborador, email_body_Colaborador , 'as.estiloonline@gmail.com', [email_colaborador])
-				#cliente
 				client = tb_profile.objects.get(user__username=turno.client) #trato de traer el colaborador del formulario
-				email_subject_client = 'Nuevo Turno Solicitado'
-				email_body_Client = "Hola %s, El presente mensaje es para informarle que se ha enviado una nueva solicitud para un turno si desea revisarla y confirmarla ingrese aqui http://estiloonline.pythonanywhere.com" %(client)
-				email_client = client.mailUser
-				message_client = (email_subject_client, email_body_Client, 'as.estiloonline@gmail.com', [email_client])
-				#mensaje para apreciasoft
-				email_subject_Soporte = 'Nuevo Turno Solicitado en Estilo Online'
-				email_body_Soporte = "Hola, soporte Apreciasoft, El presente mensaje es para informarle que el cliente  %s ha enviado una nueva solicitud para de turno para el colaborador %s , si desea revisarla ingrese aqui http://estiloonline.pythonanywhere.com" %(client,colaborador)
-				message_Soporte = (email_subject_Soporte, email_body_Soporte , 'as.estiloonline@gmail.com', ['soporte@apreciasoft.com'])
-				#enviamos el correo
-				send_mass_mail((message_colaborador, message_client, message_Soporte), fail_silently=False)
+				NuevoTurnoParaHoyMAil.delay(colaborador, colaborador.mailUser , client , client.mailUser)
 				mensaje = "Hemos Guardado sus datos de manera correcta"
 				return render(request, 'Turn/NuevoTurno.html' , {'Form':Form ,'turnos':turnos ,'mensaje1':mensaje1, 'perfil':perfil, 'mensaje':mensaje})
 			elif data == 1: # collaborador ocupado para esa hora y fecha
