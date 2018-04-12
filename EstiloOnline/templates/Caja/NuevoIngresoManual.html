@@ -12,12 +12,12 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Nuveo Ingreso de Caja
+        Nuevo Ingreso de Caja
         <small>detalles</small>
       </h1>
       <ol class="breadcrumb">
         <li><a href="index.html"><i class="fa fa-dashboard"></i>Inicio</a></li>
-        <li><a href="ingresos-egresos.html">Ingresos - Egreos </a></li>
+        <li><a href="ingresos-egresos.html">Ingresos - Egresos </a></li>
         <li class="active">Nuevo Ingreso</li>
       </ol>
     </section>
@@ -31,13 +31,16 @@
           <!-- general form elements -->
           <div class="box box-info">
             <div class="box-header with-border">
+
               <h3 class="box-title">Nuevo Ingreso de Caja</h3>
             </div>
             <!-- /.box-header -->
             <!-- form start -->
             <form action="" method="post">
+            <div id="withClient" class="col-md-6" style="padding-top:0.7em;"><button type="button" class="btn btn-primary btn-block active" onclick="withClient();">Ingreso de Cliente</button></div>
+              <div id="withoutClient" class="col-md-6" style="padding-top:0.7em;"><button type="button" class="btn btn-primary btn-block" onclick="withoutClient();">Otro tipo de Ingreso</button></div>
               {% csrf_token %}
-              <div class="box-body">
+              <div class="box-body" style="padding-top:4.3em;">
                   
                   {% for field in Form %}
                      {% if Form.subject.errors %}
@@ -103,7 +106,7 @@
                     <script> console.log('{{ field.help_text|safe }}')</script>
                   {% endif %}
                {% endfor %}
-               <div class="form-group">
+               <div id="SelectClient" class="form-group">
                  <label>Cliente</label>
                  <select name="Clientes" class="form-control">
                    {% for cliente in clientes %}
@@ -118,6 +121,7 @@
                                <textarea name="descripcion" placeholder="Ingrese algun comentario adicional si lo desea" class="form-control" maxlength="3000" rows="6" id="id_descripcion"  autocomplete="off" cols="2" autofocus=""></textarea>
                       
                           </div>
+              <input id="TypeIngreso" name="TypeIngreso" type="hidden" value="Con_Cliente">
 
                
                

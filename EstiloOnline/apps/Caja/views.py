@@ -48,20 +48,23 @@ def NuevoIngresoManual(request):
 	perfil = result[0]
 	fallido = None
 	clientes = tb_client_WEB.objects.all()
-
 	if request.method == 'POST':
+		print(request.POST)
 		Form = IngresoManualForm(request.POST or None)
 		if Form.is_valid():
 			ingreso = Form.save(commit=False)
 			ingreso.user = request.user
-			ingreso.cliente = request.POST['Clientes']
-			if request.POST['descripcion'] == "":
+			if request.POST['TypeIngreso'] == 'Sin_Cliente':
+				ingreso.cliente = 'Ingreso Especial' 
+			elif request.POST['TypeIngreso'] == 'Con_Cliente':
+				ingreso.cliente = request.POST['Clientes']
+			if request.POST['descripcion'] == '':
 				ingreso.descripcion = 'Sin Comentarios'
 			else:
 				ingreso.descripcion = request.POST['descripcion']
 			ingreso.save()
 			mensaje = 'Hemos Cargado Su ingreso de manera exitosa'
-			return render(request, 'Caja/NuevoIngreso.html' , {'Form':Form, 'perfil':perfil, 'clientes':clientes ,'mensaje':mensaje})
+			return render(request, 'Caja/NuevoIngresoManual.html' , {'Form':Form, 'perfil':perfil, 'clientes':clientes ,'mensaje':mensaje})
 		else:
 			Form = IngresoManualForm()
 			fallido = "Hemos tenido algun problema con sus datos, por eso no hemos procesado su ingreso, verifiquelo e intentelo de nuevo"
